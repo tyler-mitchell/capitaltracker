@@ -1,0 +1,41 @@
+{
+    "name": "web-e2e",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/web-e2e/src",
+    "projectType": "application",
+    "targets": {
+        "exec": {
+            "executor": "@nrwl/cypress:cypress",
+            "options": {
+                "cypressConfig": "apps/web-e2e/cypress.config.ts",
+                "devServerTarget": "web:serve:development",
+                "testingType": "e2e"
+            },
+            "configurations": {
+                "production": {
+                    "devServerTarget": "web:serve:production"
+                }
+            }
+        },
+        "e2e": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "nx run web-e2e:exec --disable-gpu"
+            },
+            "configurations": {
+                "production": {
+                    "command": "nx run web-e2e:exec:production --disable-gpu"
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
+            }
+        }
+    },
+    "tags": [],
+    "implicitDependencies": ["web"]
+}

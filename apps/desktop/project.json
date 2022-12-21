@@ -1,0 +1,38 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "sourceRoot": "apps/client/src",
+    "targets": {
+        "build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "tauri build"
+            }
+        },
+        "dev": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "tauri dev"
+            }
+        },
+        "fmt": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "cargo fmt --all -- --check"
+            }
+        },
+        "test": {
+            "executor": "@ignisda/nx-rust:test",
+            "options": {}
+        },
+        "lint": {
+            "executor": "@ignisda/nx-rust:clippy",
+            "options": {
+                "fix": false,
+                "failOnWarnings": true,
+                "noDeps": true
+            }
+        }
+    },
+    "tags": []
+}
