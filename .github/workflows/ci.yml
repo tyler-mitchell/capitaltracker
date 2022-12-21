@@ -25,6 +25,7 @@ jobs:
             environment-variables: |
                 NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
                 NEXT_TELEMETRY_DISABLED=1
+                CYPRESS_CACHE_FOLDER=node_modules/.cypress
             parallel-commands: |
                 npx nx-cloud record -- npx nx format:check
                 npx nx-cloud record -- npx nx workspace-lint
@@ -42,6 +43,7 @@ jobs:
             environment-variables: |
                 NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
                 NEXT_TELEMETRY_DISABLED=1
+                CYPRESS_CACHE_FOLDER=node_modules/.cypress
             install-commands: |
                 git diff --quiet --exit-code --diff-filter=ACM $NX_BASE $NX_HEAD apps/desktop || {
                     sudo apt-get update -y;
