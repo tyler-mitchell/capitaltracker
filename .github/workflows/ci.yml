@@ -33,11 +33,11 @@ jobs:
                 npx nx-cloud record -- npx nx workspace-lint
                 npx nx-cloud record -- npx nx format:check
             parallel-commands-on-agents: |
-                yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
+                yarn ci:build &
+                yarn ci:format &
+                yarn ci:lint &
+                yarn ci:test &
+                yarn ci:e2e
 
     agents:
         name: Nx Cloud - Agents

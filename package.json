@@ -18,7 +18,7 @@
         "ci:build": "nx affected --target=build --parallel=5",
         "ci:lint": "nx affected --target=lint --parallel=5",
         "ci:test": "nx affected --target=test --parallel=5 --ci --code-coverage",
-        "ci:e2e": "nx affected --target=e2e --parallel=5"
+        "ci:e2e": "nx affected --target=exec --parallel=5"
     },
     "private": true,
     "dependencies": {
