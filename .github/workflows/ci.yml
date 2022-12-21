@@ -37,6 +37,7 @@ jobs:
             parallel-commands: |
                 npx nx-cloud record -- npx nx workspace-lint
                 npx nx-cloud record -- npx nx format:check
+                yarn export
             parallel-commands-on-agents: |
                 yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
                 yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
