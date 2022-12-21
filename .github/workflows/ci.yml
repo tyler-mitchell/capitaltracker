@@ -32,7 +32,9 @@ jobs:
             parallel-commands-on-agents: |
                 yarn ci:build --base=$NX_BASE --head=$NX_HEAD
             final-commands: |
-                echo "IM WAITING FOR THE CACHE"
+                ls -la node_modules
+                echo "sleeping for 3 minutes so the cache can get saved by agent"
+                sleep 3m
             # parallel-commands-on-agents: |
             #     yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
             #     yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
