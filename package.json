@@ -1,6 +1,6 @@
 {
     "name": "capitaltracker",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "license": "MIT",
     "scripts": {
         "start": "nx serve",
@@ -13,7 +13,7 @@
         "desktop:format": "nx fmt desktop",
         "desktop:lint": "nx lint desktop",
         "desktop:test": "nx test desktop",
-        "desktop:export": "nx export desktop",
+        "desktop:build": "nx build desktop",
         "ci:format": "nx affected --target=fmt --parallel=5",
         "ci:build": "nx affected --target=build --parallel=5",
         "ci:lint": "nx affected --target=lint --parallel=5",
