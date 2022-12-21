@@ -3,7 +3,7 @@
     "projectType": "application",
     "sourceRoot": "apps/client/src",
     "targets": {
-        "build": {
+        "cache": {
             "executor": "nx:run-commands",
             "options": {
                 "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --release"
