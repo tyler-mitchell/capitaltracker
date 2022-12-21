@@ -9,10 +9,6 @@ on:
         branches: [main, develop]
         types: [opened, synchronize]
 
-env:
-    NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
-    NEXT_TELEMETRY_DISABLED: 1
-
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
     cancel-in-progress: true
