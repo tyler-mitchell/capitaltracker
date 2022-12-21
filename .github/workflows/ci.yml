@@ -21,7 +21,7 @@ jobs:
                 os: [ubuntu-latest]
         uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11
         with:
-            number-of-agents: 5
+            number-of-agents: 1
             environment-variables: |
                 NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
                 NEXT_TELEMETRY_DISABLED=1
@@ -29,16 +29,18 @@ jobs:
                 npx nx-cloud record -- npx nx format:check
                 npx nx-cloud record -- npx nx workspace-lint
             parallel-commands-on-agents: |
-                yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
+                yarn ci:build --base=$NX_BASE --head=$NX_HEAD
+            # parallel-commands-on-agents: |
+            #     yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
     agents:
         name: Agents
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11
         with:
-            number-of-agents: 5
+            number-of-agents: 1
             environment-variables: |
                 NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
                 NEXT_TELEMETRY_DISABLED=1
