@@ -69,7 +69,13 @@
             "options": {
                 "jestConfig": "apps/mobile/jest.config.ts",
                 "passWithNoTests": true
-            }
+            },
+            "configurations": {
+                "ci": {
+                  "ci": true,
+                  "runInBand": true
+                }
+              }
         }
     },
     "tags": []
