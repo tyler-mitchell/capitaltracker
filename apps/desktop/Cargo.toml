@@ -2,8 +2,8 @@
 name = "desktop"
 version = "0.1.0"
 description = "Desktop App for Capital Tracker"
-authors = ["Clemens Horn"]
 default-run = "desktop"
+authors = ["Clemens Horn"]
 edition = "2021"
 rust-version = "1.59"
 
