@@ -31,15 +31,15 @@ jobs:
                 sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
                 yarn install
                 npx nx-cloud record -- npx nx build desktop
-            parallel-commands: |
-                npx nx-cloud record -- npx nx format:check
-                npx nx-cloud record -- npx nx workspace-lint
-            parallel-commands-on-agents: |
-                yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
-                yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
+            # parallel-commands: |
+            #     npx nx-cloud record -- npx nx format:check
+            #     npx nx-cloud record -- npx nx workspace-lint
+            # parallel-commands-on-agents: |
+            #     yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
+            #     yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
     agents:
         name: Agents
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11
