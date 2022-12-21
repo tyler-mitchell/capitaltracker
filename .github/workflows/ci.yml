@@ -21,39 +21,30 @@ jobs:
                 os: [ubuntu-latest]
         uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11
         with:
-            number-of-agents: 1
+            number-of-agents: 5
             environment-variables: |
                 NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
                 NEXT_TELEMETRY_DISABLED=1
-                CYPRESS_CACHE_FOLDER=node_modules/.cypress
-            init-commands: |
-                sudo apt-get update -y
-                sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx cache desktop
             parallel-commands: |
-                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx cache desktop
-            # parallel-commands: |
-            #     npx nx-cloud record -- npx nx format:check
-            #     npx nx-cloud record -- npx nx workspace-lint
+                npx nx-cloud record -- npx nx format:check
+                npx nx-cloud record -- npx nx workspace-lint
             parallel-commands-on-agents: |
-                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx cache desktop
-            # parallel-commands-on-agents: |
-            #     yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
-            #     yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
-            #     yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
-            #     yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
-            #     yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
+                yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
+                yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
+                yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
+                yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
+                yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
     agents:
         name: Agents
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11
         with:
-            number-of-agents: 1
+            number-of-agents: 5
             environment-variables: |
                 NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
                 NEXT_TELEMETRY_DISABLED=1
-                CYPRESS_CACHE_FOLDER=node_modules/.cypress
             install-commands: |
-                sudo apt-get update -y
-                sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+                git diff --quiet --exit-code --diff-filter=ACM $NX_BASE $NX_HEAD apps/desktop || {
+                    sudo apt-get update -y;
+                    sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf;
+                }
                 yarn install
-                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx cache desktop
