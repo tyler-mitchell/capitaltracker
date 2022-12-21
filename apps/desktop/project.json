@@ -6,6 +6,12 @@
         "build": {
             "executor": "nx:run-commands",
             "options": {
+                "command": "cargo build --release"
+            }
+        },
+        "export": {
+            "executor": "nx:run-commands",
+            "options": {
                 "command": "tauri build"
             }
         },
@@ -22,15 +28,15 @@
             }
         },
         "test": {
-            "executor": "@ignisda/nx-rust:test",
-            "options": {}
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "cargo test"
+            }
         },
         "lint": {
-            "executor": "@ignisda/nx-rust:clippy",
+            "executor": "nx:run-commands",
             "options": {
-                "fix": false,
-                "failOnWarnings": true,
-                "noDeps": true
+                "command": "cargo clippy -- --no-deps --deny warnings"
             }
         }
     },
