@@ -91,10 +91,11 @@ jobs:
 
     agents:
         name: Nx Cloud Agents
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
         timeout-minutes: 60
         strategy:
             matrix:
+                os: [ubuntu-latest]
                 agent: [1, 2, 3, 4, 5]
         steps:
             - name: Checkout
