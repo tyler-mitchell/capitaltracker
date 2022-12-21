@@ -9,11 +9,6 @@ on:
         branches: [main, develop]
         types: [opened, synchronize]
 
-env:
-    NX_CLOUD_DISTRIBUTED_EXECUTION: true
-    NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
-    NEXT_TELEMETRY_DISABLED: 1
-
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
     cancel-in-progress: true
@@ -24,15 +19,12 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest]
-                include:
-                    - os: ubuntu-latest
         uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11
         with:
             number-of-agents: 5
-            init-commands: |
-                sudo apt-get update -y
-                sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-                yarn export
+            environment-variables: |
+                NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
+                NEXT_TELEMETRY_DISABLED=1
             parallel-commands: |
                 npx nx-cloud record -- npx nx workspace-lint
                 npx nx-cloud record -- npx nx format:check
@@ -42,9 +34,15 @@ jobs:
                 yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
                 yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
                 yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
-
     agents:
         name: Agents
         uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11
         with:
             number-of-agents: 5
+            environment-variables: |
+                NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE=true
+                NEXT_TELEMETRY_DISABLED=1
+            init-commands: |
+                sudo apt-get update -y
+                sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+                yarn export
