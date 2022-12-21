@@ -17,7 +17,7 @@
         "ci:format": "nx affected --target=fmt --parallel=5",
         "ci:build": "nx affected --target=build --parallel=5",
         "ci:lint": "nx affected --target=lint --parallel=5",
-        "ci:test": "nx affected --target=test --parallel=5 --ci --code-coverage",
+        "ci:test": "nx affected --target=test --parallel=5",
         "ci:e2e": "nx affected --target=exec --parallel=5"
     },
     "private": true,
