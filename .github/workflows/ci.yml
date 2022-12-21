@@ -107,8 +107,8 @@ jobs:
                       ${{ github.workspace }}/target/
                       ${{ github.workspace }}/dist/
                       ${{ github.workspace }}/node_modules/
-                  key: ${{ matrix.os }}-node-cargo-${{ hashFiles('**/Cargo.lock', '**/yarn.lock') }}
-                  restore-keys: ${{ matrix.os }}-node-cargo
+                  key: ubuntu-latest-node-cargo-${{ hashFiles('**/Cargo.lock', '**/yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-cargo
 
             - name: Install Rust Toolchain
               uses: dtolnay/rust-toolchain@stable
