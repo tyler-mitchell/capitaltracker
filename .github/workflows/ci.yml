@@ -37,7 +37,7 @@ jobs:
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
-            - name: Cache Rust
+            - name: Cache
               uses: actions/cache@v3
               with:
                   path: |
@@ -74,16 +74,16 @@ jobs:
               run: npx nx format:check
 
             - name: Build
-              run: yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
+              run: yarn ci:build --base=$NX_BASE --head=$NX_HEAD
 
             - name: Lint
-              run: yarn ci:lint --base=$NX_BASE --head=$NX_HEAD &
+              run: yarn ci:lint --base=$NX_BASE --head=$NX_HEAD
 
             - name: Format
-              run: yarn ci:fmt --base=$NX_BASE --head=$NX_HEAD &
+              run: yarn ci:format --base=$NX_BASE --head=$NX_HEAD
 
             - name: Test
-              run: yarn ci:test --base=$NX_BASE --head=$NX_HEAD &
+              run: yarn ci:test --base=$NX_BASE --head=$NX_HEAD
 
             - name: E2E
-              run: yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD &
+              run: yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
