@@ -17,8 +17,7 @@ env:
     NEXT_TELEMETRY_DISABLED: 1
 
 jobs:
-    main:
-        name: Main Job
+    ci:
         runs-on: ${{ matrix.os }}
         defaults:
             run:
