@@ -10,7 +10,7 @@
                     "fmt",
                     "lint",
                     "test",
-                    "exec",
+                    "e2e",
                     "export"
                 ],
                 "accessToken": "N2NlZDcwMjQtYjlhNi00NThhLTk1NmItMTJhYjM5M2I4MTcyfHJlYWQtd3JpdGU="
