@@ -86,4 +86,3 @@ jobs:
 
             - name: E2E
               run: yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
-
