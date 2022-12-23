@@ -54,23 +54,20 @@ jobs:
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
 
             - name: Lint
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx workspace-lint
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
 
             - name: Run tasks
               uses: jameshenry/parallel-bash-commands@v1
               with:
-                  cmd1: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=build
-                  cmd2: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=lint
-                  cmd3: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=format
-                  cmd4: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=test
-                  cmd5: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
+                  cmd1: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=build
+                  cmd2: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=lint
+                  cmd3: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=format
+                  cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=test
+                  cmd5: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
               run: npx nx-cloud stop-all-agents
-
-            - name: Deploy
-              run: echo "Deploying..."
 
     agents:
         name: Agent
