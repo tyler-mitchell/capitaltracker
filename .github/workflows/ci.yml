@@ -71,20 +71,16 @@ jobs:
               run: yarn install
 
             - name: Start Nx Cloud DTE
-              run: npx nx-cloud start-ci-run
-
-            - name: Linting the workspace
-              run: npx nx workspace-lint
-
-            - name: Checking workspace format
-              run: npx nx-cloud record -- npx nx format:check
+              run: npx nx-cloud start-ci-run --stop-agents-after=e2e
 
             - name: Run tasks
               run: |
-                  yarn ci:build --base=$NX_BASE --head=$NX_HEAD
-                  yarn ci:lint  --base=$NX_BASE --head=$NX_HEAD
-                  yarn ci:format --base=$NX_BASE --head=$NX_HEAD
-                  yarn ci:test  --base=$NX_BASE --head=$NX_HEAD
+                  NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check &
+                  NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx workspace-lint &
+                  yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
+                  yarn ci:lint  --base=$NX_BASE --head=$NX_HEAD &
+                  yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
+                  yarn ci:test  --base=$NX_BASE --head=$NX_HEAD &
                   yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
 
             - name: Stop Agents

@@ -14,11 +14,12 @@
         "desktop:lint": "nx lint desktop",
         "desktop:test": "nx test desktop",
         "desktop:build": "nx build desktop",
-        "ci:format": "nx affected --target=fmt --parallel=2",
-        "ci:build": "nx affected --target=build --parallel=2",
-        "ci:lint": "nx affected --target=lint --parallel=2",
-        "ci:test": "nx affected --target=test --parallel=2",
-        "ci:e2e": "nx affected --target=e2e --parallel=2"
+        "ci:affected": "nx affected --parallel=2 --nx-bail --skip-nx-cache",
+        "ci:format": "yarn ci:affected --target=fmt",
+        "ci:build": "yarn ci:affected --target=build",
+        "ci:lint": "yarn ci:affected --target=lint",
+        "ci:test": "yarn ci:affected --target=test",
+        "ci:e2e": "yarn ci:affected --target=e2e"
     },
     "private": true,
     "dependencies": {
