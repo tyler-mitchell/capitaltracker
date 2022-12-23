@@ -87,7 +87,7 @@ jobs:
                   yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
                   yarn ci:test  --base=$NX_BASE --head=$NX_HEAD &
                   yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD &
-                  echo "failing now" && false
+                  npx nx exec -- false
 
             - name: Stop Agents
               if: ${{ always() }}
