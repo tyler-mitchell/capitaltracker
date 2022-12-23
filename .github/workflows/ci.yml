@@ -71,7 +71,7 @@ jobs:
               run: yarn install
 
             - name: Start Nx Cloud DTE
-              run: npx nx-cloud start-ci-run --stop-agents-after=e2e
+              run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
 
             - name: Run tasks
               run: |
