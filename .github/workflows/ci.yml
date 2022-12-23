@@ -14,7 +14,6 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
-    YARN_CACHE_FOLDER: ~/.cache/yarn/v6
 
 jobs:
     main:
@@ -41,7 +40,6 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ~/.cache/yarn/v6
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -104,7 +102,6 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ~/.cache/yarn/v6
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
 
@@ -139,7 +136,6 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ~/.cache/yarn/v6
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
