@@ -74,14 +74,15 @@ jobs:
               run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
 
             - name: Run tasks
-              run: |
-                  NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check &
-                  NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx workspace-lint &
-                  yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:lint  --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:test  --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
+              uses: jameshenry/parallel-bash-commands@v1
+              with:
+                  cmd1: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
+                  cmd2: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx workspace-lint
+                  cmd3: yarn ci:build --base=$NX_BASE --head=$NX_HEAD
+                  cmd4: yarn ci:lint  --base=$NX_BASE --head=$NX_HEAD
+                  cmd5: yarn ci:format --base=$NX_BASE --head=$NX_HEAD
+                  cmd6: yarn ci:test  --base=$NX_BASE --head=$NX_HEAD
+                  cmd7: yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
 
             - name: Stop Agents
               if: ${{ always() }}
