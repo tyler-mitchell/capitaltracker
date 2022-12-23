@@ -43,7 +43,6 @@ jobs:
                   key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
-
             - name: Cache Rust
               uses: actions/cache@v3
               with:
@@ -140,5 +139,5 @@ jobs:
             - name: Install dependencies
               run: yarn install
 
-            - name: Start Nx Agent ${{ matrix.agent }}
+            - name: Start Agent ${{ matrix.agent }}
               run: npx nx-cloud start-agent
