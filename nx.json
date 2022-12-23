@@ -19,17 +19,22 @@
     },
     "targetDefaults": {
         "build": {
-            "dependsOn": ["^build"],
+            "dependsOn": ["^build", "export"],
             "inputs": ["production", "^production"]
         },
         "test": {
+            "dependsOn": ["build"],
             "inputs": [
                 "default",
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
             ]
         },
+        "e2e": {
+            "dependsOn": ["build"]
+        },
         "lint": {
+            "dependsOn": ["build"],
             "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
         }
     },
