@@ -36,6 +36,7 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
+                      ${{ github.workspace }}/dist/
                       ${{ github.workspace }}/node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -43,22 +44,26 @@ jobs:
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
-            - name: Install dependencies
+            - name: Install Dependencies
               run: yarn install
 
             - name: Start Nx Cloud DTE
               run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
 
+            - name: Format
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
+
+            - name: Lint
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx workspace-lint
+
             - name: Run tasks
               uses: jameshenry/parallel-bash-commands@v1
               with:
-                  cmd1: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
-                  cmd2: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx workspace-lint
-                  cmd3: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=build
-                  cmd4: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=lint
-                  cmd5: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=format
-                  cmd6: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=test
-                  cmd7: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
+                  cmd1: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=build
+                  cmd2: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=lint
+                  cmd3: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=format
+                  cmd4: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=test
+                  cmd5: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
