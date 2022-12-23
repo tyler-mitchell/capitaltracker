@@ -71,7 +71,7 @@ jobs:
               run: yarn install
 
             - name: Start Nx Cloud DTE
-              run: npx nx-cloud start-ci-run 
+              run: npx nx-cloud start-ci-run
 
             - name: Linting the workspace
               run: npx nx workspace-lint
