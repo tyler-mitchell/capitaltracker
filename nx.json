@@ -19,8 +19,12 @@
     },
     "targetDefaults": {
         "build": {
-            "dependsOn": ["^build", "export"],
+            "dependsOn": ["^build"],
             "inputs": ["production", "^production"]
+        },
+        "lint": {
+            "dependsOn": ["build"],
+            "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
         },
         "test": {
             "dependsOn": ["build"],
@@ -31,11 +35,11 @@
             ]
         },
         "e2e": {
-            "dependsOn": ["build"]
-        },
-        "lint": {
-            "dependsOn": ["build"],
-            "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+            "dependsOn": ["test"],
+            "inputs": [
+                "default",
+                "^production"
+            ]
         }
     },
     "namedInputs": {

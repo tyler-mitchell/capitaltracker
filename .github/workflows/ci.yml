@@ -13,6 +13,7 @@ concurrency:
     cancel-in-progress: true
 
 env:
+    NX_VERBOSE_LOGGING: true
     NX_CLOUD_DISTRIBUTED_EXECUTION: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
     NEXT_TELEMETRY_DISABLED: 1
@@ -70,7 +71,7 @@ jobs:
               run: yarn install
 
             - name: Start Nx Cloud DTE
-              run: npx nx-cloud start-ci-run
+              run: npx nx-cloud start-ci-run 
 
             - name: Linting the workspace
               run: npx nx workspace-lint
