@@ -41,22 +41,6 @@ jobs:
                   key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
-            - name: Cache Rust
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ${{ github.workspace }}/target/
-                  key: ubuntu-latest-cargo-${{ hashFiles('**/Cargo.lock') }}
-                  restore-keys: ubuntu-latest-cargo
-
-            - name: Install Rust Toolchain
-              uses: dtolnay/rust-toolchain@stable
-              with:
-                  components: rustfmt, clippy,
-
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
@@ -75,7 +59,7 @@ jobs:
                   cmd4: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=lint
                   cmd5: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=format
                   cmd6: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=test
-                  cmd7: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
+                  cmd7: CYPRESS_DISABLE_GPU=1 npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
@@ -124,6 +108,9 @@ jobs:
               run: |
                   sudo apt-get update
                   sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+
+            - name: Install Cypress Dependencies
+              run: sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
             - name: Install dependencies
               run: yarn install
