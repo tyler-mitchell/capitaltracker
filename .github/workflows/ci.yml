@@ -119,3 +119,26 @@ jobs:
 
             - name: Start Agent
               run: npx nx-cloud start-agent
+
+            - name: Cache Node
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      ${{ github.workspace }}/dist/
+                      ${{ github.workspace }}/node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
+                  action: save
+
+            - name: Cache Rust
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ${{ github.workspace }}/target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
+                  action: save
