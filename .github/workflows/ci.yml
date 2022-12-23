@@ -59,7 +59,7 @@ jobs:
                   cmd4: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=lint
                   cmd5: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=format
                   cmd6: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=test
-                  cmd7: CYPRESS_DISABLE_GPU=1 npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
+                  cmd7: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
