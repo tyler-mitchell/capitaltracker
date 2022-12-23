@@ -3,15 +3,6 @@
     "projectType": "application",
     "sourceRoot": "apps/client/src",
     "targets": {
-        "export": {
-            "command": "tauri build"
-        },
-        "fmt": {
-            "command": "cargo fmt --all -- --check"
-        },
-        "dev": {
-            "command": "tauri dev"
-        },
         "build": {
             "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --release"
         },
@@ -20,6 +11,15 @@
         },
         "lint": {
             "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy -- --no-deps --deny warnings"
+        },
+        "export": {
+            "command": "tauri build"
+        },
+        "fmt": {
+            "command": "cargo fmt --all -- --check"
+        },
+        "dev": {
+            "command": "tauri dev"
         }
     },
     "tags": []
