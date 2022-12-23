@@ -23,11 +23,9 @@
             "inputs": ["production", "^production"]
         },
         "lint": {
-            "dependsOn": ["build"],
             "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
         },
         "test": {
-            "dependsOn": ["build"],
             "inputs": [
                 "default",
                 "^production",
@@ -35,7 +33,7 @@
             ]
         },
         "e2e": {
-            "dependsOn": ["test"],
+            "dependsOn": ["build"],
             "inputs": ["default", "^production"]
         }
     },

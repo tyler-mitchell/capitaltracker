@@ -7,7 +7,7 @@
             "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --release"
         },
         "test": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo test"
+            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo test --release"
         },
         "lint": {
             "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy -- --no-deps --deny warnings"
