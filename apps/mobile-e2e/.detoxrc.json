@@ -12,7 +12,6 @@
             "build": "cd ../../apps/mobile/ios && xcodebuild -workspace Mobile.xcworkspace -scheme Mobile -configuration Release -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 13' -derivedDataPath ./build -quiet",
             "binaryPath": "../../apps/mobile/ios/build/Build/Products/Release-iphonesimulator/Mobile.app"
         },
-
         "android.debug": {
             "type": "android.apk",
             "build": "cd ../../apps/mobile/android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug",
@@ -47,7 +46,6 @@
             "device": "simulator",
             "app": "ios.debug"
         },
-
         "android.emu.release": {
             "device": "emulator",
             "app": "android.release"
