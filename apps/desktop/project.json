@@ -3,7 +3,7 @@
     "projectType": "application",
     "sourceRoot": "apps/client/src",
     "targets": {
-       "export": {
+        "export": {
             "command": "tauri build"
         },
         "fmt": {
