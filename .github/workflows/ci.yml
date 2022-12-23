@@ -64,9 +64,6 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
-            - name: Install Cypress Dependencies
-              run: sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-
             - name: Install Tauri Dependencies
               run: |
                   sudo apt-get update
@@ -100,7 +97,7 @@ jobs:
               run: npx nx-cloud stop-all-agents
 
             - name: Export Rust
-              run: yarn export desktop
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn export desktop
 
             - name: Save Node Cache
               if: steps.node_cache.outputs.cache-hit != 'true'
@@ -127,6 +124,9 @@ jobs:
     agents:
         name: Agent
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
         strategy:
             matrix:
                 agent: [1, 2, 3]
