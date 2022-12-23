@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
     push:
@@ -80,11 +80,11 @@ jobs:
 
             - name: Run tasks
               run: |
-                  yarn ci:build --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:lint  --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:test  --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD &
+                  yarn ci:build --base=$NX_BASE --head=$NX_HEAD
+                  yarn ci:lint  --base=$NX_BASE --head=$NX_HEAD
+                  yarn ci:format --base=$NX_BASE --head=$NX_HEAD
+                  yarn ci:test  --base=$NX_BASE --head=$NX_HEAD
+                  yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
 
             - name: Stop Agents
               if: ${{ always() }}

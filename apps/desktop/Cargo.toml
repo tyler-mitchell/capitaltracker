@@ -4,8 +4,8 @@ default-run = "desktop"
 version = "0.0.1"
 description = "Desktop App for Capital Tracker"
 authors = ["Clemens Horn"]
-edition = "2021"
 rust-version = "1.59"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
