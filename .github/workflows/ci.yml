@@ -34,19 +34,26 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Cache Rust
+            - name: Cache Node
               uses: actions/cache@v3
               with:
                   path: |
                       ~/.cache/Cypress/
+                      ${{ github.workspace }}/node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
+
+
+            - name: Cache Rust
+              uses: actions/cache@v3
+              with:
+                  path: |
                       ~/.cargo/bin/
                       ~/.cargo/registry/index/
                       ~/.cargo/registry/cache/
                       ${{ github.workspace }}/target/
-                      ${{ github.workspace }}/dist/
-                      ${{ github.workspace }}/node_modules/
-                  key: ${{ matrix.os }}-node-cargo-${{ hashFiles('**/Cargo.lock', '**/yarn.lock') }}
-                  restore-keys: ${{ matrix.os }}-node-cargo
+                  key: ubuntu-latest-cargo-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
 
             - name: Install Rust Toolchain
               uses: dtolnay/rust-toolchain@stable
@@ -80,35 +87,45 @@ jobs:
                   yarn ci:lint  --base=$NX_BASE --head=$NX_HEAD &
                   yarn ci:format --base=$NX_BASE --head=$NX_HEAD &
                   yarn ci:test  --base=$NX_BASE --head=$NX_HEAD &
-                  yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
+                  yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD &
+                  false # to make sure a runner fails
 
             - name: Stop Agents
               if: ${{ always() }}
               run: npx nx-cloud stop-all-agents
+
+            - name: Deploy
+              run: echo "Deploying..."
 
     agents:
         name: Agents
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                agent: [1, 2, 3]
+                agent: [1, 2]
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+
+            - name: Cache Node
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      ${{ github.workspace }}/node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
 
             - name: Cache Rust
               uses: actions/cache@v3
               with:
                   path: |
-                      ~/.cache/Cypress/
                       ~/.cargo/bin/
                       ~/.cargo/registry/index/
                       ~/.cargo/registry/cache/
                       ${{ github.workspace }}/target/
-                      ${{ github.workspace }}/dist/
-                      ${{ github.workspace }}/node_modules/
-                  key: ubuntu-latest-node-cargo-${{ hashFiles('**/Cargo.lock', '**/yarn.lock') }}
-                  restore-keys: ubuntu-latest-node-cargo
+                  key: ubuntu-latest-cargo-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
 
             - name: Install Rust Toolchain
               uses: dtolnay/rust-toolchain@stable
