@@ -4,9 +4,12 @@
     "sourceRoot": "apps/web-e2e/src",
     "projectType": "application",
     "targets": {
-        "exec": {
+        "e2e": {
             "executor": "@nrwl/cypress:cypress",
             "options": {
+                "env": {
+                    "CYPRESS_DISABLE_GPU": 1
+                },
                 "cypressConfig": "apps/web-e2e/cypress.config.ts",
                 "devServerTarget": "web:serve:development",
                 "testingType": "e2e"
@@ -14,17 +17,6 @@
             "configurations": {
                 "production": {
                     "devServerTarget": "web:serve:production"
-                }
-            }
-        },
-        "e2e": {
-            "executor": "nx:run-commands",
-            "options": {
-                "command": "nx run web-e2e:exec --disable-gpu"
-            },
-            "configurations": {
-                "production": {
-                    "command": "nx run web-e2e:exec:production --disable-gpu"
                 }
             }
         },

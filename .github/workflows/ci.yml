@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
     push:
@@ -6,7 +6,6 @@ on:
             - '*'
         branches: [main]
     pull_request:
-        branches: [main, develop]
         types: [opened, synchronize]
 
 concurrency:
@@ -15,9 +14,11 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
+    CYPRESS_DISABLE_GPU: 1
 
 jobs:
-    ci:
+    main:
+        name: Main Job
         runs-on: ${{ matrix.os }}
         defaults:
             run:
@@ -25,64 +26,107 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest]
-                include:
-                    - os: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v3
               with:
                   fetch-depth: 0
 
-            - name: Derive appropriate SHAs for base and head for `nx affected` commands
-              uses: nrwl/nx-set-shas@v3
-
-            - name: Cache
+            - name: Cache Node
               uses: actions/cache@v3
               with:
                   path: |
                       ~/.cache/Cypress/
+                      ${{ github.workspace }}/node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
+
+            - name: Cache Rust
+              uses: actions/cache@v3
+              with:
+                  path: |
                       ~/.cargo/bin/
                       ~/.cargo/registry/index/
                       ~/.cargo/registry/cache/
                       ${{ github.workspace }}/target/
-                      ${{ github.workspace }}/dist/
-                      ${{ github.workspace }}/node_modules/
-                  key: ${{ matrix.os }}-node-cargo-${{ hashFiles('**/Cargo.lock', '**/yarn.lock') }}
-                  restore-keys: ${{ matrix.os }}-node-cargo
+                  key: ubuntu-latest-cargo-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
 
             - name: Install Rust Toolchain
               uses: dtolnay/rust-toolchain@stable
               with:
-                  components: rustfmt, clippy
+                  components: rustfmt, clippy,
 
-            - name: Install Tauri Dependencies
-              if: matrix.os == 'ubuntu-latest'
-              run: |
-                  if ! git diff --quiet --exit-code --diff-filter=ACM "$NX_BASE" "$NX_HEAD" apps/desktop; then
-                      sudo apt-get update
-                      sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-                  fi
+            - name: Derive appropriate SHAs for base and head for `nx affected` commands
+              uses: nrwl/nx-set-shas@v3
 
-            - name: Install Dependencies
+            - name: Install dependencies
               run: yarn install
 
-            - name: Linting Workspace
-              run: npx nx workspace-lint
+            - name: Start Nx Cloud DTE
+              run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
 
-            - name: Checking Workspace Format
-              run: npx nx format:check
+            - name: Run tasks
+              uses: jameshenry/parallel-bash-commands@v1
+              with:
+                  cmd1: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
+                  cmd2: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx workspace-lint
+                  cmd3: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=build
+                  cmd4: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=lint
+                  cmd5: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=format
+                  cmd6: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=test
+                  cmd7: npx nx affected --parallel=2 --nx-bail --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --target=e2e
 
-            - name: Build
-              run: yarn ci:build --base=$NX_BASE --head=$NX_HEAD
+            - name: Stop Agents
+              if: ${{ always() }}
+              run: npx nx-cloud stop-all-agents
 
-            - name: Lint
-              run: yarn ci:lint --base=$NX_BASE --head=$NX_HEAD
+            - name: Deploy
+              run: echo "Deploying..."
 
-            - name: Format
-              run: yarn ci:format --base=$NX_BASE --head=$NX_HEAD
+    agents:
+        name: Agent
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                agent: [1, 2, 3]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-            - name: Test
-              run: yarn ci:test --base=$NX_BASE --head=$NX_HEAD
+            - name: Cache Node
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      ${{ github.workspace }}/dist/
+                      ${{ github.workspace }}/node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
 
-            - name: E2E
-              run: yarn ci:e2e --base=$NX_BASE --head=$NX_HEAD
+            - name: Cache Rust
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ${{ github.workspace }}/target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
+
+            - name: Install Rust Toolchain
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: rustfmt, clippy,
+
+            - name: Install Tauri Dependencies (ubuntu only)
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Start Agent
+              run: npx nx-cloud start-agent

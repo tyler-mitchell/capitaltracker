@@ -22,15 +22,21 @@
             "dependsOn": ["^build"],
             "inputs": ["production", "^production"]
         },
+        "lint": {
+            "dependsOn": ["build"],
+            "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+        },
         "test": {
+            "dependsOn": ["build"],
             "inputs": [
                 "default",
                 "^production",
                 "{workspaceRoot}/jest.preset.js"
             ]
         },
-        "lint": {
-            "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+        "e2e": {
+            "dependsOn": ["test"],
+            "inputs": ["default", "^production"]
         }
     },
     "namedInputs": {
