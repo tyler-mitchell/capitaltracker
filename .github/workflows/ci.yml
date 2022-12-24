@@ -83,9 +83,6 @@ jobs:
             - name: Start Agents
               run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
 
-            - name: Run Xvfb
-              run: Xvfb -screen 0 1024x768x24 :99 &
-
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
               with:
@@ -151,5 +148,11 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
+            - name: Run Xvfb
+              run: Xvfb -screen 0 1024x768x24 :99 &
+
             - name: Start Agent
               run: npx nx-cloud start-agent
+
+            - name: Kill Xvfb
+              run: pkill Xvfb
