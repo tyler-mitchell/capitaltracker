@@ -14,6 +14,7 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
+    NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
     RUST: false
 
 jobs:
@@ -46,11 +47,14 @@ jobs:
                   restore-keys: ubuntu-latest-node-
 
             - name: Check for affected Rust
-              run: git diff --quiet --exit-code --diff-filter=ACM $NX_HEAD $NX_BASE apps/desktop && echo RUST=true
+              run: |
+                if git diff --quiet --exit-code --diff-filter=ACM $NX_HEAD $NX_BASE apps/desktop; then
+                    echo "RUST=true" >> $GITHUB_ENV
+                fi
 
             - name: Rust Cache
-              if: env.RUST == 'true'
               id: rust_cache
+              if: env.RUST == 'true'
               uses: actions/cache@v3
               with:
                   path: |
@@ -90,11 +94,11 @@ jobs:
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
               with:
-                  cmd1: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=build
-                  cmd2: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=lint
-                  cmd3: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=format
-                  cmd4: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=test
-                  cmd5: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=e2e
+                  cmd1: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=build
+                  cmd2: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=lint
+                  cmd3: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=format
+                  cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=test
+                  cmd5: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
