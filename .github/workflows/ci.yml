@@ -14,7 +14,6 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
-    ELECTRON_RUN_AS_NODE: 1
 
 jobs:
     main:
@@ -146,13 +145,5 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
-            - name: Run Xvfb
-              run: |
-                  Xvfb -screen 0 1024x768x24 :99 &
-                  export DISPLAY=:99
-
             - name: Start Agent
               run: npx nx-cloud start-agent
-
-            - name: Kill Xvfb
-              run: pkill Xvfb
