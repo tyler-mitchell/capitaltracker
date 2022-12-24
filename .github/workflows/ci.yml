@@ -16,6 +16,7 @@ env:
     NEXT_TELEMETRY_DISABLED: 1
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
     RUST: false
+    NODE: false
 
 jobs:
     main:
@@ -33,8 +34,11 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Derive appropriate SHAs for base and head for `nx affected` commands
-              uses: nrwl/nx-set-shas@v3
+            - name: Check for affected Node
+              run: |
+                  if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps -- apps ':!apps/desktop'; then
+                    echo "NODE=true" >> $GITHUB_ENV
+                  fi
 
             - name: Check for affected Rust
               run: |
@@ -116,6 +120,9 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+
+            - name: Derive appropriate SHAs for base and head for `nx affected` commands
+              uses: nrwl/nx-set-shas@v3
 
             - name: Check for affected Rust
               run: |
