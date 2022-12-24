@@ -15,7 +15,6 @@ concurrency:
 env:
     NEXT_TELEMETRY_DISABLED: 1
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
-    RUST: false
 
 jobs:
     main:
@@ -36,6 +35,14 @@ jobs:
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
+            - name: Check for affected Rust
+              run: |
+                  if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
+                    echo "RUST=true" >> $GITHUB_ENV
+                  else
+                    echo "RUST=false" >> $GITHUB_ENV
+                  fi
+
             - name: Node Cache
               id: node_cache
               uses: actions/cache@v3
@@ -45,12 +52,6 @@ jobs:
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
-
-            - name: Check for affected Rust
-              run: |
-                  if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
-                    echo "RUST=true" >> $GITHUB_ENV
-                  fi
 
             - name: Rust Cache
               id: rust_cache
