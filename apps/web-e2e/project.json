@@ -7,11 +7,6 @@
         "e2e": {
             "executor": "@nrwl/cypress:cypress",
             "options": {
-                "env": {
-                    "ELECTRON_RUN_AS_NODE": 1,
-                    "CYPRESS_DISABLE_GPU": 1
-                },
-                "browser": "chromium",
                 "cypressConfig": "apps/web-e2e/cypress.config.ts",
                 "devServerTarget": "web:serve:development",
                 "testingType": "e2e"
