@@ -15,11 +15,11 @@
         "export": {
             "command": "tauri build"
         },
-        "fmt": {
-            "command": "cargo fmt --all -- --check"
-        },
         "dev": {
             "command": "tauri dev"
+        },
+        "fmt": {
+            "command": "cargo fmt --all -- --check"
         }
     },
     "tags": []

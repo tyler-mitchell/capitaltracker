@@ -64,7 +64,6 @@ jobs:
                   restore-keys: ubuntu-latest-node-
 
             - name: Rust Cache
-              id: rust_cache
               if: env.RUST == 'true'
               uses: actions/cache@v3
               with:
@@ -105,25 +104,41 @@ jobs:
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
               with:
-                  cmd1: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=build
-                  cmd2: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=lint
-                  cmd3: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=format
-                  cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=test
-                  cmd5: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=3 --target=e2e
+                  cmd1: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=build
+                  cmd2: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=lint
+                  cmd3: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=format
+                  cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=test
+                  cmd5: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
               run: npx nx-cloud stop-all-agents
 
+    set-agents:
+        runs-on: ubuntu-latest
+        name: Set Agent Matrix
+        outputs:
+            matrix: ${{ steps.set-matrix.outputs.matrix }}
+        steps:
+            - name: Calculate Matrix
+              id: set-matrix
+              shell: bash
+              run: |
+                  AGENTS_JSON_ARRAY=$(node -e "console.log(JSON.stringify(Array.from(new Array($NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT)).map((_, i) => i + 1)));")
+                  echo $AGENTS_JSON_ARRAY
+                  echo "matrix=$AGENTS_JSON_ARRAY" >> $GITHUB_OUTPUT
+
     agents:
-        name: Agent
+        name: Agent ${{ matrix.agent }}
+        needs: set-agents
         runs-on: ubuntu-latest
         defaults:
             run:
                 shell: bash
         strategy:
             matrix:
-                agent: [1, 2, 3]
+                agent:
+                    - ${{fromJson(needs.set-agents.outputs.matrix)}}
         steps:
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
