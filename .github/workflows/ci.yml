@@ -39,6 +39,7 @@ jobs:
             - run: |
                   echo "$NX_HEAD" >> commit-hashes.txt
                   echo "$NX_BASE" >> commit-hashes.txt
+
             - uses: actions/upload-artifact@v3
               with:
                   name: commit-hashes
@@ -64,6 +65,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: commit-hashes
+                  path: commit-hashes.txt
 
             - name: Append SHAs to $GITHUB_ENV
               run: echo commit-hashes.txt >> $GITHUB_ENV
@@ -155,6 +157,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: commit-hashes
+                  path: commit-hashes.txt
 
             - name: Append SHAs to $GITHUB_ENV
               run: echo commit-hashes.txt >> $GITHUB_ENV
