@@ -20,7 +20,6 @@ env:
 jobs:
     main:
         name: Main Job
-        needs: shas
         runs-on: ${{ matrix.os }}
         defaults:
             run:
@@ -119,7 +118,6 @@ jobs:
 
     agents:
         name: Agent
-        needs: shas
         runs-on: ubuntu-latest
         defaults:
             run:
