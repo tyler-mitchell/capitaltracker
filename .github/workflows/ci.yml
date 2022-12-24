@@ -14,6 +14,9 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
+    CYPRESS_DISABLE_GPU: 1
+    ELECTRON_RUN_AS_NODE: 1
+    DISPLAY: :99
 
 jobs:
     main:
@@ -80,6 +83,9 @@ jobs:
             - name: Start Agents
               run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
 
+            - name: Run Xvfb
+              run: Xvfb -screen 0 1024x768x24 :99 &
+
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
               with:
@@ -87,7 +93,7 @@ jobs:
                   cmd2: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=lint
                   cmd3: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=format
                   cmd4: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=test
-                  cmd5: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=e2e
+                  cmd5: CYPRESS_DISABLE_GPU=1 npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
