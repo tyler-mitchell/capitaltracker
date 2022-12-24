@@ -18,9 +18,9 @@ env:
     RUST: false
 
 jobs:
-    main:
-        name: Main Job
-        runs-on: ${{ matrix.os }}
+    shas:
+        name: Derive SHAs
+        runs-on: ubuntu-latest
         defaults:
             run:
                 shell: bash
@@ -35,6 +35,22 @@ jobs:
 
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
+
+    main:
+        name: Main Job
+        needs: shas
+        runs-on: ${{ matrix.os }}
+        defaults:
+            run:
+                shell: bash
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
 
             - name: Check for affected Rust
               run: |
@@ -107,6 +123,7 @@ jobs:
 
     agents:
         name: Agent
+        needs: shas
         runs-on: ubuntu-latest
         defaults:
             run:
