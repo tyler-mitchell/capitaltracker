@@ -33,14 +33,16 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Derive appropriate SHAs for base and head for `nx affected` commands
+            - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
-            - run: |
+            - name: Save SHAs
+              run: |
                   echo "NX_HEAD=$NX_HEAD" >> commit-hashes.txt
                   echo "NX_BASE=$NX_BASE" >> commit-hashes.txt
 
-            - uses: actions/upload-artifact@v3
+            - name: Upload SHAs
+              uses: actions/upload-artifact@v3
               with:
                   name: commit-hashes
                   path: commit-hashes.txt
@@ -66,7 +68,7 @@ jobs:
               with:
                   name: commit-hashes
 
-            - name: Append SHAs to $GITHUB_ENV
+            - name: Install SHAs
               run: cat commit-hashes.txt >> $GITHUB_ENV
 
             - name: Check for affected Rust
@@ -151,13 +153,15 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
 
             - name: Download SHAs
               uses: actions/download-artifact@v3
               with:
                   name: commit-hashes
 
-            - name: Append SHAs to $GITHUB_ENV
+            - name: Install SHAs
               run: cat commit-hashes.txt >> $GITHUB_ENV
 
             - name: Check for affected Rust
