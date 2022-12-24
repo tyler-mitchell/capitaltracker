@@ -29,10 +29,18 @@ jobs:
             matrix:
                 os: [ubuntu-latest]
         steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+            - uses: actions/checkout@v3
+              name: Checkout [Pull Request]
+              if: ${{ github.event_name == 'pull_request' }}
               with:
-                  fetch-depth: 0
+                ref: ${{ github.event.pull_request.head.sha }}
+                fetch-depth: 0
+
+            - uses: actions/checkout@v3
+              name: Checkout [Default Branch]
+              if: ${{ github.event_name != 'pull_request' }}
+              with:
+                fetch-depth: 0
 
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
