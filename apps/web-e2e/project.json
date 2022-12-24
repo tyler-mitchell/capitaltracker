@@ -10,7 +10,7 @@
                 "env": {
                     "ELECTRON_RUN_AS_NODE": 1
                 },
-                "browser": "chrome",
+                "browser": "firefox",
                 "cypressConfig": "apps/web-e2e/cypress.config.ts",
                 "devServerTarget": "web:serve:development",
                 "testingType": "e2e"
