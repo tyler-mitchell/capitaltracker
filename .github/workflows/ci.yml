@@ -16,7 +16,6 @@ env:
     NEXT_TELEMETRY_DISABLED: 1
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
     RUST: false
-    NODE: false
 
 jobs:
     main:
@@ -29,25 +28,18 @@ jobs:
             matrix:
                 os: [ubuntu-latest]
         steps:
-            - uses: actions/checkout@v3
-              name: Checkout [Pull Request]
-              if: ${{ github.event_name == 'pull_request' }}
+            - name: Checkout
+              uses: actions/checkout@v3
               with:
-                ref: ${{ github.event.pull_request.head.sha }}
-                fetch-depth: 0
-
-            - uses: actions/checkout@v3
-              name: Checkout [Default Branch]
-              if: ${{ github.event_name != 'pull_request' }}
-              with:
-                fetch-depth: 0
+                  fetch-depth: 0
 
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
             - name: Check for affected Rust
               run: |
-                  if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
+                  echo "head=$NX_HEAD base=$NX_BASE"
+                  if ! git diff --name-only --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
                     echo "RUST=true" >> $GITHUB_ENV
                   fi
 
@@ -123,21 +115,12 @@ jobs:
             matrix:
                 agent: [1, 2, 3]
         steps:
-            - uses: actions/checkout@v3
-              name: Checkout [Pull Request]
-              if: ${{ github.event_name == 'pull_request' }}
-              with:
-                ref: ${{ github.event.pull_request.head.sha }}
-                fetch-depth: 0
-
-            - uses: actions/checkout@v3
-              name: Checkout [Default Branch]
-              if: ${{ github.event_name != 'pull_request' }}
-              with:
-                fetch-depth: 0
+            - name: Checkout
+              uses: actions/checkout@v3
 
             - name: Check for affected Rust
               run: |
+                  echo "head=$NX_HEAD base=$NX_BASE"
                   if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
                     echo "RUST=true" >> $GITHUB_ENV
                   fi
