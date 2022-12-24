@@ -48,9 +48,9 @@ jobs:
 
             - name: Check for affected Rust
               run: |
-                if git diff --quiet --exit-code --diff-filter=ACM $NX_HEAD $NX_BASE apps/desktop; then
-                    echo "RUST=true" >> $GITHUB_ENV
-                fi
+                  if git diff --exit-code --diff-filter=ACM $NX_HEAD $NX_BASE apps/desktop; then
+                      echo "RUST=true" >> $GITHUB_ENV
+                  fi
 
             - name: Rust Cache
               id: rust_cache
