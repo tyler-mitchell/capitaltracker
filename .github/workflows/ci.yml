@@ -14,7 +14,6 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
-    CYPRESS_DISABLE_GPU: 1
     ELECTRON_RUN_AS_NODE: 1
 
 jobs:
@@ -92,7 +91,7 @@ jobs:
                   cmd2: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=lint
                   cmd3: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=format
                   cmd4: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=test
-                  cmd5: CYPRESS_DISABLE_GPU=1 npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=e2e
+                  cmd5: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
@@ -153,13 +152,5 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
-            - name: Run Xvfb
-              run: |
-                  Xvfb -screen 0 1024x768x24 :99 &
-                  export DISPLAY=:99
-
             - name: Start Agent
               run: npx nx-cloud start-agent
-
-            - name: Kill Xvfb
-              run: pkill Xvfb
