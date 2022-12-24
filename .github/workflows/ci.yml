@@ -37,12 +37,6 @@ jobs:
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
-            - name: Check for affected Node
-              run: |
-                  if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE -- apps ':!apps/desktop'; then
-                    echo "NODE=true" >> $GITHUB_ENV
-                  fi
-
             - name: Check for affected Rust
               run: |
                   if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
