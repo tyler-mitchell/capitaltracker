@@ -120,7 +120,8 @@ jobs:
         outputs:
             matrix: ${{ steps.set-matrix.outputs.matrix }}
         steps:
-            - id: set-matrix
+            - name: Calculate Matrix
+              id: set-matrix
               shell: bash
               run: |
                   AGENTS_JSON_ARRAY=$(node -e "console.log(JSON.stringify(Array.from(new Array($NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT)).map((_, i) => i + 1)));")
