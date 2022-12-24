@@ -13,41 +13,15 @@ concurrency:
     cancel-in-progress: true
 
 env:
-    NEXT_TELEMETRY_DISABLED: 1
+    NX_CLOUD_DISTRIBUTED_EXECUTION: true
+    NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
+    NEXT_TELEMETRY_DISABLED: 1
     RUST: false
 
 jobs:
-    shas:
-        name: Derive SHAs
-        runs-on: ubuntu-latest
-        defaults:
-            run:
-                shell: bash
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-              with:
-                  fetch-depth: 0
-
-            - name: Derive appropriate SHAs for base and head for `nx affected` commands
-              uses: nrwl/nx-set-shas@v3
-
-            - run: |
-                  echo "NX_HEAD=$NX_HEAD" >> commit-hashes.txt
-                  echo "NX_BASE=$NX_BASE" >> commit-hashes.txt
-
-            - uses: actions/upload-artifact@v3
-              with:
-                  name: commit-hashes
-                  path: commit-hashes.txt
-
     main:
         name: Main Job
-        needs: shas
         runs-on: ${{ matrix.os }}
         defaults:
             run:
@@ -56,18 +30,21 @@ jobs:
             matrix:
                 os: [ubuntu-latest]
         steps:
-            - name: Checkout
+            - name: Checkout [Pull Request]
               uses: actions/checkout@v3
+              if: ${{ github.event_name == 'pull_request' }}
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Checkout [Main]
+              uses: actions/checkout@v3
+              if: ${{ github.event_name != 'pull_request' }}
               with:
                   fetch-depth: 0
 
-            - name: Download SHAs
-              uses: actions/download-artifact@v3
-              with:
-                  name: commit-hashes
-
-            - name: Append SHAs to $GITHUB_ENV
-              run: cat commit-hashes.txt >> $GITHUB_ENV
+            - name: Derive SHAs
+              uses: nrwl/nx-set-shas@v3
 
             - name: Check for affected Rust
               run: |
@@ -140,7 +117,6 @@ jobs:
 
     agents:
         name: Agent
-        needs: shas
         runs-on: ubuntu-latest
         defaults:
             run:
@@ -149,16 +125,21 @@ jobs:
             matrix:
                 agent: [1, 2, 3]
         steps:
-            - name: Checkout
+            - name: Checkout [Pull Request]
               uses: actions/checkout@v3
-
-            - name: Download SHAs
-              uses: actions/download-artifact@v3
+              if: ${{ github.event_name == 'pull_request' }}
               with:
-                  name: commit-hashes
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
 
-            - name: Append SHAs to $GITHUB_ENV
-              run: cat commit-hashes.txt >> $GITHUB_ENV
+            - name: Checkout [Main]
+              uses: actions/checkout@v3
+              if: ${{ github.event_name != 'pull_request' }}
+              with:
+                  fetch-depth: 0
+
+            - name: Derive SHAs
+              uses: nrwl/nx-set-shas@v3
 
             - name: Check for affected Rust
               run: |
