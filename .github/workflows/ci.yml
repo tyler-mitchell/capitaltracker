@@ -153,5 +153,5 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
-            - name: Start Agent
+            - name: Run Agent
               run: npx nx-cloud start-agent
