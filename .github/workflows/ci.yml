@@ -47,7 +47,10 @@ jobs:
                   restore-keys: ubuntu-latest-node-
 
             - name: Check for affected Rust
-              run: git diff --exit-code --diff-filter=* $NX_HEAD $NX_BASE apps/desktop || echo "RUST=true" >> $GITHUB_ENV
+              run: |
+                  if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
+                    echo "RUST=true" >> $GITHUB_ENV
+                  fi
 
             - name: Rust Cache
               id: rust_cache
