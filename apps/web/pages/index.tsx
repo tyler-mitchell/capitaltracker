@@ -15,7 +15,7 @@ export function Index() {
                   text-gray-900
                   sm:text-4xl"
                 >
-                    <span className="block">Ready to dive in???</span>
+                    <span className="block">Ready to dive in?</span>
                     <span className="block text-indigo-600">
                         Start your free trial today.
                     </span>

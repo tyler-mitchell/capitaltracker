@@ -18,9 +18,9 @@ env:
     RUST: false
 
 jobs:
-    main:
-        name: Main Job
-        runs-on: ${{ matrix.os }}
+    shas:
+        name: Derive SHAs
+        runs-on: ubuntu-latest
         defaults:
             run:
                 shell: bash
@@ -36,6 +36,46 @@ jobs:
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
+            - run: |
+                  echo "NX_HEAD=$NX_HEAD" >> commit-hashes.txt
+                  echo "NX_BASE=$NX_BASE" >> commit-hashes.txt
+
+            - uses: actions/upload-artifact@v3
+              with:
+                  name: commit-hashes
+                  path: commit-hashes.txt
+
+    main:
+        name: Main Job
+        needs: shas
+        runs-on: ${{ matrix.os }}
+        defaults:
+            run:
+                shell: bash
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Download SHAs
+              uses: actions/download-artifact@v3
+              with:
+                  name: commit-hashes
+
+            - name: Append SHAs to $GITHUB_ENV
+              run: cat commit-hashes.txt >> $GITHUB_ENV
+
+            - name: Check for affected Rust
+              run: |
+                  echo "head=$NX_HEAD base=$NX_BASE"
+                  if ! git diff --name-only --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
+                    echo "RUST=true" >> $GITHUB_ENV
+                  fi
+
             - name: Node Cache
               id: node_cache
               uses: actions/cache@v3
@@ -45,9 +85,6 @@ jobs:
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
-
-            - name: Check for affected Rust
-              run: git diff --exit-code --diff-filter=* $NX_HEAD $NX_BASE apps/desktop || echo "RUST=true" >> $GITHUB_ENV
 
             - name: Rust Cache
               id: rust_cache
@@ -103,6 +140,7 @@ jobs:
 
     agents:
         name: Agent
+        needs: shas
         runs-on: ubuntu-latest
         defaults:
             run:
@@ -113,6 +151,21 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+
+            - name: Download SHAs
+              uses: actions/download-artifact@v3
+              with:
+                  name: commit-hashes
+
+            - name: Append SHAs to $GITHUB_ENV
+              run: cat commit-hashes.txt >> $GITHUB_ENV
+
+            - name: Check for affected Rust
+              run: |
+                  echo "head=$NX_HEAD base=$NX_BASE"
+                  if ! git diff --exit-code --diff-filter=ACDMRT $NX_HEAD $NX_BASE apps/desktop; then
+                    echo "RUST=true" >> $GITHUB_ENV
+                  fi
 
             - name: Restore Node Cache
               id: node_cache
@@ -153,5 +206,5 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
-            - name: Start Agent
+            - name: Run Agent
               run: npx nx-cloud start-agent
