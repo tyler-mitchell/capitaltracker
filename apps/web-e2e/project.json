@@ -15,6 +15,7 @@
                 "cypressConfig": "apps/web-e2e/cypress.config.ts",
                 "devServerTarget": "web:serve:development",
                 "testingType": "e2e"
+
             },
             "configurations": {
                 "production": {
