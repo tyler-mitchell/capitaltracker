@@ -36,9 +36,6 @@ jobs:
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
-            - name: Start Agents
-              run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
-
             - name: Node Cache
               id: node_cache
               uses: actions/cache@v3
@@ -81,6 +78,9 @@ jobs:
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
+
+            - name: Start Agents
+              run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
 
             - name: Format Workspace
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
