@@ -35,9 +35,9 @@ jobs:
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
-            - name: Restore Node Cache
+            - name: Node Cache
               id: node_cache
-              uses: actions/cache/restore@v3
+              uses: actions/cache@v3
               with:
                   path: |
                       ~/.cache/Cypress/
@@ -45,9 +45,9 @@ jobs:
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
-            - name: Restore Rust Cache
+            - name: Rust Cache
               id: rust_cache
-              uses: actions/cache/restore@v3
+              uses: actions/cache@v3
               with:
                   path: |
                       ~/.cargo/bin/
@@ -96,27 +96,6 @@ jobs:
 
             - name: Export Rust
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export desktop --skip-nx-cache
-
-            - name: Save Node Cache
-              if: steps.node_cache.outputs.cache-hit != 'true'
-              uses: actions/cache/save@v3
-              with:
-                  path: |
-                      ~/.cache/Cypress/
-                      node_modules/
-                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
-
-            - name: Save Rust Cache
-              if: steps.rust_cache.outputs.cache-hit != 'true'
-              uses: actions/cache/save@v3
-              with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ~/.cargo/git/db/
-                      target/
-                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
 
     agents:
         name: Agent
