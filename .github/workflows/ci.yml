@@ -44,9 +44,6 @@ jobs:
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
-            - name: Install SHAs
-              run: cat commit-hashes.txt >> $GITHUB_ENV
-
             - name: Check for affected Rust
               run: |
                   echo "head=$NX_HEAD base=$NX_BASE"
