@@ -14,6 +14,7 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
+    ELECTRON_EXTRA_LAUNCH_ARGS: --disable-gpu
 
 jobs:
     main:
@@ -31,24 +32,45 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Cache Node
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cache/Cypress/
-                      ${{ github.workspace }}/dist/
-                      ${{ github.workspace }}/node_modules/
-                  key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: ubuntu-latest-node-
-
             - name: Derive appropriate SHAs for base and head for `nx affected` commands
               uses: nrwl/nx-set-shas@v3
 
+            - name: Restore Node Cache
+              id: node_cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
+
+            - name: Restore Rust Cache
+              id: rust_cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
+
             - name: Install Node Dependencies
+              if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
-            - name: Start Agents
-              run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
+            - name: Install Tauri Dependencies
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+
+            - name: Install Rust Toolchain
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: rustfmt, clippy
 
             - name: Format Workspace
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
@@ -56,22 +78,52 @@ jobs:
             - name: Lint Workspace
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
 
+            - name: Start Agents
+              run: npx nx-cloud start-ci-run --stop-agents-on-failure=true --stop-agents-after=e2e
+
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
               with:
-                  cmd1: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=build
-                  cmd2: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=lint
-                  cmd3: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=format
-                  cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=test
-                  cmd5: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=2 --target=e2e
+                  cmd1: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=build
+                  cmd2: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=lint
+                  cmd3: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=format
+                  cmd4: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=test
+                  cmd5: npx nx affected --base=$NX_BASE --skip-nx-cache --head=$NX_HEAD --parallel=2 --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}
               run: npx nx-cloud stop-all-agents
 
+            - name: Export Rust
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export desktop --skip-nx-cache
+
+            - name: Save Node Cache
+              if: steps.node_cache.outputs.cache-hit != 'true'
+              uses: actions/cache/save@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
+
+            - name: Save Rust Cache
+              if: steps.rust_cache.outputs.cache-hit != 'true'
+              uses: actions/cache/save@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
+
     agents:
         name: Agent
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
         strategy:
             matrix:
                 agent: [1, 2, 3]
@@ -79,25 +131,26 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            - name: Cache Node
-              uses: actions/cache@v3
+            - name: Restore Node Cache
+              id: node_cache
+              uses: actions/cache/restore@v3
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ github.workspace }}/dist/
-                      ${{ github.workspace }}/node_modules/
-                  key: ubuntu-latest-node-${{ hashFiles('**/yarn.lock') }}
+                      node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
-            - name: Cache Rust
-              uses: actions/cache@v3
+            - name: Restore Rust Cache
+              uses: actions/cache/restore@v3
               with:
                   path: |
                       ~/.cargo/bin/
                       ~/.cargo/registry/index/
                       ~/.cargo/registry/cache/
-                      ${{ github.workspace }}/target/
-                  key: ubuntu-latest-cargo-${{ hashFiles('**/Cargo.lock') }}
+                      ~/.cargo/git/db/
+                      target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
                   restore-keys: ubuntu-latest-cargo
 
             - name: Install Rust Toolchain
@@ -110,10 +163,8 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
 
-            - name: Install Cypress Dependencies
-              run: sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-
             - name: Install Node Dependencies
+              if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install
 
             - name: Start Agent
