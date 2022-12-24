@@ -12,6 +12,7 @@
                     "CYPRESS_DISABLE_GPU": 1
                 },
 
+
                 "browser": "chromium",
                 "cypressConfig": "apps/web-e2e/cypress.config.ts",
                 "devServerTarget": "web:serve:development",
