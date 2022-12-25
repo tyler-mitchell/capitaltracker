@@ -1,0 +1,39 @@
+{
+    "name": "api",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "sourceRoot": "apps/api/src",
+    "targets": {
+        "build": {
+            "executor": "@ignisda/nx-rust:build",
+            "options": {
+                "release": false
+            },
+            "configurations": {
+                "production": {
+                    "release": true
+                }
+            }
+        },
+        "serve": {
+            "executor": "@ignisda/nx-rust:build",
+            "options": {
+                "release": false,
+                "run": true
+            }
+        },
+        "test": {
+            "executor": "@ignisda/nx-rust:test",
+            "options": {}
+        },
+        "lint": {
+            "executor": "@ignisda/nx-rust:clippy",
+            "options": {
+                "fix": false,
+                "failOnWarnings": true,
+                "noDeps": true
+            }
+        }
+    },
+    "tags": []
+}

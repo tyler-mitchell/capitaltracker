@@ -1,4 +1,2 @@
 [workspace]
-members = [
-    "apps/desktop"
-]
+members = [ "apps/desktop", "apps/api" ]
