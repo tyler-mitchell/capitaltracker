@@ -101,14 +101,17 @@ jobs:
             - name: Lint Workspace
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
 
+            - name: Set Affected Alias
+              run: alias nx_exec="npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target"
+
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
               with:
-                  cmd1: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=build
-                  cmd2: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=lint
-                  cmd3: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=format
-                  cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=test
-                  cmd5: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target=e2e
+                  cmd1: nx_exec build
+                  cmd2: nx_exec lint
+                  cmd3: nx_exec format
+                  cmd4: nx_exec test
+                  cmd5: nx_exec e2e
 
             - name: Stop Agents
               if: ${{ always() }}
