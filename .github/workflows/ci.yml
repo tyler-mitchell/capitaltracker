@@ -296,12 +296,11 @@ jobs:
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
-                  find . -type f -wholename '*/target-agent-*' -exec tar -xf {} \; > result
-                  ls -la
-                  find . -type f -wholename '*/target-agent-*' -exec tar -xf {} \; > result
-                  ls -la
-                  cat result
+                  find . -type f -wholename 'build-agent-*/target-agent-*' > result
                   if cat result | grep -q .; then
+                    while read line; do
+                        tar xf $line
+                    done < result
                     rsync -av --info=progress2 --ignore-existing target-agent-*/ target
                   else
                     echo "No build artifacts found"
