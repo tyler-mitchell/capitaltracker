@@ -6,11 +6,25 @@
     "targets": {
         "build": {
             "executor": "@ignisda/nx-rust:build",
-            "options": {}
+            "options": {
+                "release": false
+            },
+            "configurations": {
+                "production": {
+                    "release": true
+                }
+            }
         },
         "test": {
             "executor": "@ignisda/nx-rust:test",
-            "options": {}
+            "options": {
+                "release": false
+            },
+            "configurations": {
+                "production": {
+                    "release": true
+                }
+            }
         },
         "lint": {
             "executor": "@ignisda/nx-rust:clippy",
@@ -19,6 +33,9 @@
                 "failOnWarnings": true,
                 "noDeps": true
             }
+        },
+        "fmt": {
+            "command": "cargo fmt -p rust-api-models -- --check"
         }
     },
     "tags": []

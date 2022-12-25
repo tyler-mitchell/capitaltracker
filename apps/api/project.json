@@ -33,6 +33,9 @@
                 "failOnWarnings": true,
                 "noDeps": true
             }
+        },
+        "fmt": {
+            "command": "cargo fmt -p api -- --check"
         }
     },
     "tags": []

@@ -4,13 +4,13 @@
     "sourceRoot": "apps/client/src",
     "targets": {
         "build": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --release"
+            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --package desktop --release"
         },
         "test": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo test --release"
+            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo test --package desktop --release"
         },
         "lint": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy -- --no-deps --deny warnings"
+            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy --package desktop --release -- --no-deps --deny warnings"
         },
         "export": {
             "command": "tauri build"
@@ -19,7 +19,7 @@
             "command": "tauri dev"
         },
         "fmt": {
-            "command": "cargo fmt --all -- --check"
+            "command": "cargo fmt -p desktop -- --check"
         }
     },
     "tags": []
