@@ -17,7 +17,7 @@ env:
     NX_CLOUD_DISTRIBUTED_EXECUTION: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
-    NX_EXEC: 'npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
+    NX_EXEC: 'npx nx affected --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
     RUST_BUILT: false
 
@@ -216,7 +216,6 @@ jobs:
                     tar -cf target-agent-${{ matrix.agent }}.tar target/
                     echo "RUST_BUILT=true" >> $GITHUB_ENV
                   fi
-                  echo "$RUST_BUILT"
 
             - name: Upload Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
@@ -288,16 +287,19 @@ jobs:
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               uses: actions/download-artifact@v3
 
+            - name: Delete Build Artifacts
+              uses: geekyeggo/delete-artifact@v2
+              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
+              with:
+                  name: build-agent-*
+
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
                   if find . -type f -wholename '*/target-agent-*' -exec tar -xf '{}' \; -print > result && cat result | grep -q .; then
+                    ls -la
+                    cat result
                     rsync -av --info=progress2 --ignore-existing target-agent-*/ target
                   else
                     echo "No build artifacts found"
                   fi
-
-            - uses: geekyeggo/delete-artifact@v2
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              with:
-                  name: build-agent-*
