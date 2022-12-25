@@ -290,7 +290,10 @@ jobs:
 
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              run: find . -type f -wholename '*/target-agent-*' -exec tar -xf '{}' \; && rsync -av --info=progress2 --ignore-existing target-agent-*/ target
+              run: |
+                find . -type f -wholename '*/target-agent-*' -exec tar -xf '{}' \; -print \
+                > result && cat result | grep -q . && \
+                rsync -av --info=progress2 --ignore-existing target-agent-*/ target
 
             - uses: geekyeggo/delete-artifact@v2
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
