@@ -19,6 +19,7 @@ env:
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
     NX_EXEC: 'npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
+    RUST_BUILT: false
 
 jobs:
     main:
@@ -136,7 +137,7 @@ jobs:
                     - ${{fromJson(needs.set-agents.outputs.matrix)}}
         steps:
             - name: Update
-              run: sudo apt-get update && sudo apt-get upgrade -y
+              run: sudo apt-get update
 
             - name: Install Tauri Dependencies
               run: sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
@@ -193,7 +194,7 @@ jobs:
               run: yarn install
 
             - name: Check Rust Affected
-              run: npx nx print-affected --select=projects | grep -Eo "rust-[^,]*|api[^,]*|desktop[^,]*" && echo "RUST=true" >> $GITHUB_ENV
+              run: npx nx print-affected --select=projects | grep -Eo "rust-[^,]*|api|desktop" && echo "RUST=true" >> $GITHUB_ENV
 
             - name: Run Agent
               run: npx nx-cloud start-agent
@@ -204,9 +205,8 @@ jobs:
                   if [ -d "target" ]; then
                     tar -cf target-agent-${{ matrix.agent }}.tar target/
                     echo "RUST_BUILT=true" >> $GITHUB_ENV
-                  else
-                    echo "RUST_BUILT=false" >> $GITHUB_ENV
                   fi
+                  echo "$RUST_BUILT"
 
             - name: Upload Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
@@ -236,6 +236,9 @@ jobs:
               with:
                   fetch-depth: 0
 
+            - name: Derive SHAs
+              uses: nrwl/nx-set-shas@v3
+
             - name: Node Cache
               id: node_cache
               uses: actions/cache/restore@v3
@@ -264,7 +267,7 @@ jobs:
               run: yarn install --immutable
 
             - name: Check Rust Affected
-              run: npx nx print-affected --select=projects | grep -Eo "rust-[^,]*|api[^,]*|desktop[^,]*" && echo "RUST=true" >> $GITHUB_ENV
+              run: npx nx print-affected --select=projects | grep -Eo "rust-[^,]*|api|desktop" && echo "RUST=true" >> $GITHUB_ENV
 
             - name: Download Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
