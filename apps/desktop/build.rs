@@ -1,4 +1,4 @@
 fn main() {
-    println!("cache");
+    println!("caches");
     tauri_build::build()
 }

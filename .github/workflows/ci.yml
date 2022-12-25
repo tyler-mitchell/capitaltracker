@@ -299,7 +299,8 @@ jobs:
                   find . -name '*.tar' -print -exec tar xf {} \; > result.txt
                   cat result.txt
                   ls -la
-                  if [ -s "result.txt"; ] then
+                  ls -la build-agent-*
+                  if [ -s "result.txt" ]; then
                     rsync -av --info=progress2 --ignore-existing target-agent-*/ target/
                   else
                     echo "No build artifacts found"
