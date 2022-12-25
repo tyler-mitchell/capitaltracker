@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build_client(false)
         .out_dir(out_dir)
         .compile(&[&api_proto_path], &[models_dir])?;
-    println!("cachess");
+    println!("cachesss");
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed={}", api_proto_path.display());
     Ok(())

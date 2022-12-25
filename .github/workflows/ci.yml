@@ -213,7 +213,8 @@ jobs:
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
                   if [ -d "target" ]; then
-                    tar -cf target-agent-${{ matrix.agent }}.tar target/
+                    mv target target-agent-${{ matrix.agent }}
+                    tar -cf target-agent-${{ matrix.agent }}.tar target-agent-${{ matrix.agent }}/
                     echo "RUST_BUILT=true" >> $GITHUB_ENV
                   fi
 
@@ -286,8 +287,6 @@ jobs:
             - name: Download Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               uses: actions/download-artifact@v3
-              with:
-                  path: build-agent
 
             - name: Delete Build Artifacts
               uses: geekyeggo/delete-artifact@v2
@@ -298,8 +297,7 @@ jobs:
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
-                  for file in build-agent/*.tar; do echo "Processing $file"; tar xf $file -C target-agent; done
-                  ls -la target-agent > result.txt
+                  find . -name '*.tar' -print -exec tar xf '{}' \; > result.txt
                   if [ -s "result.txt" ]; then
                     rsync -av --info=progress2 --ignore-existing target-agent-*/ target/
                   else
