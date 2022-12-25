@@ -3,24 +3,18 @@ name = "desktop"
 default-run = "desktop"
 description = "Desktop App for Capital Tracker"
 version = "0.0.1"
-authors = ["Clemens Horn"]
-edition = "2021"
 rust-version = "1.59"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+edition = "2021"
+authors = ["Clemens Horn"]
 
 [build-dependencies]
 tauri-build = { version = "1.2.1", features = [] }
 
 [dependencies]
-serde_json = "1.0"
-serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.2.2", features = [] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 [features]
-# by default Tauri runs in production mode
-# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
 default = [ "custom-protocol" ]
-# this feature is used for production builds where `devPath` points to the filesystem
-# DO NOT remove this
 custom-protocol = [ "tauri/custom-protocol" ]
