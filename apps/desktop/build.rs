@@ -1,4 +1,4 @@
 fn main() {
-    println!("ci");
+    println!("cici");
     tauri_build::build()
 }
