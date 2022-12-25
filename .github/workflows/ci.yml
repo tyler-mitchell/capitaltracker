@@ -286,6 +286,8 @@ jobs:
             - name: Download Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               uses: actions/download-artifact@v3
+              with:
+                  path: build-agent
 
             - name: Delete Build Artifacts
               uses: geekyeggo/delete-artifact@v2
@@ -296,10 +298,8 @@ jobs:
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
-                  find . -name '*.tar' -print -exec tar xf {} \; > result.txt
-                  cat result.txt
-                  ls -la
-                  ls -la build-agent-*
+                  for file in build-agent/*.tar; do echo "Processing $file"; tar xf $file -C target-agent; done
+                  ls -la target-agent > result.txt
                   if [ -s "result.txt" ]; then
                     rsync -av --info=progress2 --ignore-existing target-agent-*/ target/
                   else
