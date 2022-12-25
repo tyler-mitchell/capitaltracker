@@ -7,7 +7,11 @@ mod tests {
 
     #[test]
     fn api_works() {
-        HelloRequest
-
+        Request {
+            field: "foo".to_owned(),
+        };
+        Reply {
+            message: "foo".to_owned(),
+        };
     }
 }
