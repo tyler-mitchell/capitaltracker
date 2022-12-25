@@ -235,11 +235,9 @@ jobs:
                   fetch-depth: 0
 
             - name: Download Build
-              if: success(agents)
               uses: actions/download-artifact@v3
 
             - name: Merge Build
-              if: success(agents)
               run: |
                   tar -xvf node_modules-agent-*.tar
                   tar -xvf target-agent-*.tar
