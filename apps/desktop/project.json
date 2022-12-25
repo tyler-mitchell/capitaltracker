@@ -12,11 +12,11 @@
         "lint": {
             "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy --package desktop --release -- --no-deps --deny warnings"
         },
-        "export": {
-            "command": "tauri build"
-        },
         "dev": {
             "command": "tauri dev"
+        },
+        "export": {
+            "command": "tauri build"
         },
         "fmt": {
             "command": "cargo fmt -p desktop -- --check"
