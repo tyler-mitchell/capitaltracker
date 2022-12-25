@@ -202,8 +202,8 @@ jobs:
 
             - name: Archive Build
               run: |
-                  tar -qcvf target-agent-${{ matrix.agent }}.tar target/
-                  tar -qcvf node_modules-agent-${{ matrix.agent }}.tar node_modules/
+                  tar -cf target-agent-${{ matrix.agent }}.tar target/
+                  tar -cf node_modules-agent-${{ matrix.agent }}.tar node_modules/
 
             - name: Upload Build
               uses: actions/upload-artifact@v3
