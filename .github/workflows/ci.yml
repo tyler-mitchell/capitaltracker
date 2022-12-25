@@ -299,7 +299,7 @@ jobs:
               run: |
                   find . -name '*.tar' -print -exec tar xf '{}' \; > result.txt
                   if [ -s "result.txt" ]; then
-                    rsync -av --info=progress2 --ignore-existing target-agent-*/ target/
+                    rsync -av --quiet --ignore-existing target-agent-*/ target/
                   else
                     echo "No build artifacts found"
                   fi
