@@ -94,7 +94,7 @@ jobs:
               run: yarn install --immutable
 
             - name: Start Agents
-              run: npx nx-cloud start-ci-run --stop-agents-after=e2e
+              run: npx nx-cloud start-ci-run
 
             - name: Format Workspace
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
