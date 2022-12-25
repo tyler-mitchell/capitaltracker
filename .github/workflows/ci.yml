@@ -287,20 +287,20 @@ jobs:
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               uses: actions/download-artifact@v3
 
-            - name: Merge Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              run: |
-                  ls -la
-                  find . -name '*.tar' -print -exec tar xvf {} \; > result.txt
-                  cat result.txt
-                  if [ -s "result.txt"; ] then
-                    rsync -av --info=progress2 --ignore-existing target-agent-*/ target/
-                  else
-                    echo "No build artifacts found"
-                  fi
-
             - name: Delete Build Artifacts
               uses: geekyeggo/delete-artifact@v2
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               with:
                   name: build-agent-*
+
+            - name: Merge Build
+              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
+              run: |
+                  find . -name '*.tar' -print -exec tar xf {} \; > result.txt
+                  cat result.txt
+                  ls -la
+                  if [ -s "result.txt"; ] then
+                    rsync -av --info=progress2 --ignore-existing target-agent-*/ target/
+                  else
+                    echo "No build artifacts found"
+                  fi
