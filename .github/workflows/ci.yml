@@ -202,8 +202,8 @@ jobs:
 
             - name: Archive Build
               run: |
-                  tar -cvf target-agent-${{ matrix.agent }}.tar target/
-                  tar -cvf node_modules-agent-${{ matrix.agent }}.tar node_modules/
+                  tar -qcvf target-agent-${{ matrix.agent }}.tar target/
+                  tar -qcvf node_modules-agent-${{ matrix.agent }}.tar node_modules/
 
             - name: Upload Build
               uses: actions/upload-artifact@v3
@@ -239,10 +239,10 @@ jobs:
 
             - name: Merge Build
               run: |
-                  tar -xvf node_modules-agent-*.tar
-                  tar -xvf target-agent-*.tar
-                  rsync -avq -P --ignore-existing node_modules-agent-* node_modules
-                  rsync -avq -P --ignore-existing target-agent-* target
+                  find . -type f -wholename '*/node_modules-agent-*' -exec tar -xf '{}' \;
+                  find . -type f -wholename '*/target-agent-*' -exec tar -xf '{}' \;
+                  rsync -av --info=progress2 --ignore-existing node_modules-agent-*/ node_modules
+                  rsync -av --info=progress2 --ignore-existing target-agent-*/ target
 
             - name: Save Node Cache
               uses: actions/cache/save@v3
