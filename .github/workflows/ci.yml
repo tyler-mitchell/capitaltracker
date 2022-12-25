@@ -41,6 +41,11 @@ jobs:
             - name: Install Protocol Buffer Dependencies
               run: sudo apt-get install -y protobuf-compiler libprotobuf-dev
 
+            - name: Install Rust Toolchain
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: rustfmt, clippy
+
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
               if: ${{ github.event_name == 'pull_request' }}
@@ -57,12 +62,17 @@ jobs:
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
+            - name: Yarn Cache Path
+              id: yarn-cache-dir-path
+              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
             - name: Node Cache
               id: node_cache
-              uses: actions/cache/restore@v3
+              uses: actions/cache@v3
               with:
                   path: |
                       ~/.cache/Cypress/
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -78,11 +88,6 @@ jobs:
                       target/
                   key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
                   restore-keys: ubuntu-latest-cargo
-
-            - name: Install Rust Toolchain
-              uses: dtolnay/rust-toolchain@stable
-              with:
-                  components: rustfmt, clippy
 
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
@@ -166,12 +171,17 @@ jobs:
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
+            - name: Yarn Cache Path
+              id: yarn-cache-dir-path
+              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
             - name: Restore Node Cache
               id: node_cache
               uses: actions/cache/restore@v3
               with:
                   path: |
                       ~/.cache/Cypress/
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -236,6 +246,10 @@ jobs:
               with:
                   fetch-depth: 0
 
+            - name: Yarn Cache Path
+              id: yarn-cache-dir-path
+              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
@@ -245,6 +259,7 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -275,9 +290,7 @@ jobs:
 
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              run: |
-                  find . -type f -wholename '*/target-agent-*' -exec tar -xf '{}' \;
-                  rsync -av --info=progress2 --ignore-existing target-agent-*/ target
+              run: find . -type f -wholename '*/target-agent-*' -exec tar -xf '{}' \; && rsync -av --info=progress2 --ignore-existing target-agent-*/ target
 
             - uses: geekyeggo/delete-artifact@v2
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
