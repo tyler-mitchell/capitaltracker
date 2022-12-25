@@ -20,11 +20,24 @@
             "options": {
                 "release": false,
                 "run": true
+            },
+            "configurations": {
+                "production": {
+                    "release": true,
+                    "run": true
+                }
             }
         },
         "test": {
             "executor": "@ignisda/nx-rust:test",
-            "options": {}
+            "options": {
+                "release": false
+            },
+            "configurations": {
+                "production": {
+                    "release": true
+                }
+            }
         },
         "lint": {
             "executor": "@ignisda/nx-rust:clippy",

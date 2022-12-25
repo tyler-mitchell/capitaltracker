@@ -200,10 +200,15 @@ jobs:
             - name: Run Agent
               run: npx nx-cloud start-agent
 
-            - name: Archive Build
+            - name: Archive Node Build
+              if: steps.node_cache.outputs.cache-hit != 'true'
+              run: |
+                  tar -cf node_modules-agent-${{ matrix.agent }}.tar node_modules/
+
+            - name: Archive Rust Build
+              if: steps.rust_cache.outputs.cache-hit != 'true'
               run: |
                   tar -cf target-agent-${{ matrix.agent }}.tar target/
-                  tar -cf node_modules-agent-${{ matrix.agent }}.tar node_modules/
 
             - name: Upload Build
               uses: actions/upload-artifact@v3

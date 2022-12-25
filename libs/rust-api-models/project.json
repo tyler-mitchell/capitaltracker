@@ -29,8 +29,8 @@
         "lint": {
             "executor": "@ignisda/nx-rust:clippy",
             "options": {
-                "fix": false,
                 "failOnWarnings": true,
+                "fix": false,
                 "noDeps": true
             }
         },
