@@ -11,7 +11,7 @@ mod tests {
             field: "foo".to_owned(),
         };
         Reply {
-            message: "foo".to_owned(),
+            message: "message".to_owned(),
         };
     }
 }
