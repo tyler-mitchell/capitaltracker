@@ -102,7 +102,9 @@ jobs:
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
 
             - name: Set Affected Alias
-              run: alias nx_exec="npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target"
+              run: |
+                shopt -s expand_aliases
+                alias nx_exec="npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target"
 
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
