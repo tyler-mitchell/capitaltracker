@@ -7,8 +7,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let api_proto_path = models_dir.join("api.proto");
     let out_dir = current_dir.join("src");
     tonic_build::configure()
-        .build_server(false)
         .build_client(false)
+        .build_server(false)
         .out_dir(out_dir)
         .compile(&[&api_proto_path], &[models_dir])?;
     println!("cargo:rerun-if-changed=build.rs");
