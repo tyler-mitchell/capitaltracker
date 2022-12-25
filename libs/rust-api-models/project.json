@@ -1,0 +1,25 @@
+{
+    "name": "rust-api-models",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "library",
+    "sourceRoot": "libs/rust-api-models/src",
+    "targets": {
+        "build": {
+            "executor": "@ignisda/nx-rust:build",
+            "options": {}
+        },
+        "test": {
+            "executor": "@ignisda/nx-rust:test",
+            "options": {}
+        },
+        "lint": {
+            "executor": "@ignisda/nx-rust:clippy",
+            "options": {
+                "fix": false,
+                "failOnWarnings": true,
+                "noDeps": true
+            }
+        }
+    },
+    "tags": []
+}

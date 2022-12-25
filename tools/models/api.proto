@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package api;
+
+message Request { string field = 1; }
+
+message Reply { string message = 1; }
