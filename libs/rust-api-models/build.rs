@@ -13,5 +13,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .compile(&[&api_proto_path], &[models_dir])?;
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed={}", api_proto_path.display());
+    println!("ci");
     Ok(())
 }

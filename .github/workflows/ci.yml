@@ -17,7 +17,7 @@ env:
     NX_CLOUD_DISTRIBUTED_EXECUTION: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
-    NX_EXEC: 'npx nx affected --skip-nx-cache --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
+    NX_EXEC: 'npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
     RUST_BUILT: false
 
@@ -204,7 +204,7 @@ jobs:
               run: yarn install
 
             - name: Check Rust Affected
-              run: npx nx print-affected --select=projects | grep -Eo "rust-[^,]*|api|desktop" && echo "RUST=true" >> $GITHUB_ENV
+              run: npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$" && echo "RUST=true" >> $GITHUB_ENV
 
             - name: Run Agent
               run: npx nx-cloud start-agent
@@ -282,7 +282,7 @@ jobs:
               run: yarn install --immutable
 
             - name: Check Rust Affected
-              run: npx nx print-affected --select=projects | grep -Eo "rust-[^,]*|api|desktop" && echo "RUST=true" >> $GITHUB_ENV
+              run: npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$" && echo "RUST=true" >> $GITHUB_ENV
 
             - name: Download Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
