@@ -200,10 +200,16 @@ jobs:
 
             - name: Archive Rust Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              run: tar -cf target-agent-${{ matrix.agent }}.tar target/
+              run: |
+                  if [ -d "target" ]; then
+                    tar -cf target-agent-${{ matrix.agent }}.tar target/
+                    echo "RUST_BUILT=true" >> $GITHUB_ENV
+                  else
+                    echo "RUST_BUILT=false" >> $GITHUB_ENV
+                  fi
 
             - name: Upload Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
+              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
               uses: actions/upload-artifact@v3
               with:
                   name: build-agent-${{ matrix.agent }}
