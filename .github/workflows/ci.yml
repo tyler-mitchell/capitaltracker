@@ -291,14 +291,10 @@ jobs:
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
                   ls -la
-                  find . -type f -wholename 'build-agent-*/target-agent-*' -print > result.txt
+                  find . -name '*.tar' -print -exec tar xvf {} \; > result.txt
                   cat result.txt
                   if [ -s "result.txt"; ] then
-                    while read line; do
-                        echo "$line"
-                        tar -xvf $line
-                    done < result
-                    rsync -av --info=progress2 --ignore-existing target-agent-*/ target
+                    rsync -av --info=progress2 --ignore-existing target-agent-*/ target/
                   else
                     echo "No build artifacts found"
                   fi
