@@ -110,8 +110,8 @@ jobs:
               uses: jameshenry/parallel-bash-commands@v1
               with:
                   cmd1: $NX_EXEC build
-                  cmd4: $NX_EXEC test
-                  cmd5: $NX_EXEC e2e
+                  cmd2: $NX_EXEC test
+                  cmd3: $NX_EXEC e2e
 
             - name: Stop Agents
               if: ${{ always() }}
