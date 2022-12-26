@@ -1,0 +1,50 @@
+{
+    "name": "node-api-models",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "libs/node-api-models/src",
+    "projectType": "library",
+    "targets": {
+        "codegen": {
+            "executor": "nx:run-commands",
+            "options": {
+                "commands": [
+                    "[ -d libs/node-api-models/src/lib/api ] && rm -rf libs/node-api-models/src/lib/api",
+                    "yarn proto-loader-gen-types --longs=String --enums=String --grpcLib=@grpc/grpc-js --outDir=libs/node-api-models/src/lib/ tools/models/api.proto",
+                    "rm libs/node-api-models/src/lib/api.ts",
+                    "echo \"export * as api from './'\" > libs/node-api-models/src/lib/api/index.ts",
+                    "npx nx format"
+                ],
+                "parallel": false
+            }
+        },
+        "vite-build": {
+            "executor": "@nrwl/vite:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/libs/node-api-models"
+            }
+        },
+        "build": {
+            "command": "nx codegen node-api-models && nx vite-build node-api-models"
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/node-api-models/**/*.ts"]
+            }
+        },
+        "vite-test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+            "options": {
+                "jestConfig": "libs/node-api-models/jest.config.ts",
+                "passWithNoTests": true
+            }
+        },
+        "test": {
+            "command": "nx codegen node-api-models && nx vite-test node-api-models"
+        }
+    },
+    "tags": []
+}

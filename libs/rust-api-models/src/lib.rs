@@ -9,8 +9,9 @@ mod tests {
     fn api_works() {
         Request {
             field: "foo".to_owned(),
+            value: "value".to_owned(),
         };
-        Reply {
+        Response {
             message: "message".to_owned(),
         };
     }
