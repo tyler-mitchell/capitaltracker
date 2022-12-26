@@ -1,4 +1,8 @@
+import * as api from '@capitaltracker/node-api-models';
+
 export function Index() {
+    const req: api.Request = {};
+    console.log(req);
     return (
         <div className="bg-gray-50">
             <div
