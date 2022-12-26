@@ -20,7 +20,7 @@
     "targetDefaults": {
         "build": {
             "dependsOn": ["^build"],
-            "inputs": ["production", "^production"]
+            "inputs": ["default", "production", "^production"]
         },
         "lint": {
             "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
@@ -46,7 +46,10 @@
             "!{projectRoot}/jest.config.[jt]s",
             "!{projectRoot}/.eslintrc.json"
         ],
-        "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
+        "sharedGlobals": [
+            "{workspaceRoot}/babel.config.json",
+            "{workspaceRoot}/tools/models/*.proto"
+        ]
     },
     "defaultProject": "web",
     "plugins": ["@ignisda/nx-rust"]

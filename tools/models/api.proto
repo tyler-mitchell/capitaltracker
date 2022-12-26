@@ -4,4 +4,4 @@ package api;
 
 message Request { string field = 1; }
 
-message Reply { string message = 1; }
+message Response { string message = 1; }
