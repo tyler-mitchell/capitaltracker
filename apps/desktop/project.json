@@ -4,13 +4,13 @@
     "sourceRoot": "apps/client/src",
     "targets": {
         "build": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --package desktop --release"
+            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --package desktop --release --locked"
         },
         "test": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo test --package desktop --release"
+            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo test --package desktop --release --frozen --locked"
         },
         "lint": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy --package desktop --release -- --no-deps --deny warnings"
+            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy --package desktop --release --frozen --locked -- --no-deps --deny warnings"
         },
         "dev": {
             "command": "tauri dev"

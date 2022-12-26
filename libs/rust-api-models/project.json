@@ -7,22 +7,28 @@
         "build": {
             "executor": "@ignisda/nx-rust:build",
             "options": {
-                "release": false
+                "release": false,
+                "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true
+                    "release": true,
+                    "locked": true
                 }
             }
         },
         "test": {
             "executor": "@ignisda/nx-rust:test",
             "options": {
-                "release": false
+                "release": false,
+                "frozen": true,
+                "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true
+                    "release": true,
+                    "frozen": true,
+                    "locked": true
                 }
             }
         },
