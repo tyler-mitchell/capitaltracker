@@ -97,7 +97,7 @@ jobs:
               run: npx nx-cloud start-ci-run
 
             - name: Format Workspace
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
 
             - name: Lint Workspace
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
@@ -201,10 +201,13 @@ jobs:
 
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
-              run: yarn install
+              run: yarn install --immutable
 
             - name: Check Rust Affected
-              run: npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$" && echo "RUST=true" >> $GITHUB_ENV
+              run: |
+                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
+                      echo "RUST=true" >> $GITHUB_ENV
+                  fi
 
             - name: Run Agent
               run: npx nx-cloud start-agent
@@ -282,7 +285,10 @@ jobs:
               run: yarn install --immutable
 
             - name: Check Rust Affected
-              run: npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$" && echo "RUST=true" >> $GITHUB_ENV
+              run: |
+                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
+                      echo "RUST=true" >> $GITHUB_ENV
+                  fi
 
             - name: Download Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
