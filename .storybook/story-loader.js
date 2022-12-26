@@ -9,7 +9,7 @@ function loadStories() {
 
 const stories = ['../apps/mobile/src/app/App.stories'];
 
-module.exports = {
+export default {
   loadStories,
   stories,
 };

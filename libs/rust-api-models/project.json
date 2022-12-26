@@ -7,26 +7,34 @@
         "build": {
             "executor": "@ignisda/nx-rust:build",
             "options": {
-                "release": false
+                "release": false,
+                "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true
+                    "release": true,
+                    "locked": true
                 }
             }
         },
         "test": {
+            "dependsOn": ["build"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
-                "release": false
+                "release": false,
+                "frozen": true,
+                "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true
+                    "release": true,
+                    "frozen": true,
+                    "locked": true
                 }
             }
         },
         "lint": {
+            "dependsOn": ["build"],
             "executor": "@ignisda/nx-rust:clippy",
             "options": {
                 "failOnWarnings": true,
@@ -35,7 +43,7 @@
             }
         },
         "fmt": {
-            "command": "cargo fmt -p rust-api-models -- --check"
+            "command": "cargo fmt -p rust-api-models --check"
         }
     },
     "tags": []

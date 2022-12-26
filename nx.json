@@ -7,10 +7,10 @@
             "options": {
                 "cacheableOperations": [
                     "build",
-                    "fmt",
                     "lint",
                     "test",
                     "e2e",
+                    "frontend",
                     "export"
                 ],
                 "accessToken": "OTZhYWE4YzAtNTU2OC00NzlkLWEwNWMtZjZjM2NiOGIxY2YyfHJlYWQtd3JpdGU="
@@ -23,9 +23,11 @@
             "inputs": ["default", "production", "^production"]
         },
         "lint": {
+            "dependsOn": ["^build"],
             "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
         },
         "test": {
+            "dependsOn": ["^build"],
             "inputs": [
                 "default",
                 "^production",

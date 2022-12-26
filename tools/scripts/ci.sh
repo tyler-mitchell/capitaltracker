@@ -1,7 +1,7 @@
 #!/bin/sh
 
 nx_exec() {
-    nx affected --skip-nx-cache --target "$1"
+    nx affected --target "$1"
 }
 
 if nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then

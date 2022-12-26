@@ -97,19 +97,21 @@ jobs:
               run: npx nx-cloud start-ci-run
 
             - name: Format Workspace
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
+              run: |
+                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
+                cargo fmt --all --check
 
             - name: Lint Workspace
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
+              run: |
+                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
+                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx affected --base=$NX_BASE --head=$NX_HEAD --target=lint
 
             - name: Run Agents
               uses: jameshenry/parallel-bash-commands@v1
               with:
                   cmd1: $NX_EXEC build
-                  cmd2: $NX_EXEC lint
-                  cmd3: $NX_EXEC format
-                  cmd4: $NX_EXEC test
-                  cmd5: $NX_EXEC e2e
+                  cmd2: $NX_EXEC test
+                  cmd3: $NX_EXEC e2e
 
             - name: Stop Agents
               if: ${{ always() }}

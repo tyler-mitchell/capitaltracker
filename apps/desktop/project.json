@@ -3,23 +3,60 @@
     "projectType": "application",
     "sourceRoot": "apps/client/src",
     "targets": {
+        "frontend": {
+            "command": "npx nx export"
+        },
         "build": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo build --package desktop --release"
+            "dependsOn": ["frontend"],
+            "executor": "@ignisda/nx-rust:build",
+            "options": {
+                "release": false,
+                "locked": true
+            },
+            "configurations": {
+                "production": {
+                    "release": true,
+                    "locked": true
+                }
+            }
         },
         "test": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo test --package desktop --release"
+            "dependsOn": ["build"],
+            "executor": "@ignisda/nx-rust:test",
+            "options": {
+                "release": false,
+                "locked": true
+            },
+            "configurations": {
+                "production": {
+                    "release": true,
+                    "locked": true
+                }
+            }
         },
         "lint": {
-            "command": "[ -d '../dist/apps/web/exported' ] || yarn export; cargo clippy --package desktop --release -- --no-deps --deny warnings"
+            "dependsOn": ["build"],
+            "executor": "@ignisda/nx-rust:test",
+            "options": {
+                "release": false,
+                "locked": true
+            },
+            "configurations": {
+                "production": {
+                    "release": true,
+                    "locked": true
+                }
+            }
+        },
+        "export": {
+            "dependsOn": ["build"],
+            "command": "tauri build"
         },
         "dev": {
             "command": "tauri dev"
         },
-        "export": {
-            "command": "tauri build"
-        },
         "fmt": {
-            "command": "cargo fmt -p desktop -- --check"
+            "command": "cargo fmt -p desktop --check"
         }
     },
     "tags": []
