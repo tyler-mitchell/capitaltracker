@@ -12,7 +12,7 @@
                     "yarn proto-loader-gen-types --longs=String --enums=String --grpcLib=@grpc/grpc-js --outDir=libs/node-api-models/src/lib/ tools/models/api.proto",
                     "rm libs/node-api-models/src/lib/api.ts",
                     "./tools/scripts/generate-node-api-models-index.sh",
-                    "nx format:write --libs-and-apps"
+                    "NX_CLOUD_DISTRIBUTED_EXECUTION=false nx format:write --libs-and-apps"
                 ],
                 "parallel": false
             }
