@@ -9,7 +9,7 @@ if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^r
     echo "RUST=true"
 fi
 
-npx nx format
+npx nx format  --libs-and-apps
 npx nx workspace-lint
 nx_exec build
 nx_exec lint
