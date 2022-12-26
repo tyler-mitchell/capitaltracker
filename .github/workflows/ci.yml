@@ -205,7 +205,7 @@ jobs:
 
             - name: Check Rust Affected
               run: |
-                  npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
+                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
                       echo "RUST=true" >> $GITHUB_ENV
                   fi
 
@@ -286,7 +286,7 @@ jobs:
 
             - name: Check Rust Affected
               run: |
-                  npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
+                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
                       echo "RUST=true" >> $GITHUB_ENV
                   fi
 
