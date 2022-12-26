@@ -1,10 +1,9 @@
 // Original file: tools/models/api.proto
 
-
 export interface Response {
-  'message'?: (string);
+    message?: string;
 }
 
 export interface Response__Output {
-  'message'?: (string);
+    message?: string;
 }

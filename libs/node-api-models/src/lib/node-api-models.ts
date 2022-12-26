@@ -1,7 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
 import * as protoLoader from '@grpc/proto-loader';
 import { join } from 'path';
-import * as api from './api'
+import * as api from './api';
 
 const PROTO_PATH = __dirname + '../../../../../tools/models/';
 const API_PROTO_PATH = join(PROTO_PATH, 'api.proto');
@@ -18,4 +18,4 @@ const options: protoLoader.Options = {
 const packageDefinition = protoLoader.loadSync(API_PROTO_PATH, options);
 export const grpcObject = grpc.loadPackageDefinition(packageDefinition);
 
-export { api }
+export { api };

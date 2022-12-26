@@ -10,7 +10,7 @@ mod tests {
         Request {
             field: "foo".to_owned(),
         };
-        Reply {
+        Response {
             message: "message".to_owned(),
         };
     }
