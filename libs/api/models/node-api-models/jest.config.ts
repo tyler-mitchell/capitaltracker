@@ -8,10 +8,10 @@ const { exclude: _, ...swcJestConfig } = JSON.parse(
 );
 export default {
     displayName: 'node-api-models',
-    preset: '../../jest.preset.js',
+    preset: '../../../../jest.preset.js',
     transform: {
         '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
     },
     moduleFileExtensions: ['ts', 'js', 'html'],
-    coverageDirectory: '../../coverage/libs/node-api-models',
+    coverageDirectory: '../../../../coverage/libs/api/models',
 };

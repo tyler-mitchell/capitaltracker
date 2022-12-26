@@ -15,9 +15,8 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@capitaltracker/node-api-models": [
-                "libs/node-api-models/src/index.ts"
-            ]
+            "@api": ["libs/api/node-api-wrapper/src/index.ts"],
+            "@models": ["libs/api/models/node-api-models/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

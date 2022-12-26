@@ -3,11 +3,8 @@
     "projectType": "application",
     "sourceRoot": "apps/client/src",
     "targets": {
-        "frontend": {
-            "command": "npx nx export"
-        },
         "build": {
-            "dependsOn": ["frontend"],
+            "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:build",
             "options": {
                 "release": false,
@@ -59,5 +56,6 @@
             "command": "cargo fmt -p desktop --check"
         }
     },
+    "implicitDependencies": ["web"],
     "tags": []
 }
