@@ -8,14 +8,12 @@
             "executor": "@ignisda/nx-rust:build",
             "options": {
                 "release": false,
-                "frozen": true,
                 "locked": true,
                 "run": true
             },
             "configurations": {
                 "production": {
                     "release": true,
-                    "frozen": true,
                     "locked": true,
                     "run": true
                 }
@@ -36,6 +34,7 @@
         },
         "test": {
             "executor": "@ignisda/nx-rust:test",
+            "dependsOn": ["build"],
             "options": {
                 "release": false,
                 "frozen": true,
@@ -51,6 +50,7 @@
         },
         "lint": {
             "executor": "@ignisda/nx-rust:clippy",
+            "dependsOn": ["build"],
             "options": {
                 "fix": false,
                 "failOnWarnings": true,

@@ -18,6 +18,7 @@
             }
         },
         "test": {
+            "dependsOn": ["build"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
                 "release": false,
@@ -33,6 +34,7 @@
             }
         },
         "lint": {
+            "dependsOn": ["build"],
             "executor": "@ignisda/nx-rust:clippy",
             "options": {
                 "failOnWarnings": true,
@@ -41,7 +43,7 @@
             }
         },
         "fmt": {
-            "command": "cargo fmt -p rust-api-models -- --check"
+            "command": "cargo fmt -p rust-api-models --check"
         }
     },
     "tags": []
