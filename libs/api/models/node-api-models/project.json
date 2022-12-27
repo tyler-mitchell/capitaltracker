@@ -3,12 +3,9 @@
     "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/api/models/node-api-models/src",
     "projectType": "library",
-    "namedInputs": {
-        "codegen": ["{workspaceRoot}/tools/scripts/generate-node-api-models.sh"]
-    },
     "targets": {
         "codegen": {
-            "inputs": ["codegen", "default", "grpcModels"],
+            "inputs": ["default", "grpcModels"],
             "command": "libs/api/models/node-api-models/codegen.sh"
         },
         "build": {

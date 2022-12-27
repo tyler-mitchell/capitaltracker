@@ -17,4 +17,4 @@ files=$(echo "$files" | grep -v index.ts)
 while read -r file; do
   echo "export * from './${file%.ts}';" >> "$index"
 done <<< "$files"
-NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx format:write --projects=node-api-models --base="$NX_BASE" --head="$NX_HEAD"
+NX_CLOUD_DISTRIBUTED_EXECUTION=false nx format:write --projects=node-api-models --base="$NX_BASE" --head="$NX_HEAD"
