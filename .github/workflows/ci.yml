@@ -114,7 +114,7 @@ jobs:
                   cmd1: $NX_EXEC build
                   cmd2: $NX_EXEC test
                   cmd3: $NX_EXEC lint
-                  cmd4: $NX_EXEC e2e
+                  cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=1 --target=e2e
 
             - name: Stop Agents
               if: ${{ always() }}

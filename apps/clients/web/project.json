@@ -38,6 +38,7 @@
             }
         },
         "export": {
+            "dependsOn": ["build"],
             "executor": "@nrwl/next:export",
             "options": {
                 "buildTarget": "web:build:production"
