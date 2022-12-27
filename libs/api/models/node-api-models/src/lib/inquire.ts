@@ -1,6 +1,3 @@
-'use strict';
-module.exports = inquire;
-
-function inquire() {
+export function inquire() {
     return null;
 }
