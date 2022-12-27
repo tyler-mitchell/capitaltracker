@@ -4,12 +4,9 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
-  require('../apps/mobile/src/app/App.stories');
+    require('../apps/mobile/src/app/App.stories');
 }
 
 const stories = ['../apps/mobile/src/app/App.stories'];
 
-export default {
-  loadStories,
-  stories,
-};
+export { loadStories, stories };

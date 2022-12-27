@@ -16,7 +16,8 @@
         "baseUrl": ".",
         "paths": {
             "@api": ["libs/api/node-api-wrapper/src/index.ts"],
-            "@models": ["libs/api/models/node-api-models/src/index.ts"]
+            "@models": ["libs/api/models/node-api-models/src/index.ts"],
+            "@ui": ["libs/ui/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

@@ -17,23 +17,27 @@
                     "outputPath": "dist/apps/web"
                 },
                 "production": {}
-            }
+            },
+            "dependsOn": ["build-custom-server"]
         },
         "serve": {
             "executor": "@nrwl/next:server",
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "web:build",
-                "dev": true
+                "dev": true,
+                "customServerTarget": "web:serve-custom-server"
             },
             "configurations": {
                 "development": {
                     "buildTarget": "web:build:development",
-                    "dev": true
+                    "dev": true,
+                    "customServerTarget": "web:serve-custom-server:development"
                 },
                 "production": {
                     "buildTarget": "web:build:production",
-                    "dev": false
+                    "dev": false,
+                    "customServerTarget": "web:serve-custom-server:production"
                 }
             }
         },
@@ -111,7 +115,38 @@
             "options": {
                 "command": "test-storybook -c apps/web/.storybook --url=http://localhost:4400"
             }
+        },
+        "build-custom-server": {
+            "executor": "@nrwl/js:tsc",
+            "defaultConfiguration": "production",
+            "options": {
+                "outputPath": "dist/apps/web",
+                "main": "apps/web/server/main.ts",
+                "tsConfig": "apps/web/tsconfig.server.json",
+                "clean": false,
+                "assets": []
+            },
+            "configurations": {
+                "development": {},
+                "production": {}
+            }
+        },
+        "serve-custom-server": {
+            "executor": "@nrwl/js:node",
+            "defaultConfiguration": "development",
+            "options": {
+                "buildTarget": "web:build-custom-server"
+            },
+            "configurations": {
+                "development": {
+                    "buildTarget": "web:build-custom-server:development"
+                },
+                "production": {
+                    "buildTarget": "web:build-custom-server:production"
+                }
+            }
         }
     },
+    "implicitDependencies": ["ui"],
     "tags": []
 }

@@ -78,6 +78,6 @@
             }
         }
     },
-    "implicitDependencies": ["node-api-wrapper"],
+    "implicitDependencies": ["ui"],
     "tags": []
 }

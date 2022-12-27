@@ -48,9 +48,21 @@
                     "e2e",
                     "frontend",
                     "codegen",
-                    "export"
+                    "export",
+                    "build-custom-server",
+                    "build-storybook"
                 ],
                 "accessToken": "MWY5NGM2MWYtMzljNi00ZDFiLTk2YzktYTFjYzBmZTNkNjYyfHJlYWQtd3JpdGU="
+            }
+        }
+    },
+    "generators": {
+        "@nrwl/react": {
+            "application": {
+                "babel": true
+            },
+            "library": {
+                "unitTestRunner": "jest"
             }
         }
     }
