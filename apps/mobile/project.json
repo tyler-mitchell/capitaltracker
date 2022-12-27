@@ -78,6 +78,6 @@
             }
         }
     },
-    "implicitDependencies": ["ui"],
+    "implicitDependencies": [],
     "tags": []
 }

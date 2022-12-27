@@ -4,5 +4,5 @@ import App from './App';
 
 test('renders correctly', () => {
     const { getByTestId } = render(<App />);
-    expect(getByTestId('heading')).toContain('Welcome');
+    expect(getByTestId('heading')).toHaveTextContent('Welcome');
 });
