@@ -1,8 +1,7 @@
 import { Api } from '@api';
 
 export function Index() {
-    const req = Api.request();
-    console.log(req);
+    Api.request();
     return (
         <div className="bg-gray-50">
             <div
