@@ -1,13 +1,24 @@
 {
     "compilerOptions": {
-        "jsx": "react-jsx",
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
+        "skipLibCheck": true,
         "esModuleInterop": false,
         "allowSyntheticDefaultImports": true,
-        "strict": true
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "types": ["vite/client"]
     },
     "files": [],
-    "include": [],
+    "include": ["src"],
     "references": [
         {
             "path": "./tsconfig.lib.json"
