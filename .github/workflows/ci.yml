@@ -311,6 +311,7 @@ jobs:
 
     cleanup:
         name: Cleanup Artifacts
+        needs: [agents]
         runs-on: ubuntu-latest
         defaults:
             run:
