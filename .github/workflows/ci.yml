@@ -214,7 +214,7 @@ jobs:
               run: npx nx-cloud start-agent
 
             - name: Archive Rust Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
+              if: needs.main.status == 'success' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
                   if [ -d "target" ]; then
                     mv target target-agent-${{ matrix.agent }}
@@ -223,7 +223,7 @@ jobs:
                   fi
 
             - name: Upload Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
+              if: needs.main.status == 'success' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
               uses: actions/upload-artifact@v3
               with:
                   name: build-agent-${{ matrix.agent }}
