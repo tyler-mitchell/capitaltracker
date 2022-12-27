@@ -53,7 +53,7 @@
             "dependsOn": ["frontend"],
             "command": "tauri build"
         },
-        "dev": {
+        "serve": {
             "command": "tauri dev"
         },
         "fmt": {
