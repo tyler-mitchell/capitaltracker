@@ -1,0 +1,30 @@
+{
+    "name": "e2e-components",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/e2e/ui/components/src",
+    "projectType": "application",
+    "targets": {
+        "e2e": {
+            "executor": "@nrwl/cypress:cypress",
+            "options": {
+                "cypressConfig": "apps/e2e/ui/components/cypress.config.ts",
+                "devServerTarget": "components:storybook",
+                "testingType": "e2e"
+            },
+            "configurations": {
+                "ci": {
+                    "devServerTarget": "components:storybook:ci"
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/e2e/ui/components/**/*.{js,ts}"]
+            }
+        }
+    },
+    "tags": [],
+    "implicitDependencies": ["components"]
+}
