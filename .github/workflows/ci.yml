@@ -98,8 +98,8 @@ jobs:
 
             - name: Format Workspace
               run: |
-                NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
-                cargo fmt --all --check
+                  NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
+                  cargo fmt --all --check
 
             - name: Lint Workspace
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
