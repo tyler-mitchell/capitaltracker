@@ -3,16 +3,19 @@
     "projectType": "application",
     "sourceRoot": "apps/client/src",
     "targets": {
+        "frontend": {
+            "command": "[ -d dist/apps/web/exported ] || nx export --skip-nx-cache"
+        },
         "build": {
-            "dependsOn": ["^export"],
+            "dependsOn": ["frontend", "^export"],
             "executor": "@ignisda/nx-rust:build",
             "options": {
-                "release": false,
+                "release": true,
                 "locked": true
             },
             "configurations": {
-                "production": {
-                    "release": true,
+                "development": {
+                    "release": false,
                     "locked": true
                 }
             }

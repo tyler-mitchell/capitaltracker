@@ -46,6 +46,7 @@
                     "lint",
                     "test",
                     "e2e",
+                    "frontend",
                     "codegen",
                     "export"
                 ],
