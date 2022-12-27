@@ -7,7 +7,7 @@
             "command": "[ -d dist/apps/web/exported ] || nx export --skip-nx-cache"
         },
         "build": {
-            "dependsOn": ["frontend", "^export"],
+            "dependsOn": ["frontend"],
             "executor": "@ignisda/nx-rust:build",
             "options": {
                 "release": true,
@@ -21,7 +21,7 @@
             }
         },
         "test": {
-            "dependsOn": ["build"],
+            "dependsOn": ["frontend"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
                 "release": false,
@@ -35,7 +35,7 @@
             }
         },
         "lint": {
-            "dependsOn": ["build"],
+            "dependsOn": ["frontend"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
                 "release": false,
@@ -49,7 +49,7 @@
             }
         },
         "export": {
-            "dependsOn": ["build"],
+            "dependsOn": ["frontend"],
             "command": "tauri build"
         },
         "dev": {

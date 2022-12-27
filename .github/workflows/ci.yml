@@ -16,7 +16,7 @@ env:
     NEXT_TELEMETRY_DISABLED: 1
     NX_CLOUD_DISTRIBUTED_EXECUTION: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
-    NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 5
+    NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 2
     NX_EXEC: 'npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
     RUST_BUILT: false
@@ -299,12 +299,6 @@ jobs:
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               uses: actions/download-artifact@v3
 
-            - name: Delete Build Artifacts
-              uses: geekyeggo/delete-artifact@v2
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              with:
-                  name: build-agent-*
-
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
@@ -314,3 +308,15 @@ jobs:
                   else
                     echo "No build artifacts found"
                   fi
+
+    cleanup:
+        name: Cleanup Artifacts
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
+        steps:
+            - name: Delete Build Artifacts
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: build-agent-*
