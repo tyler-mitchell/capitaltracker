@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import UiComponents from './ui-components';
+import Header from './header';
 
-describe('UiComponents', () => {
+describe('Header', () => {
     it('should render successfully', () => {
-        const { baseElement } = render(<UiComponents />);
+        const { baseElement } = render(<Header />);
         expect(baseElement).toBeTruthy();
     });
 });
