@@ -1,6 +1,6 @@
 [workspace]
 members = [
-  "apps/desktop",
-  "apps/api",
+  "apps/clients/desktop",
+  "apps/server/api",
   "libs/api/models/rust-api-models"
 ]

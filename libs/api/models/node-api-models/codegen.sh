@@ -4,11 +4,10 @@ dir=$(dirname "$0")
 dir=$(dirname "$dir")
 dir=$(dirname "$dir")
 dir=$(dirname "$dir")
-workspace_dir=$(dirname "$dir")
 lib_dir="$dir/api/models/node-api-models/src/lib"
 api_dir="$lib_dir/api"
 index="$api_dir/index.ts"
-proto="$workspace_dir/tools/models/api.proto"
+proto="tools/models/api.proto"
 [ -d "$api_dir" ] && rm -rf "$api_dir"
 yarn proto-loader-gen-types --longs=String --enums=String --grpcLib=@grpc/grpc-js --outDir="$lib_dir" "$proto"
 rm "$lib_dir/api.ts"

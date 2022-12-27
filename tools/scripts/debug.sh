@@ -1,7 +1,7 @@
 #!/bin/sh
 
-yarn failed build
-yarn failed lint
-yarn failed format
-yarn failed test
-yarn failed e2e
+yarn failed build  --parallel "$1"
+yarn failed lint --parallel "$1"
+yarn failed format --parallel "$1"
+yarn failed test --parallel "$1"
+yarn failed e2e --parallel "$1"

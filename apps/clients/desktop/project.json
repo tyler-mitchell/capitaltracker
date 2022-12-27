@@ -1,0 +1,65 @@
+{
+    "name": "desktop",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "sourceRoot": "apps/client/src",
+    "targets": {
+        "frontend": {
+            "command": "nx export --skip-nx-cache"
+        },
+        "build": {
+            "dependsOn": ["frontend"],
+            "executor": "@ignisda/nx-rust:build",
+            "options": {
+                "release": true,
+                "locked": true
+            },
+            "configurations": {
+                "development": {
+                    "release": false,
+                    "locked": true
+                }
+            }
+        },
+        "test": {
+            "dependsOn": ["frontend"],
+            "executor": "@ignisda/nx-rust:test",
+            "options": {
+                "release": false,
+                "locked": true
+            },
+            "configurations": {
+                "production": {
+                    "release": true,
+                    "locked": true
+                }
+            }
+        },
+        "lint": {
+            "dependsOn": ["frontend"],
+            "executor": "@ignisda/nx-rust:test",
+            "options": {
+                "release": false,
+                "locked": true
+            },
+            "configurations": {
+                "production": {
+                    "release": true,
+                    "locked": true
+                }
+            }
+        },
+        "export": {
+            "dependsOn": ["frontend"],
+            "command": "tauri build"
+        },
+        "dev": {
+            "command": "tauri dev"
+        },
+        "fmt": {
+            "command": "cargo fmt -p desktop --check"
+        }
+    },
+    "implicitDependencies": ["web"],
+    "tags": []
+}
