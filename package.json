@@ -12,6 +12,8 @@
         "ci": "tools/scripts/ci.sh",
         "full": "tools/scripts/full.sh",
         "debug": "tools/scripts/debug.sh",
+        "component": "tools/scripts/component.sh",
+        "page": "tools/scripts/page.sh",
         "affected": "nx affected --target",
         "all": "nx run-many --all=true --with-deps=true --target",
         "failed": "nx run-many --all=true --with-deps=true --only-failed=true --target"

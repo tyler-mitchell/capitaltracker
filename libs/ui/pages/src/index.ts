@@ -1,1 +1,2 @@
-export * from './lib/ui-pages';
+export * from './lib/dashboard/dashboard';
+export * from './lib/home/home';

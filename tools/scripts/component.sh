@@ -2,7 +2,7 @@
 
 component="$1"
 
-nx generate @nrwl/next:component "$component" --project=components --export
+nx generate @nrwl/next:component "$component" --project=components --export -s=css
 
 nx generate @nrwl/react:component-story --componentPath=lib/"$component"/"$component".tsx --project=components
 

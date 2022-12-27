@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import UiPages from './ui-pages';
+import Home from './home';
 
-describe('UiPages', () => {
+describe('Home', () => {
     it('should render successfully', () => {
-        const { baseElement } = render(<UiPages />);
+        const { baseElement } = render(<Home />);
         expect(baseElement).toBeTruthy();
     });
 });
