@@ -11,6 +11,7 @@
         "e2e": "yarn affected e2e",
         "ci": "tools/scripts/ci.sh",
         "full": "tools/scripts/full.sh",
+        "debug": "tools/scripts/debug.sh",
         "affected": "nx affected --parallel --target",
         "all": "nx run-many --all=true --with-deps=true --target",
         "failed": "nx run-many --all=true --with-deps=true --only-failed=true --target"

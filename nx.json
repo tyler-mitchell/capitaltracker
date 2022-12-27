@@ -1,21 +1,19 @@
 {
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "npmScope": "capitaltracker",
-    "tasksRunnerOptions": {
-        "default": {
-            "runner": "@nrwl/nx-cloud",
-            "options": {
-                "cacheableOperations": [
-                    "build",
-                    "lint",
-                    "test",
-                    "e2e",
-                    "frontend",
-                    "export"
-                ],
-                "accessToken": "OTZhYWE4YzAtNTU2OC00NzlkLWEwNWMtZjZjM2NiOGIxY2YyfHJlYWQtd3JpdGU="
-            }
-        }
+    "defaultProject": "web",
+    "plugins": ["@ignisda/nx-rust"],
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "production": [
+            "default",
+            "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+            "!{projectRoot}/tsconfig.spec.json",
+            "!{projectRoot}/jest.config.[jt]s",
+            "!{projectRoot}/.eslintrc.json"
+        ],
+        "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
+        "grpcModels": ["{workspaceRoot}/tools/models/**/*.proto"]
     },
     "targetDefaults": {
         "build": {
@@ -39,20 +37,21 @@
             "inputs": ["default", "^production"]
         }
     },
-    "namedInputs": {
-        "default": ["{projectRoot}/**/*", "sharedGlobals"],
-        "production": [
-            "default",
-            "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-            "!{projectRoot}/tsconfig.spec.json",
-            "!{projectRoot}/jest.config.[jt]s",
-            "!{projectRoot}/.eslintrc.json"
-        ],
-        "sharedGlobals": [
-            "{workspaceRoot}/babel.config.json",
-            "{workspaceRoot}/tools/models/*.proto"
-        ]
-    },
-    "defaultProject": "web",
-    "plugins": ["@ignisda/nx-rust"]
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "@nrwl/nx-cloud",
+            "options": {
+                "cacheableOperations": [
+                    "build",
+                    "lint",
+                    "test",
+                    "e2e",
+                    "frontend",
+                    "codegen",
+                    "export"
+                ],
+                "accessToken": "MWY5NGM2MWYtMzljNi00ZDFiLTk2YzktYTFjYzBmZTNkNjYyfHJlYWQtd3JpdGU="
+            }
+        }
+    }
 }

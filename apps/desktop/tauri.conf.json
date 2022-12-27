@@ -1,7 +1,7 @@
 {
     "$schema": "../../node_modules/@tauri-apps/cli/schema.json",
     "build": {
-        "beforeBuildCommand": "[ -d '../dist/apps/web/exported' ] || yarn export",
+        "beforeBuildCommand": "[ -d '../dist/apps/web/exported' ] || npx nx export",
         "beforeDevCommand": "yarn start",
         "devPath": "http://localhost:4200",
         "distDir": "../../dist/apps/web/exported",

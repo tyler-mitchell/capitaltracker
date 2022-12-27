@@ -2,5 +2,5 @@
 members = [
   "apps/desktop",
   "apps/api",
-  "libs/rust-api-models"
+  "libs/api/models/rust-api-models"
 ]

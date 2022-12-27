@@ -1,10 +1,14 @@
 {
     "name": "rust-api-models",
-    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
     "projectType": "library",
-    "sourceRoot": "libs/rust-api-models/src",
+    "sourceRoot": "libs/api/models/rust-api-models/src",
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*"]
+    },
     "targets": {
         "build": {
+            "inputs": ["grpcModels", "default"],
             "executor": "@ignisda/nx-rust:build",
             "options": {
                 "release": false,
@@ -19,6 +23,7 @@
         },
         "test": {
             "dependsOn": ["build"],
+            "inputs": ["grpcModels", "default"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
                 "release": false,
@@ -35,6 +40,7 @@
         },
         "lint": {
             "dependsOn": ["build"],
+            "inputs": ["grpcModels", "default"],
             "executor": "@ignisda/nx-rust:clippy",
             "options": {
                 "failOnWarnings": true,
@@ -43,6 +49,8 @@
             }
         },
         "fmt": {
+            "dependsOn": ["build"],
+            "inputs": ["grpcModels", "default"],
             "command": "cargo fmt -p rust-api-models --check"
         }
     },

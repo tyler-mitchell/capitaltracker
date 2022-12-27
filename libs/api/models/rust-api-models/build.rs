@@ -3,7 +3,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Ok(current_dir) => current_dir,
         Err(error) => return Err(Box::new(error)),
     };
-    let models_dir = current_dir.join("../../tools/models").canonicalize()?;
+    let models_dir = current_dir
+        .join("../../../../tools/models")
+        .canonicalize()?;
     let api_proto_path = models_dir.join("api.proto");
     let out_dir = current_dir.join("src");
     tonic_build::configure()

@@ -3,9 +3,12 @@
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "projectType": "application",
     "sourceRoot": "apps/api/src",
+    "namedInputs": {
+        "default": ["{projectRoot}/**/*"]
+    },
     "targets": {
         "serve": {
-            "executor": "@ignisda/nx-rust:build",
+            "executor": "@ignisda/nx-rust:run",
             "options": {
                 "release": false,
                 "locked": true,
@@ -61,5 +64,6 @@
             "command": "cargo fmt -p api -- --check"
         }
     },
+    "implicitDependencies": ["rust-api-models"],
     "tags": []
 }
