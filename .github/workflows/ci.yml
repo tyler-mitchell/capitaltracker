@@ -16,7 +16,7 @@ env:
     NEXT_TELEMETRY_DISABLED: 1
     NX_CLOUD_DISTRIBUTED_EXECUTION: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
-    NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
+    NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 5
     NX_EXEC: 'npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
     RUST_BUILT: false
@@ -94,20 +94,21 @@ jobs:
               run: yarn install --immutable
 
             - name: Start Agents
+              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
               run: npx nx-cloud start-ci-run --stop-agents-after=e2e
 
             - name: Format Workspace
-              if: needs.agents.result != 'failed' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
+              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
               run: |
                   NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
                   cargo fmt --all --check
 
             - name: Lint Workspace
-              if: needs.agents.result != 'failed' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
+              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
 
             - name: Run Agents
-              if: needs.agents.result != 'failed' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
+              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
               uses: jameshenry/parallel-bash-commands@v1
               with:
                   cmd1: $NX_EXEC build
@@ -217,7 +218,7 @@ jobs:
               run: npx nx-cloud start-agent
 
             - name: Archive Rust Build
-              if: needs.main.status == 'success' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
+              if: needs.main.result != 'failure' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
                   if [ -d "target" ]; then
                     mv target target-agent-${{ matrix.agent }}
@@ -226,7 +227,7 @@ jobs:
                   fi
 
             - name: Upload Build
-              if: needs.main.status == 'success' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
+              if: needs.main.result != 'failure' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
               uses: actions/upload-artifact@v3
               with:
                   name: build-agent-${{ matrix.agent }}
