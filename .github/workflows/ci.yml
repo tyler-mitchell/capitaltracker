@@ -367,7 +367,7 @@ jobs:
 
 
     release:
-        name: Release Desktop
+        name: Release
         runs-on: ${{ matrix.platform }}
         needs: [main, agents]
         defaults:
