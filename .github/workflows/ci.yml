@@ -32,6 +32,9 @@ jobs:
             matrix:
                 os: [ubuntu-latest]
         steps:
+            - name: Debug
+              run: echo ${{ github.event }}
+
             - name: Update
               run: sudo apt-get update
 
@@ -123,7 +126,7 @@ jobs:
 
             - name: Abort Workflow
               if: steps.agents.outcome == 'failure'
-              uses: styfle/cancel-workflow-action
+              uses: styfle/cancel-workflow-action@0.11.0
               with:
                   workflow_id: ${{ github.event.workflow.id }}
 
