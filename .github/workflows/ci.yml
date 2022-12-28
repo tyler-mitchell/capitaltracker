@@ -91,6 +91,15 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
 
+            - name: Export Web
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export --skip-nx-cache
+
+            - name: Upload Web
+              uses: actions/upload-artifact@v3
+              with:
+                  name: dist
+                  path: dist
+
             - name: Start Agents
               if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
               run: npx nx-cloud start-ci-run --stop-agents-after=e2e
@@ -219,6 +228,11 @@ jobs:
                       echo "RUST=true" >> $GITHUB_ENV
                   fi
 
+            - name: Download Web
+              uses: actions/download-artifact@v3
+              with:
+                  name: dist
+
             - name: Run Agent
               run: npx nx-cloud start-agent
 
@@ -231,7 +245,7 @@ jobs:
                     echo "RUST_BUILT=true" >> $GITHUB_ENV
                   fi
 
-            - name: Upload Build
+            - name: Upload Rust Build
               if: needs.main.result != 'failure' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
               uses: actions/upload-artifact@v3
               with:
@@ -300,16 +314,16 @@ jobs:
                       echo "RUST=true" >> $GITHUB_ENV
                   fi
 
-            - name: Download Build
+            - name: Download Rust Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               uses: actions/download-artifact@v3
 
             - name: Delete Build Artifacts
               uses: geekyeggo/delete-artifact@v2
               with:
-                  name: "*"
+                  name: build-agent-*
 
-            - name: Merge Build
+            - name: Merge Rust Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
               run: |
                   find . -name '*.tar' -print -exec tar xf '{}' \; > result.txt
@@ -358,21 +372,10 @@ jobs:
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
-            - name: Rust Cache
-              id: rust_cache
-              uses: actions/cache/restore@v3
+            - name: Download Web
+              uses: actions/download-artifact@v3
               with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ~/.cargo/git/db/
-                      target/
-                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ubuntu-latest-cargo
-
-            - name: Export
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export --skip-nx-cache
+                  name: dist
 
             - name: Deploy to Firebase Hosting Preview on PR
               if: github.event.pull_request.head.repo.full_name == github.repository
@@ -391,3 +394,8 @@ jobs:
                   firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}'
                   channelId: live
                   projectId: lifemastery-8f9c1
+
+            - name: Delete Build Artifacts
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: "*"
