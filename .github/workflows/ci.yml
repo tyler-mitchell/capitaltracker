@@ -356,6 +356,10 @@ jobs:
                   name: dist
                   path: dist
 
+            - name: Install Node Dependencies
+              if: steps.node_cache.outputs.cache-hit != 'true'
+              run: yarn install --immutable
+
             - name: Deploy to Firebase Hosting Preview on PR
               if: github.event.pull_request.head.repo.full_name == github.repository
               uses: FirebaseExtended/action-hosting-deploy@v0
@@ -399,6 +403,10 @@ jobs:
               with:
                   fetch-depth: 0
 
+            - name: Yarn Cache Path
+              id: yarn-cache-dir-path
+              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
             - name: Node Cache
               id: node_cache
               uses: actions/cache/restore@v3
@@ -427,6 +435,10 @@ jobs:
               with:
                   name: dist
                   path: dist
+
+            - name: Install Node Dependencies
+              if: steps.node_cache.outputs.cache-hit != 'true'
+              run: yarn install --immutable
 
             - name: Export Desktop
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export desktop
