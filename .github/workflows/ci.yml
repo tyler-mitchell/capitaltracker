@@ -372,7 +372,7 @@ jobs:
                   restore-keys: ubuntu-latest-cargo
 
             - name: Export
-              run: npx nx export --skip-nx-cache
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export --skip-nx-cache
 
             - name: Deploy to Firebase Hosting Preview on PR
               if: github.event.pull_request.head.repo.full_name == github.repository
