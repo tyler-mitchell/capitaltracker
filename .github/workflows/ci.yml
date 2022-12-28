@@ -33,7 +33,7 @@ jobs:
                 os: [ubuntu-latest]
         steps:
             - name: Debug
-              run: echo ${{ github.event }}
+              run: echo ${{ github.event.workflow }}
 
             - name: Update
               run: sudo apt-get update
