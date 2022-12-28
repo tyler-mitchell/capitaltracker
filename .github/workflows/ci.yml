@@ -356,7 +356,7 @@ jobs:
               with:
                   args: deploy --only hosting
               env:
-                  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
+                  GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
             - name: Deploy to Firebase Hosting Preview on PR
               if: github.ref == '/refs/heads/main' && github.event_name != 'pull_request'
@@ -364,7 +364,7 @@ jobs:
               with:
                   args: deploy --only hosting:preview
               env:
-                  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
+                  GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
             - name: Delete Artifacts
               if: failure()
