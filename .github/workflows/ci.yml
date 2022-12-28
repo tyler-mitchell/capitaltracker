@@ -24,13 +24,10 @@ env:
 jobs:
     web:
         name: Initialize Web
-        runs-on: ${{ matrix.os }}
+        runs-on: ubuntu-latest
         defaults:
             run:
                 shell: bash
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
         steps:
             - name: Update
               run: sudo apt-get update
@@ -115,13 +112,10 @@ jobs:
     main:
         name: Main Job
         needs: [web]
-        runs-on: ${{ matrix.os }}
+        runs-on: ubuntu-latest
         defaults:
             run:
                 shell: bash
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
         steps:
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
@@ -145,7 +139,7 @@ jobs:
 
             - name: Node Cache
               id: node_cache
-              uses: actions/cache@v3
+              uses: actions/cache/restore@v3
               with:
                   path: |
                       ~/.cache/Cypress/
@@ -153,6 +147,18 @@ jobs:
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
+
+            - name: Rust Cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
 
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
@@ -281,6 +287,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: dist
+                  path: dist
 
             - name: Run Agent
               run: npx nx-cloud start-agent
@@ -431,6 +438,7 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: dist
+                  path: dist
 
             - name: Deploy to Firebase Hosting Preview on PR
               if: github.event.pull_request.head.repo.full_name == github.repository
