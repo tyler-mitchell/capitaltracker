@@ -14,8 +14,6 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
-    NX_CLOUD_DISTRIBUTED_EXECUTION: true
-    NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
     NX_EXEC: 'npx nx affected --nx-bail --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
@@ -48,14 +46,14 @@ jobs:
 
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
-              if: ${{ github.event_name == 'pull_request' }}
+              if: github.event_name == 'pull_request'
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
                   fetch-depth: 0
 
             - name: Checkout [Main]
               uses: actions/checkout@v3
-              if: ${{ github.event_name != 'pull_request' }}
+              if: github.event_name != 'pull_request'
               with:
                   fetch-depth: 0
 
@@ -118,7 +116,7 @@ jobs:
                   cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=1 --target=e2e
 
             - name: Stop Agents
-              if: ${{ always() }}
+              if: always()
               run: npx nx-cloud stop-all-agents
 
             - name: Abort Workflow
@@ -169,14 +167,14 @@ jobs:
 
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
-              if: ${{ github.event_name == 'pull_request' }}
+              if: github.event_name == 'pull_request'
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
                   fetch-depth: 0
 
             - name: Checkout [Main]
               uses: actions/checkout@v3
-              if: ${{ github.event_name != 'pull_request' }}
+              if: github.event_name != 'pull_request'
               with:
                   fetch-depth: 0
 
@@ -250,14 +248,14 @@ jobs:
         steps:
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
-              if: ${{ github.event_name == 'pull_request' }}
+              if: github.event_name == 'pull_request'
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
                   fetch-depth: 0
 
             - name: Checkout [Main]
               uses: actions/checkout@v3
-              if: ${{ github.event_name != 'pull_request' }}
+              if: github.event_name != 'pull_request'
               with:
                   fetch-depth: 0
 
@@ -331,14 +329,14 @@ jobs:
         steps:
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
-              if: ${{ github.event_name == 'pull_request' }}
+              if: github.event_name == 'pull_request'
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
                   fetch-depth: 0
 
             - name: Checkout [Main]
               uses: actions/checkout@v3
-              if: ${{ github.event_name != 'pull_request' }}
+              if: github.event_name != 'pull_request'
               with:
                   fetch-depth: 0
 
@@ -377,7 +375,7 @@ jobs:
               run: npx nx export --skip-nx-cache
 
             - name: Deploy to Firebase Hosting Preview on PR
-              if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
+              if: github.event.pull_request.head.repo.full_name == github.repository
               uses: FirebaseExtended/action-hosting-deploy@v0
               with:
                   repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -386,7 +384,7 @@ jobs:
                   projectId: lifemastery-8f9c1
 
             - name: Deploy to Firebase Hosting on Main
-              if: github.ref == '/refs/heads/main'
+              if: github.ref == '/refs/heads/main' && github.event_name != 'pull_request'
               uses: FirebaseExtended/action-hosting-deploy@v0
               with:
                   repoToken: '${{ secrets.GITHUB_TOKEN }}'
