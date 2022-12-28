@@ -424,7 +424,7 @@ jobs:
                       ~/.cargo/git/db/
                       target/
                   key: ${{ matrix.platform }}-node-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ${{ matrix.platform }-node-
+                  restore-keys: ${{ matrix.platform }}-node-
 
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
