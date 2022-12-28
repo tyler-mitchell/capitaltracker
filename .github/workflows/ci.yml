@@ -183,10 +183,15 @@ jobs:
               run: npx nx-cloud stop-all-agents
 
             - name: Abort Workflow
-              id: failure
               if: failure()
               run: |
                   curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
 
     set-agents:
         runs-on: ubuntu-latest
@@ -287,10 +292,15 @@ jobs:
               run: npx nx-cloud start-agent
 
             - name: Abort Workflow
-              id: failure
               if: failure()
               run: |
                   curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
 
     deploy:
         name: Deploy Web
@@ -355,12 +365,7 @@ jobs:
                   channelId: live
                   projectId: lifemastery-8f9c1
 
-            - name: Delete Build Artifacts
-              uses: geekyeggo/delete-artifact@v2
-              with:
-                  name: '*'
-
-    desktop:
+    release:
         name: Release Desktop
         runs-on: ${{ matrix.platform }}
         needs: [main, agents]
@@ -428,3 +433,13 @@ jobs:
                   releaseBody: 'See the assets to download this version and install.'
                   releaseDraft: false
                   prerelease: false
+
+    cleanup:
+        name: Cleanup
+        runs-on: ubuntu-latest
+        needs: [deploy, release]
+        steps:
+            - name: Delete Artifacts
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
