@@ -48,9 +48,8 @@
                     "e2e",
                     "frontend",
                     "codegen",
-                    "export",
-                    "build-custom-server",
-                    "build-storybook"
+                    "test-codegen",
+                    "export"
                 ],
                 "accessToken": "MWY5NGM2MWYtMzljNi00ZDFiLTk2YzktYTFjYzBmZTNkNjYyfHJlYWQtd3JpdGU="
             }
