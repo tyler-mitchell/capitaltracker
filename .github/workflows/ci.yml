@@ -345,7 +345,7 @@ jobs:
               if: github.event.pull_request.head.repo.full_name == github.repository
               uses: w9jds/firebase-action@master
               with:
-                  args: deploy --only hosting:channel:deploy ${{ github.ref }} --expires 12h
+                  args: hosting:channel:deploy pr${{ github.event.ref }}-${{ github.ref_name }} --expires 12h
               env:
                   GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
@@ -353,7 +353,7 @@ jobs:
               if: github.ref == '/refs/heads/main' && github.event_name != 'pull_request'
               uses: w9jds/firebase-action@master
               with:
-                  args: deploy --only hosting
+                  args: hosting:channel:deploy live
               env:
                   GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
