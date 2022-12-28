@@ -130,6 +130,15 @@ jobs:
               with:
                   fetch-depth: 0
 
+            - name: Download Web
+              uses: actions/download-artifact@v3
+              with:
+                  name: dist
+                  path: dist
+
+            - name: Inspect Web Build
+              run: tree dist
+
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
