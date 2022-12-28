@@ -1,7 +1,7 @@
 {
     "$schema": "../../../node_modules/@tauri-apps/cli/schema.json",
     "build": {
-        "beforeBuildCommand": "npx nx export",
+        "beforeBuildCommand": "npx nx export --skip-nx-cache",
         "beforeDevCommand": "yarn start",
         "devPath": "http://localhost:4200",
         "distDir": "../../../dist/apps/clients/web/exported",

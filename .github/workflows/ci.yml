@@ -32,9 +32,6 @@ jobs:
             - name: Update
               run: sudo apt-get update
 
-            - name: Install Tauri Dependencies
-              run: sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
-
             - name: Install Protocol Buffer Dependencies
               run: sudo apt-get install -y protobuf-compiler libprotobuf-dev
 
@@ -42,6 +39,11 @@ jobs:
               uses: dtolnay/rust-toolchain@stable
               with:
                   components: rustfmt, clippy
+
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
 
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
@@ -59,17 +61,12 @@ jobs:
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
             - name: Node Cache
               id: node_cache
               uses: actions/cache@v3
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -130,21 +127,19 @@ jobs:
               with:
                   fetch-depth: 0
 
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
+
             - name: Download Web
               uses: actions/download-artifact@v3
               with:
                   name: dist
                   path: dist
 
-            - name: Inspect Web Build
-              run: tree dist
-
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
-
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
             - name: Node Cache
               id: node_cache
@@ -152,7 +147,6 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -243,6 +237,11 @@ jobs:
               with:
                   components: rustfmt, clippy
 
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
+
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
               if: github.event_name == 'pull_request'
@@ -259,17 +258,12 @@ jobs:
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
             - name: Restore Node Cache
               id: node_cache
               uses: actions/cache/restore@v3
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -319,25 +313,8 @@ jobs:
             run:
                 shell: bash
         steps:
-            - name: Checkout [Pull Request]
+            - name: Checkout
               uses: actions/checkout@v3
-              if: github.event_name == 'pull_request'
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-                  fetch-depth: 0
-
-            - name: Checkout [Main]
-              uses: actions/checkout@v3
-              if: github.event_name != 'pull_request'
-              with:
-                  fetch-depth: 0
-
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-            - name: Derive SHAs
-              uses: nrwl/nx-set-shas@v3
 
             - name: Node Cache
               id: node_cache
@@ -345,10 +322,14 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
+
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
 
             - name: Download Web
               uses: actions/download-artifact@v3
@@ -390,6 +371,26 @@ jobs:
             matrix:
                 platform: [macos-latest, ubuntu-latest, windows-latest]
         steps:
+            - name: Update
+              run: sudo apt-get update
+
+            - name: Install Protocol Buffer Dependencies
+              run: sudo apt-get install -y protobuf-compiler libprotobuf-dev
+
+            - name: Install Tauri Dependencies (ubuntu only)
+              if: matrix.platform == 'ubuntu-latest'
+              run: sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
+
+            - name: Install Rust Toolchain
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: rustfmt, clippy
+
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
+
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
               if: github.event_name == 'pull_request'
@@ -403,20 +404,15 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
             - name: Node Cache
               id: node_cache
-              uses: actions/cache/restore@v3
+              uses: actions/cache@v3
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
-                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
-                  restore-keys: ubuntu-latest-node-
+                  key: ${{ matrix.platform }}-node-${{ hashFiles('yarn.lock') }}
+                  restore-keys: ${{ matrix.platform }-node-
 
             - name: Rust Cache
               uses: actions/cache@v3
@@ -427,21 +423,12 @@ jobs:
                       ~/.cargo/registry/cache/
                       ~/.cargo/git/db/
                       target/
-                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ubuntu-latest-cargo
-
-            - name: Download Web
-              uses: actions/download-artifact@v3
-              with:
-                  name: dist
-                  path: dist
+                  key: ${{ matrix.platform }}-node-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ${{ matrix.platform }-node-
 
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
-
-            - name: Export Desktop
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export desktop
 
             - name: Release Tauri App
               if: startsWith(github.ref, 'refs/tags/v')
