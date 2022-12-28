@@ -17,7 +17,7 @@ env:
     NX_CLOUD_DISTRIBUTED_EXECUTION: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
-    NX_EXEC: 'npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
+    NX_EXEC: 'npx nx affected --nx-bail --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
     RUST_BUILT: false
 
@@ -315,7 +315,7 @@ jobs:
                   fi
 
     deploy:
-        name: Cache Archived Build
+        name: Deploy
         runs-on: ubuntu-latest
         needs: [main, agents, cache]
         defaults:
