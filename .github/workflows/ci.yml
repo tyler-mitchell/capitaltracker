@@ -309,7 +309,7 @@ jobs:
             - name: Delete Build Artifacts
               uses: geekyeggo/delete-artifact@v2
               with:
-                  name: build-agent-*
+                  name: "*"
 
             - name: Merge Build
               if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
@@ -359,6 +359,22 @@ jobs:
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
+
+            - name: Rust Cache
+              id: rust_cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
+
+            - name: Export
+              run: npx nx export --skip-nx-cache
 
             - name: Deploy to Firebase Hosting Preview on PR
               if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
