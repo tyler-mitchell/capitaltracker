@@ -343,26 +343,17 @@ jobs:
 
             - name: Deploy to Firebase Hosting Preview on PR
               if: github.event.pull_request.head.repo.full_name == github.repository
-              uses: FirebaseExtended/action-hosting-deploy@v0
+              uses: w9jds/firebase-action@master
               with:
-                  repoToken: '${{ secrets.GITHUB_TOKEN }}'
-                  firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}'
-                  expires: 30d
-                  projectId: lifemastery-8f9c1
+                  args: deploy --only hosting:preview
+              env:
+                  GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
             - name: Deploy to Firebase Hosting on Main
               if: github.ref == '/refs/heads/main' && github.event_name != 'pull_request'
               uses: w9jds/firebase-action@master
               with:
                   args: deploy --only hosting
-              env:
-                  GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
-
-            - name: Deploy to Firebase Hosting Preview on PR
-              if: github.ref == '/refs/heads/main' && github.event_name != 'pull_request'
-              uses: w9jds/firebase-action@master
-              with:
-                  args: deploy --only hosting:preview
               env:
                   GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
@@ -457,7 +448,7 @@ jobs:
             - name: Release Tauri App
               uses: tauri-apps/tauri-action@v0
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.TAURI_GITHUB_TOKEN }}
               with:
                   tagName: v__VERSION__ # tauri-action replaces \_\_VERSION\_\_ with the app version
                   releaseName: 'v__VERSION__'
