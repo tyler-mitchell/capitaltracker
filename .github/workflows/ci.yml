@@ -277,12 +277,6 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
 
-            - name: Check Rust Affected
-              run: |
-                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
-                      echo "RUST=true" >> $GITHUB_ENV
-                  fi
-
             - name: Download Web
               uses: actions/download-artifact@v3
               with:
@@ -292,113 +286,16 @@ jobs:
             - name: Run Agent
               run: npx nx-cloud start-agent
 
-            - name: Archive Rust Build
-              if: needs.main.result != 'failure' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              run: |
-                  if [ -d "target" ]; then
-                    mv target target-agent-${{ matrix.agent }}
-                    tar -cf target-agent-${{ matrix.agent }}.tar target-agent-${{ matrix.agent }}/
-                    echo "RUST_BUILT=true" >> $GITHUB_ENV
-                  fi
-
-            - name: Upload Rust Build
-              if: needs.main.result != 'failure' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
-              uses: actions/upload-artifact@v3
-              with:
-                  name: build-agent-${{ matrix.agent }}
-                  path: target-agent-${{ matrix.agent }}.tar
-
             - name: Abort Workflow
               id: failure
               if: failure()
               run: |
                   curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
 
-    cache:
-        name: Cache Archived Build
+    deploy:
+        name: Deploy Web
         runs-on: ubuntu-latest
         needs: [main, agents]
-        defaults:
-            run:
-                shell: bash
-        steps:
-            - name: Checkout [Pull Request]
-              uses: actions/checkout@v3
-              if: github.event_name == 'pull_request'
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-                  fetch-depth: 0
-
-            - name: Checkout [Main]
-              uses: actions/checkout@v3
-              if: github.event_name != 'pull_request'
-              with:
-                  fetch-depth: 0
-
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-            - name: Derive SHAs
-              uses: nrwl/nx-set-shas@v3
-
-            - name: Node Cache
-              id: node_cache
-              uses: actions/cache/restore@v3
-              with:
-                  path: |
-                      ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                      node_modules/
-                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
-                  restore-keys: ubuntu-latest-node-
-
-            - name: Rust Cache
-              id: rust_cache
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ~/.cargo/git/db/
-                      target/
-                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ubuntu-latest-cargo
-
-            - name: Install Node Dependencies
-              if: steps.node_cache.outputs.cache-hit != 'true'
-              run: yarn install --immutable
-
-            - name: Check Rust Affected
-              run: |
-                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
-                      echo "RUST=true" >> $GITHUB_ENV
-                  fi
-
-            - name: Download Rust Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              uses: actions/download-artifact@v3
-
-            - name: Delete Build Artifacts
-              uses: geekyeggo/delete-artifact@v2
-              with:
-                  name: build-agent-*
-
-            - name: Merge Rust Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              run: |
-                  find . -name '*.tar' -print -exec tar xf '{}' \; > result.txt
-                  if [ -s "result.txt" ]; then
-                    rsync -av --quiet --ignore-existing target-agent-*/ target/
-                  else
-                    echo "No build artifacts found"
-                  fi
-
-    deploy:
-        name: Deploy
-        runs-on: ubuntu-latest
-        needs: [main, agents, cache]
         defaults:
             run:
                 shell: bash
@@ -461,4 +358,66 @@ jobs:
             - name: Delete Build Artifacts
               uses: geekyeggo/delete-artifact@v2
               with:
-                  name: "*"
+                  name: '*'
+
+    desktop:
+        name: Release Desktop
+        runs-on: ${{ matrix.platform }}
+        needs: [main, agents]
+        defaults:
+            run:
+                shell: bash
+        strategy:
+            fail-fast: false
+            matrix:
+                platform: [macos-latest, ubuntu-latest, windows-latest]
+        steps:
+            - name: Checkout [Pull Request]
+              uses: actions/checkout@v3
+              if: github.event_name == 'pull_request'
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Checkout [Main]
+              uses: actions/checkout@v3
+              if: github.event_name != 'pull_request'
+              with:
+                  fetch-depth: 0
+
+            - name: Node Cache
+              id: node_cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
+
+            - name: Rust Cache
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
+
+            - name: Export Desktop
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export desktop
+
+            - name: Release Tauri App
+              uses: tauri-apps/tauri-action@v0
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tagName: v__VERSION__ # tauri-action replaces \_\_VERSION\_\_ with the app version
+                  releaseName: 'v__VERSION__'
+                  releaseBody: 'See the assets to download this version and install.'
+                  releaseDraft: false
+                  prerelease: false
