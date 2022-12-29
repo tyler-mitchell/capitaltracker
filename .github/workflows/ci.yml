@@ -446,7 +446,7 @@ jobs:
                   path: dist
 
             - name: Build Tauri App
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- yarn tauri build
+              run: yarn tauri build
 
             - name: Release Desktop App (ubuntu-latest)
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
