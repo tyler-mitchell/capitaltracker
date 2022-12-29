@@ -474,7 +474,7 @@ jobs:
                   GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
             - name: Deploy to Firebase Hosting on Main
-              if: github.event_name != 'pull_request'
+              if: github.event_name != 'pull_request' && github.ref_name == 'main'
               uses: w9jds/firebase-action@master
               with:
                   args: deploy --only hosting
