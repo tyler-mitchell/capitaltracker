@@ -367,6 +367,7 @@ jobs:
         name: Release
         runs-on: ${{ matrix.platform }}
         needs: [main, agents]
+        if: startsWith(github.ref, 'refs/tags/v')
         defaults:
             run:
                 shell: bash
@@ -448,8 +449,22 @@ jobs:
             - name: Build Tauri App
               run: yarn tauri build
 
+            - name: Package App (macos-12 only)
+              if: matrix.platform == 'macos-12'
+              run: tar cvf target/release/bundle/macos/capital-tracker.app.tar target/release/bundle/macos/capital-tracker.app
+
+            - name: Release Desktop App (macos-12)
+              if: matrix.platform == 'macos-12'
+              uses: softprops/action-gh-release@v1
+              with:
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  fail_on_unmatched_files: true
+                  files: |
+                      target/release/bundle/macos/*.app.tar
+                      target/release/bundle/dmg/*.dmg
+
             - name: Release Desktop App (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
+              if: matrix.platform == 'ubuntu-latest'
               uses: softprops/action-gh-release@v1
               with:
                   generate_release_notes: true
@@ -460,23 +475,13 @@ jobs:
                       target/release/bundle/deb/*.deb
 
             - name: Release Desktop App (windows-latest)
-              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
+              if: matrix.platform == 'windows-latest'
               uses: softprops/action-gh-release@v1
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
                   fail_on_unmatched_files: true
                   files: |
                       target/release/bundle/msi/*.msi
-
-            - name: Release Desktop App (macos-12)
-              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v')
-              uses: softprops/action-gh-release@v1
-              with:
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  fail_on_unmatched_files: true
-                  files: |
-                      target/release/bundle/macos/*.app
-                      target/release/bundle/dmg/*.dmg
 
             - name: Delete Artifacts
               if: failure()
