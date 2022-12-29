@@ -449,8 +449,7 @@ jobs:
               run: yarn tauri build
 
             - name: Release Desktop App (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest'
-            #   if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
               uses: softprops/action-gh-release@v1
               with:
                   generate_release_notes: true
@@ -461,8 +460,7 @@ jobs:
                       target/release/bundle/deb/*.deb
 
             - name: Release Desktop App (windows-latest)
-              if: matrix.platform == 'windows-latest'
-            #   if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
               uses: softprops/action-gh-release@v1
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
@@ -471,8 +469,7 @@ jobs:
                       target\release\bundle\msi\*.msi
 
             - name: Release Desktop App (macos-12)
-              if: matrix.platform == 'macos-12'
-            #   if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v')
+              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v')
               uses: softprops/action-gh-release@v1
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
