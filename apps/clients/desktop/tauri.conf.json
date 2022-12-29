@@ -8,7 +8,7 @@
         "withGlobalTauri": true
     },
     "package": {
-        "productName": "Capital Tracker",
+        "productName": "capital-tracker",
         "version": "0.0.1"
     },
     "tauri": {
@@ -59,7 +59,7 @@
                 "fullscreen": false,
                 "height": 600,
                 "resizable": true,
-                "title": "Capital Tracker",
+                "title": "capital-tracker",
                 "width": 800
             }
         ]
