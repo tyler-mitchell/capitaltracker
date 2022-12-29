@@ -446,15 +446,36 @@ jobs:
                   path: dist
 
             - name: Release Tauri App
-              uses: tauri-apps/tauri-action@v0
-              env:
-                  GITHUB_TOKEN: ${{ secrets.TAURI_GITHUB_TOKEN }}
+              run: yarn tauri build
+
+            - name: Release Desktop App (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v'
+              uses: softprops/action-gh-release@v1
               with:
-                  tagName: v__VERSION__ # tauri-action replaces \_\_VERSION\_\_ with the app version
-                  releaseName: 'v__VERSION__'
-                  releaseBody: 'See the assets to download this version and install.'
-                  releaseDraft: false
-                  prerelease: false
+                  generate_release_notes: true
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  files: |
+                      target/release/bundle/appimage/*.AppImage
+                      target/release/bundle/deb/*.deb
+
+            - name: Release Desktop App (windows-latest)
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v'
+              uses: softprops/action-gh-release@v1
+              with:
+                  generate_release_notes: true
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  files: |
+                      target\release\bundle\msi\*.msi
+
+            - name: Release Desktop App (macos-12)
+              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v'
+              uses: softprops/action-gh-release@v1
+              with:
+                  generate_release_notes: true
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  files: |
+                      target/release/bundle/macos/*.app
+                      target/release/bundle/dmg/*.dmg
 
             - name: Delete Artifacts
               if: failure()
