@@ -513,7 +513,7 @@ jobs:
 
             - name: Download Desktop (windows-latest)
               if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
-              uses: actions/-artifact@v3
+              uses: actions/download-artifact@v3
               with:
                   name: windows-desktop
 
