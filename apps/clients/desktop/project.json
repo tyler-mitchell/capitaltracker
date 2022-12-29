@@ -5,7 +5,7 @@
     "sourceRoot": "apps/client/src",
     "targets": {
         "frontend": {
-            "command": "nx export --skip-nx-cache"
+            "command": "[ -d dist/apps/clients/web/exported ] || nx export --skip-nx-cache"
         },
         "build": {
             "dependsOn": ["frontend"],

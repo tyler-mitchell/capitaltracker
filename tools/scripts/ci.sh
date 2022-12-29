@@ -8,6 +8,5 @@ nx format --libs-and-apps
 nx workspace-lint
 yarn affected build --parallel "$1"
 yarn affected lint --parallel "$1"
-yarn affected format --parallel "$1"
 yarn affected test --parallel "$1"
-yarn affected e2e --parallel "$1"
+yarn affected e2e --parallel 1

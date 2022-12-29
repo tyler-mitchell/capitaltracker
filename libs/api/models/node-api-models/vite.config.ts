@@ -3,7 +3,7 @@ import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfil
 import { defineConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
-import { join } from 'path';
+import path, { join } from 'path';
 
 export default defineConfig({
     plugins: [
@@ -55,6 +55,17 @@ export default defineConfig({
             zlib: 'rollup-plugin-node-polyfills/polyfills/zlib',
             tty: 'rollup-plugin-node-polyfills/polyfills/tty',
             domain: 'rollup-plugin-node-polyfills/polyfills/domain',
+            /**
+             * https://github.com/protobufjs/protobuf.js/issues/997 The original inquire module contains
+             * usage of eval, which triggers a CSP violation. Currently we always generates static code
+             * for protos, so there is no need for any reflection, thus we don't need inquire to work.
+             */
+            '@protobufjs/inquire': path.resolve(
+                __dirname,
+                'src',
+                'lib',
+                'inquire.ts'
+            ),
         },
     },
     optimizeDeps: {

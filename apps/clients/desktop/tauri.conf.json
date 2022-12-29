@@ -1,14 +1,14 @@
 {
     "$schema": "../../../node_modules/@tauri-apps/cli/schema.json",
     "build": {
-        "beforeBuildCommand": "[ -d '../dist/apps/clients/web/exported' ] || npx nx export",
+        "beforeBuildCommand": "",
         "beforeDevCommand": "yarn start",
         "devPath": "http://localhost:4200",
         "distDir": "../../../dist/apps/clients/web/exported",
         "withGlobalTauri": true
     },
     "package": {
-        "productName": "Capital Tracker",
+        "productName": "capital-tracker",
         "version": "0.0.1"
     },
     "tauri": {
@@ -59,7 +59,7 @@
                 "fullscreen": false,
                 "height": 600,
                 "resizable": true,
-                "title": "Capital Tracker",
+                "title": "capital-tracker",
                 "width": 800
             }
         ]

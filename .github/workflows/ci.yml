@@ -14,29 +14,23 @@ concurrency:
 
 env:
     NEXT_TELEMETRY_DISABLED: 1
+    NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
     NX_CLOUD_DISTRIBUTED_EXECUTION: true
     NX_CLOUD_DISTRIBUTED_EXECUTION_STOP_AGENTS_ON_FAILURE: true
-    NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT: 3
-    NX_EXEC: 'npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
+    NX_EXEC: 'npx nx affected --nx-bail --base=$NX_BASE --head=$NX_HEAD --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
     RUST_BUILT: false
 
 jobs:
-    main:
-        name: Main Job
-        runs-on: ${{ matrix.os }}
+    web:
+        name: Export Web
+        runs-on: ubuntu-latest
         defaults:
             run:
                 shell: bash
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
         steps:
             - name: Update
               run: sudo apt-get update
-
-            - name: Install Tauri Dependencies
-              run: sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf
 
             - name: Install Protocol Buffer Dependencies
               run: sudo apt-get install -y protobuf-compiler libprotobuf-dev
@@ -46,25 +40,26 @@ jobs:
               with:
                   components: rustfmt, clippy
 
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
+
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
-              if: ${{ github.event_name == 'pull_request' }}
+              if: github.event_name == 'pull_request'
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
                   fetch-depth: 0
 
             - name: Checkout [Main]
               uses: actions/checkout@v3
-              if: ${{ github.event_name != 'pull_request' }}
+              if: github.event_name != 'pull_request'
               with:
                   fetch-depth: 0
 
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
-
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
             - name: Node Cache
               id: node_cache
@@ -72,7 +67,210 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      node_modules/
+                  key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
+                  restore-keys: ubuntu-latest-node-
+
+            - name: Rust Cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ubuntu-latest-cargo
+
+            - name: Install Node Dependencies
+              if: steps.node_cache.outputs.cache-hit != 'true'
+              run: yarn install --immutable
+
+            - name: Format Workspace
+              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
+              run: |
+                  NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
+                  cargo fmt --all --check
+
+            - name: Lint Workspace
+              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
+
+            - name: Export Web
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export --skip-nx-cache
+
+            - name: Upload Web
+              uses: actions/upload-artifact@v3
+              with:
+                  name: dist
+                  path: dist
+
+    desktop:
+        name: Build Desktop
+        runs-on: ${{ matrix.platform }}
+        needs: [web]
+        strategy:
+            fail-fast: false
+            matrix:
+                platform: [macos-12, ubuntu-latest, windows-latest]
+        steps:
+            - name: Install Dependencies (ubuntu)
+              if: matrix.platform == 'ubuntu-latest'
+              run: sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf protobuf-compiler libprotobuf-dev
+
+            - name: Install Dependencies (macos)
+              if: matrix.platform == 'macos-12'
+              run: brew install protobuf
+
+            - name: Install Python (windows)
+              if: matrix.platform == 'windows-latest'
+              uses: actions/setup-python@v4
+              with:
+                  python-version: '3.10'
+
+            - name: Install Dependencies (windows)
+              if: matrix.platform == 'windows-latest'
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install protobuf
+
+            - name: Install Rust Toolchain
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: rustfmt, clippy
+
+            - name: Checkout [Pull Request]
+              uses: actions/checkout@v3
+              if: github.event_name == 'pull_request'
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Checkout [Main]
+              uses: actions/checkout@v3
+              if: github.event_name != 'pull_request'
+              with:
+                  fetch-depth: 0
+
+            - name: Node Cache
+              id: node_cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      node_modules/
+                  key: ${{ matrix.platform }}-node-${{ hashFiles('yarn.lock') }}
+                  restore-keys: ${{ matrix.platform }}-node-
+
+            - name: Rust Cache
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ${{ matrix.platform }}-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ${{ matrix.platform }}-cargo-
+
+            - name: Install Node Dependencies
+              if: steps.node_cache.outputs.cache-hit != 'true'
+              run: yarn install --immutable
+
+            - name: Download Web
+              uses: actions/download-artifact@v3
+              with:
+                  name: dist
+                  path: dist
+
+            - name: Build Tauri App
+              run: yarn tauri build
+
+            - name: Package App (macos only)
+              if: matrix.platform == 'macos-12'
+              run: tar cvf target/release/bundle/macos/capital-tracker.app.tar target/release/bundle/macos/capital-tracker.app
+
+            - name: Upload Desktop (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest'
+              uses: actions/upload-artifact@v3
+              with:
+                  name: linux-desktop
+                  path: |
+                      target/release/bundle/appimage/*.AppImage
+                      target/release/bundle/deb/*.deb
+
+            - name: Upload Desktop (macos-12)
+              if: matrix.platform == 'macos-12'
+              uses: actions/upload-artifact@v3
+              with:
+                  name: macos-desktop
+                  path: |
+                      target/release/bundle/macos/*.app.tar
+                      target/release/bundle/dmg/*.dmg
+
+            - name: Upload Desktop (windows-latest)
+              if: matrix.platform == 'windows-latest'
+              uses: actions/upload-artifact@v3
+              with:
+                  name: windows-desktop
+                  path: |
+                      target/release/bundle/msi/*.msi
+
+            - name: Abort Workflow
+              if: failure()
+              run: |
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
+
+
+    main:
+        name: Main Job
+        needs: [web]
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
+        steps:
+            - name: Checkout [Pull Request]
+              uses: actions/checkout@v3
+              if: github.event_name == 'pull_request'
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Checkout [Main]
+              uses: actions/checkout@v3
+              if: github.event_name != 'pull_request'
+              with:
+                  fetch-depth: 0
+
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
+
+            - name: Download Web
+              uses: actions/download-artifact@v3
+              with:
+                  name: dist
+                  path: dist
+
+            - name: Derive SHAs
+              uses: nrwl/nx-set-shas@v3
+
+            - name: Node Cache
+              id: node_cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -97,17 +295,8 @@ jobs:
               if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
               run: npx nx-cloud start-ci-run --stop-agents-after=e2e
 
-            - name: Format Workspace
-              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
-              run: |
-                  NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx format:check --libs-and-apps
-                  cargo fmt --all --check
-
-            - name: Lint Workspace
-              if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
-
             - name: Run Agents
+              id: agents
               if: needs.agents.result != 'failure' && needs.agents.result != 'cancelled' && needs.agents.result != 'skipped'
               uses: jameshenry/parallel-bash-commands@v1
               with:
@@ -117,11 +306,23 @@ jobs:
                   cmd4: npx nx affected --base=$NX_BASE --head=$NX_HEAD --parallel=1 --target=e2e
 
             - name: Stop Agents
-              if: ${{ always() }}
+              if: always()
               run: npx nx-cloud stop-all-agents
+
+            - name: Abort Workflow
+              if: failure()
+              run: |
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
 
     set-agents:
         runs-on: ubuntu-latest
+        needs: [web]
         name: Set Agent Matrix
         outputs:
             matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -160,25 +361,26 @@ jobs:
               with:
                   components: rustfmt, clippy
 
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 'lts/*'
+
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
-              if: ${{ github.event_name == 'pull_request' }}
+              if: github.event_name == 'pull_request'
               with:
                   ref: ${{ github.event.pull_request.head.sha }}
                   fetch-depth: 0
 
             - name: Checkout [Main]
               uses: actions/checkout@v3
-              if: ${{ github.event_name != 'pull_request' }}
+              if: github.event_name != 'pull_request'
               with:
                   fetch-depth: 0
 
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
-
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
             - name: Restore Node Cache
               id: node_cache
@@ -186,7 +388,6 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
@@ -208,58 +409,36 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
 
-            - name: Check Rust Affected
-              run: |
-                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
-                      echo "RUST=true" >> $GITHUB_ENV
-                  fi
+            - name: Download Web
+              uses: actions/download-artifact@v3
+              with:
+                  name: dist
+                  path: dist
 
             - name: Run Agent
               run: npx nx-cloud start-agent
 
-            - name: Archive Rust Build
-              if: needs.main.result != 'failure' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
+            - name: Abort Workflow
+              if: failure()
               run: |
-                  if [ -d "target" ]; then
-                    mv target target-agent-${{ matrix.agent }}
-                    tar -cf target-agent-${{ matrix.agent }}.tar target-agent-${{ matrix.agent }}/
-                    echo "RUST_BUILT=true" >> $GITHUB_ENV
-                  fi
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
 
-            - name: Upload Build
-              if: needs.main.result != 'failure' && steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true' && env.RUST_BUILT == 'true'
-              uses: actions/upload-artifact@v3
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
               with:
-                  name: build-agent-${{ matrix.agent }}
-                  path: target-agent-${{ matrix.agent }}.tar
+                  name: '*'
 
-    cache:
-        name: Cache Archived Build
+    deploy:
+        name: Deploy Web
         runs-on: ubuntu-latest
-        needs: [agents]
+        needs: [main, agents]
         defaults:
             run:
                 shell: bash
         steps:
-            - name: Checkout [Pull Request]
+            - name: Checkout
               uses: actions/checkout@v3
-              if: ${{ github.event_name == 'pull_request' }}
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-                  fetch-depth: 0
-
-            - name: Checkout [Main]
-              uses: actions/checkout@v3
-              if: ${{ github.event_name != 'pull_request' }}
-              with:
-                  fetch-depth: 0
-
-            - name: Yarn Cache Path
-              id: yarn-cache-dir-path
-              run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-            - name: Derive SHAs
-              uses: nrwl/nx-set-shas@v3
 
             - name: Node Cache
               id: node_cache
@@ -267,49 +446,115 @@ jobs:
               with:
                   path: |
                       ~/.cache/Cypress/
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
-            - name: Rust Cache
-              id: rust_cache
-              uses: actions/cache@v3
+            - name: Install Node
+              uses: actions/setup-node@v3
               with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ~/.cargo/git/db/
-                      target/
-                  key: ubuntu-latest-cargo-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ubuntu-latest-cargo
+                  node-version: 'lts/*'
+
+            - name: Download Web
+              uses: actions/download-artifact@v3
+              with:
+                  name: dist
+                  path: dist
 
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
 
-            - name: Check Rust Affected
-              run: |
-                  if npx nx print-affected --select=projects | sed "s/, /\n/g" | grep -E "^api$|^rust-[^,]*|^desktop$"; then
-                      echo "RUST=true" >> $GITHUB_ENV
-                  fi
+            - name: Deploy to Firebase Hosting Preview on PR
+              if: github.event.pull_request.head.repo.full_name == github.repository
+              uses: w9jds/firebase-action@master
+              with:
+                  args: hosting:channel:deploy pr${{ github.event.ref }}-${{ github.ref_name }} --expires 12h
+              env:
+                  GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
-            - name: Download Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              uses: actions/download-artifact@v3
+            - name: Deploy to Firebase Hosting on Main
+              if: github.ref == '/refs/heads/main' && github.event_name != 'pull_request'
+              uses: w9jds/firebase-action@master
+              with:
+                  args: hosting:channel:deploy live
+              env:
+                  GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
-            - name: Delete Build Artifacts
+            - name: Delete Artifacts
+              if: failure()
               uses: geekyeggo/delete-artifact@v2
               with:
-                  name: build-agent-*
+                  name: '*'
 
-            - name: Merge Build
-              if: steps.rust_cache.outputs.cache-hit != 'true' && env.RUST == 'true'
-              run: |
-                  find . -name '*.tar' -print -exec tar xf '{}' \; > result.txt
-                  if [ -s "result.txt" ]; then
-                    rsync -av --quiet --ignore-existing target-agent-*/ target/
-                  else
-                    echo "No build artifacts found"
-                  fi
+    release:
+        name: Release
+        runs-on: ${{ matrix.platform }}
+        needs: [desktop, main, agents]
+        defaults:
+            run:
+                shell: bash
+        steps:
+            - name: Download Desktop (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
+              uses: actions/download-artifact@v3
+              with:
+                  name: linux-desktop
+
+            - name: Download Desktop (macos-12)
+              if: matrix.platform == 'macos-12'
+              uses: actions/download-artifact@v3
+              with:
+                  name: macos-desktop
+
+            - name: Download Desktop (windows-latest)
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
+              uses: actions/upload-artifact@v3
+              with:
+                  name: windows-desktop
+
+            - name: Release Desktop App (macos-12)
+              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v')
+              uses: softprops/action-gh-release@v1
+              with:
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  fail_on_unmatched_files: true
+                  files: |
+                      target/release/bundle/macos/*.app.tar
+                      target/release/bundle/dmg/*.dmg
+
+            - name: Release Desktop App (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
+              uses: softprops/action-gh-release@v1
+              with:
+                  generate_release_notes: true
+                  fail_on_unmatched_files: true
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  files: |
+                      target/release/bundle/appimage/*.AppImage
+                      target/release/bundle/deb/*.deb
+
+            - name: Release Desktop App (windows-latest)
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
+              uses: softprops/action-gh-release@v1
+              with:
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  fail_on_unmatched_files: true
+                  files: |
+                      target/release/bundle/msi/*.msi
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
+
+    cleanup:
+        name: Cleanup
+        runs-on: ubuntu-latest
+        needs: [deploy, release]
+        steps:
+            - name: Delete Artifacts
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'

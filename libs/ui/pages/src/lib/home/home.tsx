@@ -1,12 +1,15 @@
 import { Api } from '@api';
+import { log } from '@utils';
+import { Firebase } from '@components';
 
 /* eslint-disable-next-line */
 export interface HomeProps {}
 
 export function Home(props: HomeProps) {
-    console.log(Api.request());
+    log(Api.request());
     return (
         <div className="bg-gray-50">
+            <Firebase />
             <div
                 className="
               max-w-7xl mx-auto
