@@ -477,7 +477,7 @@ jobs:
               if: github.event_name != 'pull_request'
               uses: w9jds/firebase-action@master
               with:
-                  args: hosting:channel:deploy live
+                  args: deploy --only hosting
               env:
                   GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
@@ -513,7 +513,7 @@ jobs:
 
             - name: Download Desktop (windows-latest)
               if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
-              uses: actions/upload-artifact@v3
+              uses: actions/-artifact@v3
               with:
                   name: windows-desktop
 
