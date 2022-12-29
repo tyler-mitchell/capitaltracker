@@ -23,7 +23,7 @@ env:
 
 jobs:
     web:
-        name: Initialize Web
+        name: Export Web
         runs-on: ubuntu-latest
         defaults:
             run:
@@ -105,6 +105,130 @@ jobs:
               with:
                   name: dist
                   path: dist
+
+    desktop:
+        name: Build Desktop
+        runs-on: ${{ matrix.platform }}
+        needs: [web]
+        strategy:
+            fail-fast: false
+            matrix:
+                platform: [macos-12, ubuntu-latest, windows-latest]
+        steps:
+            - name: Install Dependencies (ubuntu)
+              if: matrix.platform == 'ubuntu-latest'
+              run: sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf protobuf-compiler libprotobuf-dev
+
+            - name: Install Dependencies (macos)
+              if: matrix.platform == 'macos-12'
+              run: brew install protobuf
+
+            - name: Install Python (windows)
+              if: matrix.platform == 'windows-latest'
+              uses: actions/setup-python@v4
+              with:
+                  python-version: '3.10'
+
+            - name: Install Dependencies (windows)
+              if: matrix.platform == 'windows-latest'
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install protobuf
+
+            - name: Install Rust Toolchain
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  components: rustfmt, clippy
+
+            - name: Checkout [Pull Request]
+              uses: actions/checkout@v3
+              if: github.event_name == 'pull_request'
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Checkout [Main]
+              uses: actions/checkout@v3
+              if: github.event_name != 'pull_request'
+              with:
+                  fetch-depth: 0
+
+            - name: Node Cache
+              id: node_cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: |
+                      ~/.cache/Cypress/
+                      node_modules/
+                  key: ${{ matrix.platform }}-node-${{ hashFiles('yarn.lock') }}
+                  restore-keys: ${{ matrix.platform }}-node-
+
+            - name: Rust Cache
+              uses: actions/cache@v3
+              with:
+                  path: |
+                      ~/.cargo/bin/
+                      ~/.cargo/registry/index/
+                      ~/.cargo/registry/cache/
+                      ~/.cargo/git/db/
+                      target/
+                  key: ${{ matrix.platform }}-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ${{ matrix.platform }}-cargo-
+
+            - name: Install Node Dependencies
+              if: steps.node_cache.outputs.cache-hit != 'true'
+              run: yarn install --immutable
+
+            - name: Download Web
+              uses: actions/download-artifact@v3
+              with:
+                  name: dist
+                  path: dist
+
+            - name: Build Tauri App
+              run: yarn tauri build
+
+            - name: Package App (macos only)
+              if: matrix.platform == 'macos-12'
+              run: tar cvf target/release/bundle/macos/capital-tracker.app.tar target/release/bundle/macos/capital-tracker.app
+
+            - name: Upload Desktop (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest'
+              uses: actions/upload-artifact@v3
+              with:
+                  name: linux-desktop
+                  path: |
+                      target/release/bundle/appimage/*.AppImage
+                      target/release/bundle/deb/*.deb
+
+            - name: Upload Desktop (macos-12)
+              if: matrix.platform == 'macos-12'
+              uses: actions/upload-artifact@v3
+              with:
+                  name: macos-desktop
+                  path: |
+                      target/release/bundle/macos/*.app.tar
+                      target/release/bundle/dmg/*.dmg
+
+            - name: Upload Desktop (windows-latest)
+              if: matrix.platform == 'windows-latest'
+              uses: actions/upload-artifact@v3
+              with:
+                  name: windows-desktop
+                  path: |
+                      target/release/bundle/msi/*.msi
+
+            - name: Abort Workflow
+              if: failure()
+              run: |
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
+
 
     main:
         name: Main Job
@@ -366,95 +490,31 @@ jobs:
     release:
         name: Release
         runs-on: ${{ matrix.platform }}
-        needs: [main, agents]
-        if: startsWith(github.ref, 'refs/tags/v')
+        needs: [desktop, main, agents]
         defaults:
             run:
                 shell: bash
-        strategy:
-            fail-fast: false
-            matrix:
-                platform: [macos-12, ubuntu-latest, windows-latest]
         steps:
-            - name: Install Dependencies (ubuntu)
-              if: matrix.platform == 'ubuntu-latest'
-              run: sudo apt-get install -y libgtk-3-dev webkit2gtk-4.0 libappindicator3-dev librsvg2-dev patchelf protobuf-compiler libprotobuf-dev
-
-            - name: Install Dependencies (macos)
-              if: matrix.platform == 'macos-12'
-              run: brew install protobuf
-
-            - name: Install Python (windows)
-              if: matrix.platform == 'windows-latest'
-              uses: actions/setup-python@v4
-              with:
-                  python-version: '3.10'
-
-            - name: Install Dependencies (windows)
-              if: matrix.platform == 'windows-latest'
-              run: |
-                  python -m pip install --upgrade pip
-                  pip install protobuf
-
-            - name: Install Rust Toolchain
-              uses: dtolnay/rust-toolchain@stable
-              with:
-                  components: rustfmt, clippy
-
-            - name: Checkout [Pull Request]
-              uses: actions/checkout@v3
-              if: github.event_name == 'pull_request'
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-                  fetch-depth: 0
-
-            - name: Checkout [Main]
-              uses: actions/checkout@v3
-              if: github.event_name != 'pull_request'
-              with:
-                  fetch-depth: 0
-
-            - name: Node Cache
-              id: node_cache
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cache/Cypress/
-                      node_modules/
-                  key: ${{ matrix.platform }}-node-${{ hashFiles('yarn.lock') }}
-                  restore-keys: ${{ matrix.platform }}-node-
-
-            - name: Rust Cache
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ~/.cargo/git/db/
-                      target/
-                  key: ${{ matrix.platform }}-cargo-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ${{ matrix.platform }}-cargo-
-
-            - name: Install Node Dependencies
-              if: steps.node_cache.outputs.cache-hit != 'true'
-              run: yarn install --immutable
-
-            - name: Download Web
+            - name: Download Desktop (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
               uses: actions/download-artifact@v3
               with:
-                  name: dist
-                  path: dist
+                  name: linux-desktop
 
-            - name: Build Tauri App
-              run: yarn tauri build
-
-            - name: Package App (macos-12 only)
+            - name: Download Desktop (macos-12)
               if: matrix.platform == 'macos-12'
-              run: tar cvf target/release/bundle/macos/capital-tracker.app.tar target/release/bundle/macos/capital-tracker.app
+              uses: actions/download-artifact@v3
+              with:
+                  name: macos-desktop
+
+            - name: Download Desktop (windows-latest)
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
+              uses: actions/upload-artifact@v3
+              with:
+                  name: windows-desktop
 
             - name: Release Desktop App (macos-12)
-              if: matrix.platform == 'macos-12'
+              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v')
               uses: softprops/action-gh-release@v1
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
@@ -464,7 +524,7 @@ jobs:
                       target/release/bundle/dmg/*.dmg
 
             - name: Release Desktop App (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest'
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
               uses: softprops/action-gh-release@v1
               with:
                   generate_release_notes: true
@@ -475,7 +535,7 @@ jobs:
                       target/release/bundle/deb/*.deb
 
             - name: Release Desktop App (windows-latest)
-              if: matrix.platform == 'windows-latest'
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
               uses: softprops/action-gh-release@v1
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
