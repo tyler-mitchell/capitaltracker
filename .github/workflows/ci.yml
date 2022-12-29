@@ -545,7 +545,7 @@ jobs:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
                   fail_on_unmatched_files: true
                   files: |
-                      msi/*.msi
+                      *.msi
 
             - name: Delete Artifacts
               if: failure()
