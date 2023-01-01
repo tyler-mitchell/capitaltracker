@@ -26,7 +26,8 @@
         "next": "13.0.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-native": "git+https://github.com/clemenscodes/react-native.git",
+        "react-native": "0.70.6",
+        "react-native-web": "^0.18.10",
         "react-router-dom": "6.4.3",
         "regenerator-runtime": "0.13.7",
         "tslib": "^2.3.0"
@@ -99,6 +100,7 @@
         "autoprefixer": "10.4.13",
         "babel-jest": "28.1.1",
         "babel-loader": "8.1.0",
+        "babel-plugin-react-native-web": "^0.18.10",
         "cypress": "^11.0.0",
         "detox": "20.0.3",
         "eslint": "~8.15.0",

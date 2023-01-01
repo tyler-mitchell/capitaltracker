@@ -1,5 +1,5 @@
 {
-    "name": "e2e-web",
+    "name": "web-e2e",
     "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "apps/e2e/clients/web/src",
     "projectType": "application",

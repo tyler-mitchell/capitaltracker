@@ -1,5 +1,5 @@
 module.exports = {
-    displayName: 'client-mobile',
+    displayName: 'mobile',
     preset: 'react-native',
     resolver: '@nrwl/jest/plugins/resolver',
     moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
