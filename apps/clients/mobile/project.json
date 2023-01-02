@@ -69,15 +69,8 @@
             "options": {
                 "jestConfig": "apps/clients/mobile/jest.config.ts",
                 "passWithNoTests": true
-            },
-            "configurations": {
-                "ci": {
-                    "ci": true,
-                    "runInBand": true
-                }
             }
         }
     },
-    "implicitDependencies": [],
     "tags": []
 }
