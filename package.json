@@ -26,8 +26,8 @@
         "next": "13.0.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-native": "0.70.6",
         "react-native-web": "^0.18.10",
+        "react-native": "git+https://github.com/clemenscodes/react-native.git",
         "react-router-dom": "6.4.3",
         "regenerator-runtime": "0.13.7",
         "tslib": "^2.3.0"
