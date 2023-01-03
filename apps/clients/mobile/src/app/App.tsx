@@ -45,7 +45,7 @@ export const App = () => {
                             style={[styles.textXL, styles.appTitleText]}
                             testID="heading"
                         >
-                            Welcome Mobile 👋
+                            Welcome mobile 👋
                         </Text>
                     </View>
                     <View style={styles.section}>

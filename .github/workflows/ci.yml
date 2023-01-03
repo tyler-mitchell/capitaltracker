@@ -155,7 +155,7 @@ jobs:
 
             - name: Node Cache
               id: node_cache
-              uses: actions/cache/restore@v3
+              uses: actions/cache@v3
               with:
                   path: |
                       ~/.cache/Cypress/
@@ -474,7 +474,7 @@ jobs:
                   GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIFEMASTERY_8F9C1 }}
 
             - name: Deploy to Firebase Hosting on Main
-              if: github.event_name != 'pull_request'
+              if: github.event_name != 'pull_request' && github.ref_name == 'main'
               uses: w9jds/firebase-action@master
               with:
                   args: deploy --only hosting
@@ -513,7 +513,7 @@ jobs:
 
             - name: Download Desktop (windows-latest)
               if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
-              uses: actions/-artifact@v3
+              uses: actions/download-artifact@v3
               with:
                   name: windows-desktop
 
@@ -524,8 +524,8 @@ jobs:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
                   fail_on_unmatched_files: true
                   files: |
-                      target/release/bundle/macos/*.app.tar
-                      target/release/bundle/dmg/*.dmg
+                      macos/*.app.tar
+                      dmg/*.dmg
 
             - name: Release Desktop App (ubuntu-latest)
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/v')
@@ -535,8 +535,8 @@ jobs:
                   fail_on_unmatched_files: true
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
                   files: |
-                      target/release/bundle/appimage/*.AppImage
-                      target/release/bundle/deb/*.deb
+                      appimage/*.AppImage
+                      deb/*.deb
 
             - name: Release Desktop App (windows-latest)
               if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/tags/v')
@@ -545,7 +545,7 @@ jobs:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
                   fail_on_unmatched_files: true
                   files: |
-                      target/release/bundle/msi/*.msi
+                      *.msi
 
             - name: Delete Artifacts
               if: failure()
