@@ -5,4 +5,5 @@
 /target
 /node_modules
 **/.next
+**/.expo
 **/build
