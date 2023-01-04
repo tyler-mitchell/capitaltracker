@@ -43,7 +43,7 @@ jobs:
             - name: Install Node
               uses: actions/setup-node@v3
               with:
-                  node-version: 'lts/*'
+                  node-version: 16
 
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
@@ -254,7 +254,7 @@ jobs:
             - name: Install Node
               uses: actions/setup-node@v3
               with:
-                  node-version: 'lts/*'
+                  node-version: 16
 
             - name: Download Web
               uses: actions/download-artifact@v3
@@ -364,7 +364,7 @@ jobs:
             - name: Install Node
               uses: actions/setup-node@v3
               with:
-                  node-version: 'lts/*'
+                  node-version: 16
 
             - name: Checkout [Pull Request]
               uses: actions/checkout@v3
@@ -453,7 +453,7 @@ jobs:
             - name: Install Node
               uses: actions/setup-node@v3
               with:
-                  node-version: 'lts/*'
+                  node-version: 16
 
             - name: Download Web
               uses: actions/download-artifact@v3
