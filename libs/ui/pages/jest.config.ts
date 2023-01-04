@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-    displayName: 'ui-pages',
+    displayName: 'pages',
     preset: '../../../jest.preset.js',
     transform: {
         '^.+\\.[tj]sx?$': [

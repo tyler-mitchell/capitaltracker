@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-    displayName: 'ui-components',
+    displayName: 'components',
     preset: '../../../jest.preset.js',
     transform: {
         '^.+\\.[tj]sx?$': [
