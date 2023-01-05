@@ -4,16 +4,10 @@
     "sourceRoot": "apps/clients/mobile/src",
     "projectType": "application",
     "targets": {
-        "start": {
+        "serve": {
             "executor": "@nrwl/expo:start",
             "options": {
                 "port": 8081
-            }
-        },
-        "serve": {
-            "executor": "nx:run-commands",
-            "options": {
-                "command": "nx start mobile"
             }
         },
         "run-ios": {

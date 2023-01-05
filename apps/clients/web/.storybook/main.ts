@@ -28,7 +28,6 @@ const config: StorybookConfig = {
                 configType,
             } as Options);
         }
-
         // add your own webpack tweaks if needed
 
         return config;

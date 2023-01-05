@@ -1,4 +1,4 @@
-import { Home } from '@pages';
+import { Home } from '@shared';
 
 /* eslint-disable-next-line */
 export interface IndexProps {}

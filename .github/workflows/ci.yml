@@ -229,7 +229,6 @@ jobs:
               with:
                   name: '*'
 
-
     main:
         name: Main Job
         needs: [web]
@@ -506,7 +505,7 @@ jobs:
                   name: linux-desktop
 
             - name: Download Desktop (macos-12)
-              if: matrix.platform == 'macos-12'
+              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v')
               uses: actions/download-artifact@v3
               with:
                   name: macos-desktop
