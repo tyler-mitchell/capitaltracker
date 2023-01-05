@@ -7,11 +7,14 @@
         "moduleResolution": "node",
         "skipLibCheck": true,
         "resolveJsonModule": true,
-        "strict": true,
         "composite": true,
-        "declaration": true
+        "declaration": true,
+        "strict": true
     },
-    "files": ["../../node_modules/@nrwl/expo/typings/svg.d.ts"],
+    "files": [
+        "../../../node_modules/@nrwl/expo/typings/svg.d.ts",
+        "../../../node_modules/@testing-library/jest-native/extend-expect.d.ts"
+    ],
     "include": [],
     "references": [
         {
