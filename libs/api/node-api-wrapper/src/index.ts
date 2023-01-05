@@ -1,1 +1,2 @@
-export * from './lib';
+import Api from './lib';
+export default Api;

@@ -7,3 +7,4 @@
 **/.next
 **/.expo
 **/build
+.yarn/

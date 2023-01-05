@@ -8,7 +8,7 @@ module.exports = async function (env, argv) {
     // You can override the config here, for example:
     // config.resolve.alias = {
     //   ...config.resolve.alias,
-    //   react: path.resolve('../../node_modules/react'),
+    //   react: path.resolve('../../../node_modules/react'),
     // };
 
     return config;

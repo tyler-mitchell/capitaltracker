@@ -1,16 +1,22 @@
 {
-    "name": "clients-mobile",
+    "name": "mobile",
     "version": "0.0.1",
     "private": true,
     "dependencies": {
         "@testing-library/jest-native": "*",
         "@testing-library/react-native": "*",
-        "react-native": "*",
         "expo": "*",
+        "nativewind": "*",
+        "react-native": "*",
+        "react-native-web": "*",
         "react-native-svg": "*",
-        "react-native-web": "*"
+        "@nrwl/expo": "*",
+        "@expo/metro-config": "*",
+        "react": "*",
+        "@nrwl/react": "*"
     },
     "scripts": {
-        "postinstall": "rm -r node_modules && cd ../../../ && yarn install && npx nx sync-deps clients-mobile && npx nx ensure-symlink clients-mobile"
+        "eas-build-pre-install": "cd ../../../ && cp package-lock.json ./apps/mobile/",
+        "postinstall": "rm -r node_modules && cd ../../../ && yarn && npx nx sync-deps mobile && npx nx ensure-symlink mobile"
     }
 }
