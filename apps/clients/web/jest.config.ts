@@ -1,5 +1,5 @@
 module.exports = {
-    displayName: 'clients-web',
+    displayName: 'web',
     resolver: '@nrwl/jest/plugins/resolver',
     moduleFileExtensions: ['ts', 'js', 'tsx', 'jsx'],
     coverageDirectory: '../../../coverage/apps/clients/web',
