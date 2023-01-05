@@ -1,7 +1,10 @@
-const { withExpo } = require('@expo/next-adapter');
 const { withNx } = require('@nrwl/next/plugins/with-nx');
+const { withExpo } = require('@expo/next-adapter');
 const withPlugins = require('next-compose-plugins');
-const withTM = require('next-transpile-modules')(['react-native-web']);
+const withTM = require('next-transpile-modules')([
+    'react-native-web',
+    'nativewind',
+]);
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
@@ -26,8 +29,9 @@ const nextConfig = {
 };
 
 module.exports = async (phase, { defaultConfig }) => {
-    const plugins = withPlugins([withTM, withExpo], withNx(nextConfig));
-    const config = plugins(phase, {
+    const plugins = [withTM, withExpo];
+    const updated = withPlugins(plugins, withNx(nextConfig));
+    const config = updated(phase, {
         ...defaultConfig,
         ...nextConfig,
     });

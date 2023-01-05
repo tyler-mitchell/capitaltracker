@@ -90,7 +90,7 @@
             "executor": "@nrwl/expo:update",
             "options": {}
         },
-        "export-mobile": {
+        "export": {
             "executor": "@nrwl/expo:export",
             "options": {
                 "platform": "all",

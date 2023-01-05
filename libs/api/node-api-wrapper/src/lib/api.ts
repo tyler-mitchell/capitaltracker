@@ -1,10 +1,15 @@
 import * as models from '@models';
+import { log } from '@utils';
 
-export class Api {
+class Api {
     static request(): models.Request {
-        return {
+        const req = {
             field: 'hello',
             value: 'world',
         };
+        log(req);
+        return req;
     }
 }
+
+export default Api;
