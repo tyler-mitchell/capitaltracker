@@ -1,5 +1,5 @@
 module.exports = {
-    displayName: 'capitaltracker',
+    displayName: 'shared',
     resolver: '@nrwl/jest/plugins/resolver',
     preset: 'react-native',
     transformIgnorePatterns: [
@@ -7,7 +7,6 @@ module.exports = {
     ],
     moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
     setupFilesAfterEnv: ['<rootDir>/test-setup.ts'],
-    coverageDirectory: '../../../coverage/apps/capitaltracker',
     moduleNameMapper: {
         '\\.svg$': '@nrwl/expo/plugins/jest/svg-mock',
     },

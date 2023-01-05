@@ -19,6 +19,7 @@
             "@components": ["libs/ui/components/src/index.ts"],
             "@models": ["libs/api/models/node-api-models/src/index.ts"],
             "@pages": ["libs/ui/pages/src/index.ts"],
+            "@shared": ["libs/shared/src/index.ts"],
             "@utils": ["libs/utils/src/index.ts"]
         }
     },

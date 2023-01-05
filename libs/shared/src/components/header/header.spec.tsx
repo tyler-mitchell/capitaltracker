@@ -1,10 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import Index from '../pages/index';
 
-describe('Index', () => {
+import Header from './header';
+
+describe('Header', () => {
     it('should render successfully', () => {
-        const { container } = render(<Index />);
+        const { container } = render(<Header />);
         expect(container).toBeTruthy();
     });
 });
