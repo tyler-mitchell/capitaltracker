@@ -1,5 +1,5 @@
 module.exports = {
-    displayName: 'clients-mobile',
+    displayName: 'mobile',
     resolver: '@nrwl/jest/plugins/resolver',
     preset: 'react-native',
     transformIgnorePatterns: [
