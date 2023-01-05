@@ -1,10 +1,7 @@
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 const { withExpo } = require('@expo/next-adapter');
 const withPlugins = require('next-compose-plugins');
-const withTM = require('next-transpile-modules')([
-    'react-native-web',
-    'nativewind',
-]);
+const withTM = require('next-transpile-modules')(['react-native-web', 'nativewind']);
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}

@@ -15,10 +15,7 @@ export function Home(props: HomeProps) {
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
                 <View>
-                    <Text
-                        className="text-center text-blue-600"
-                        testID="heading"
-                    >
+                    <Text className="text-center text-blue-600" testID="heading">
                         Text using NativeWind
                     </Text>
                 </View>

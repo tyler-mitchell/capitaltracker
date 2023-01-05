@@ -170,5 +170,6 @@
         "@storybook/react-docgen-typescript-plugin": "npm:react-docgen-typescript-plugin@1.0.2",
         "react": "18.2.0",
         "react-dom": "18.2.0"
-    }
+    },
+    "packageManager": "yarn@3.2.3"
 }
