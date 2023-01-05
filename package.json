@@ -4,6 +4,8 @@
     "license": "MIT",
     "scripts": {
         "start": "nx serve",
+        "watch": "nx watch --projects=web --includeDependencies -- nx build",
+        "dev": "nx run-many --target=serve",
         "format": "nx format:check && cargo fmt --all --check",
         "lint": "nx workspace-lint && yarn affected lint",
         "build": "yarn affected build",

@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView, StatusBar, View, Text as RNText } from 'react-native';
 import { styled } from 'nativewind';
+import Api from '@api';
 
 const Text = styled(RNText, 'font-bold text-4xl');
 
@@ -8,6 +9,7 @@ const Text = styled(RNText, 'font-bold text-4xl');
 export interface HomeProps {}
 
 export function Home(props: HomeProps) {
+    Api.request();
     return (
         <>
             <StatusBar barStyle="dark-content" />
