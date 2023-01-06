@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
-import { Text } from '../../styles/text/text';
+import { Text } from '../../styles/typography/typography';
 import { View } from '../../styles/view/view';
 import Api from '@api';
 
