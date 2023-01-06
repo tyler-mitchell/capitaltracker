@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, A, H1, P, TextLink } from '../../styles/typography/typography';
 import { View } from '../../styles/view/view';
 import { Row } from '../../styles/layout/layout';
@@ -10,7 +9,7 @@ export interface HomeProps {}
 export function HomeScreen(props: HomeProps) {
     return (
         <View className="flex-1 items-center justify-center p-3">
-            <H1 testID='heading'>Welcome to Solito.</H1>
+            <H1 testID="heading">Welcome to Solito.</H1>
             <View className="max-w-xl">
                 <P className="text-center">
                     Here is a basic starter to show you how you can navigate from one screen to
@@ -20,6 +19,7 @@ export function HomeScreen(props: HomeProps) {
                     Solito is made by{' '}
                     <A
                         href="https://twitter.com/fernandotherojo"
+                        target="_blank"
                         hrefAttrs={{
                             target: '_blank',
                             rel: 'noreferrer',
@@ -33,6 +33,7 @@ export function HomeScreen(props: HomeProps) {
                     NativeWind is made by{' '}
                     <A
                         href="https://twitter.com/mark__lawlor"
+                        target="_blank"
                         hrefAttrs={{
                             target: '_blank',
                             rel: 'noreferrer',

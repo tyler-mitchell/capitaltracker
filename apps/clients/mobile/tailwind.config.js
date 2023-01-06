@@ -5,7 +5,7 @@ const { theme } = require(join(__dirname, '../../../libs/shared/src/styles/theme
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        join(__dirname, 'src/**/*!(*.stories|*.spec).{ts,tsx,html}'),
+        join(__dirname, './app/**/*!(*.stories|*.spec).{ts,tsx,html}'),
         ...createGlobPatternsForDependencies(__dirname),
     ],
     theme: {
