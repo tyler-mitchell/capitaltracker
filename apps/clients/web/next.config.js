@@ -1,7 +1,12 @@
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 const { withExpo } = require('@expo/next-adapter');
 const withPlugins = require('next-compose-plugins');
-const withTM = require('next-transpile-modules')(['solito', 'react-native-web', 'nativewind']);
+const withTM = require('next-transpile-modules')([
+    'solito',
+    'react-native-web',
+    'nativewind',
+    'moti',
+]);
 
 module.exports = async (phase, { defaultConfig }) => {
     /**

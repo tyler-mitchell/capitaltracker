@@ -1,7 +1,3 @@
-import { Home } from '@shared';
+import { HomeScreen } from '@shared';
 
-export function Index() {
-    return <Home />;
-}
-
-export default Index;
+export default HomeScreen;

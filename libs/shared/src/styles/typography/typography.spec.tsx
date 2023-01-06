@@ -43,7 +43,6 @@ describe('Typography', () => {
             const element = getByText('Link');
             const values = Object.values(element.props.style[0][0]);
             expect(values[1]).toContain(classes);
-            fixTestingConsoleError();
         });
     });
 });
