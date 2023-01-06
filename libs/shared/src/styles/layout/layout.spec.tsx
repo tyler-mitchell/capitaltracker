@@ -1,10 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { Home } from './home';
 
-describe('Home', () => {
+import Layout from './layout';
+
+describe('Layout', () => {
     it('should render successfully', () => {
-        const { container } = render(<Home />);
+        const { container } = render(<Layout />);
         expect(container).toBeTruthy();
     });
 });

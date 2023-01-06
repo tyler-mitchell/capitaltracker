@@ -1,9 +1,8 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, View, Text as RNText } from 'react-native';
-import { styled } from 'nativewind';
+import { SafeAreaView, StatusBar } from 'react-native';
+import { Text } from '../../styles/text/text';
+import { View } from '../../styles/view/view';
 import Api from '@api';
-
-const Text = styled(RNText, 'font-bold text-4xl');
 
 /* eslint-disable-next-line */
 export interface HomeProps {}
@@ -15,7 +14,7 @@ export function Home(props: HomeProps) {
             <StatusBar barStyle="dark-content" />
             <SafeAreaView>
                 <View>
-                    <Text className="text-center text-blue-600" testID="heading">
+                    <Text className="text-center font-bold text-4xl text-blue-600" testID="heading">
                         Text using NativeWind
                     </Text>
                 </View>
