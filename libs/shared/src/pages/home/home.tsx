@@ -10,7 +10,7 @@ export interface HomeProps {}
 export function HomeScreen(props: HomeProps) {
     return (
         <View className="flex-1 items-center justify-center p-3">
-            <H1>Welcome to Solito.</H1>
+            <H1 testID='heading'>Welcome to Solito.</H1>
             <View className="max-w-xl">
                 <P className="text-center">
                     Here is a basic starter to show you how you can navigate from one screen to
