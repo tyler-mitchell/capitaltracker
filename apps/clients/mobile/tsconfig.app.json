@@ -6,9 +6,9 @@
     },
     "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.spec.tsx", "test-setup.ts"],
     "include": [
-        "../../apps/**/*.tsx",
-        "../../apps/**/*.ts",
-        "../../libs/**/*.tsx",
-        "../../libs/**/*.ts"
+        "../../../apps/**/*.tsx",
+        "../../../apps/**/*.ts",
+        "../../../libs/**/*.tsx",
+        "../../../libs/**/*.ts"
     ]
 }
