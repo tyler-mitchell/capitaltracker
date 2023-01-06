@@ -10,8 +10,8 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true
     },
-    "files": [],
-    "include": [],
+    "files": ["../../node_modules/@testing-library/jest-native/extend-expect.d.ts"],
+    "include": ["**/*.d.ts"],
     "references": [
         {
             "path": "./tsconfig.lib.json"

@@ -13,6 +13,6 @@
         "../../../node_modules/@nrwl/expo/typings/svg.d.ts",
         "../../../node_modules/@testing-library/jest-native/extend-expect.d.ts"
     ],
-    "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+    "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.d.ts"],
     "exclude": ["node_modules", "jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

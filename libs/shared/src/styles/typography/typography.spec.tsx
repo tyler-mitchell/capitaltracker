@@ -1,9 +1,12 @@
+import { fixTestingConsoleError } from '@utils';
 import React from 'react';
 import { render } from '@testing-library/react-native';
-
 import * as Typography from './typography';
+jest.mock('next/router', () => require('next-router-mock'));
 
 describe('Typography', () => {
+    afterEach(fixTestingConsoleError);
+
     it('should render p successfully', () => {
         const { container } = render(<Typography.P />);
         expect(container).toBeTruthy();
@@ -24,10 +27,23 @@ describe('Typography', () => {
         expect(container).toBeTruthy();
     });
 
-    it('should render textlink successfully', () => {
-        const { container } = render(
-            <Typography.TextLink href="/user/fernando">Regular Link</Typography.TextLink>
-        );
-        expect(container).toBeTruthy();
+    describe('TextLink', () => {
+        it('should apply the style prop to the text', () => {
+            const { getByText } = render(
+                <Typography.TextLink href="/" style={{ color: 'red' }}>
+                    Link
+                </Typography.TextLink>
+            );
+            const element = getByText('Link');
+            expect(element).toHaveStyle({ color: 'red' });
+        });
+        it('should apply the text-base font-bold hover:underline text-blue-500 class to the element', () => {
+            const classes = 'text-base font-bold hover:underline text-blue-500';
+            const { getByText } = render(<Typography.TextLink href="/">Link</Typography.TextLink>);
+            const element = getByText('Link');
+            const values = Object.values(element.props.style[0][0]);
+            expect(values[1]).toContain(classes);
+            fixTestingConsoleError();
+        });
     });
 });
