@@ -1,5 +1,4 @@
 import * as models from '@models';
-import { log } from '@utils';
 
 class Api {
     static request(): models.Request {
@@ -7,7 +6,6 @@ class Api {
             field: 'hello',
             value: 'world',
         };
-        log(req);
         return req;
     }
 }

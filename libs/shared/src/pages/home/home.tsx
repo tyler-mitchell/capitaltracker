@@ -1,27 +1,71 @@
-import React from 'react';
-import { SafeAreaView, StatusBar, View, Text as RNText } from 'react-native';
-import { styled } from 'nativewind';
-import Api from '@api';
-
-const Text = styled(RNText, 'font-bold text-4xl');
+import { Text, A, H1, P, TextLink } from '../../styles/typography/typography';
+import { View } from '../../styles/view/view';
+import { Row } from '../../styles/layout/layout';
+import { MotiLink } from 'solito/moti';
 
 /* eslint-disable-next-line */
 export interface HomeProps {}
 
-export function Home(props: HomeProps) {
-    Api.request();
+export function HomeScreen(props: HomeProps) {
     return (
-        <>
-            <StatusBar barStyle="dark-content" />
-            <SafeAreaView>
-                <View>
-                    <Text className="text-center text-blue-600" testID="heading">
-                        Text using NativeWind
+        <View className="flex-1 items-center justify-center p-3">
+            <H1 testID="heading">Welcome to Solito.</H1>
+            <View className="max-w-xl">
+                <P className="text-center">
+                    Here is a basic starter to show you how you can navigate from one screen to
+                    another. This screen uses the same code on Next.js and React Native.
+                </P>
+                <P className="text-center">
+                    Solito is made by{' '}
+                    <A
+                        href="https://twitter.com/fernandotherojo"
+                        target="_blank"
+                        hrefAttrs={{
+                            target: '_blank',
+                            rel: 'noreferrer',
+                        }}
+                    >
+                        Fernando Rojo
+                    </A>
+                    .
+                </P>
+                <P className="text-center">
+                    NativeWind is made by{' '}
+                    <A
+                        href="https://twitter.com/mark__lawlor"
+                        target="_blank"
+                        hrefAttrs={{
+                            target: '_blank',
+                            rel: 'noreferrer',
+                        }}
+                    >
+                        Mark Lawlor
+                    </A>
+                    .
+                </P>
+            </View>
+            <View className="h-[32px]" />
+            <Row className="space-x-8">
+                <TextLink href="/user/fernando">Regular Link</TextLink>
+                <MotiLink
+                    href="/user/fernando"
+                    animate={({ hovered, pressed }) => {
+                        'worklet';
+                        return {
+                            scale: pressed ? 0.95 : hovered ? 1.1 : 1,
+                            rotateZ: pressed ? '0deg' : hovered ? '-3deg' : '0deg',
+                        };
+                    }}
+                    transition={{
+                        type: 'timing',
+                        duration: 150,
+                    }}
+                >
+                    <Text selectable={false} className="text-base font-bold">
+                        Moti Link
                     </Text>
-                </View>
-            </SafeAreaView>
-        </>
+                </MotiLink>
+            </Row>
+        </View>
     );
 }
-
-export default Home;

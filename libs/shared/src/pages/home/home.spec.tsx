@@ -1,10 +1,13 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import Home from './home';
+import { HomeScreen } from './home';
+import { fixTestingConsoleError } from '@utils';
+jest.mock('next/router', () => require('next-router-mock'));
 
 describe('Home', () => {
+    afterEach(fixTestingConsoleError);
     it('should render successfully', () => {
-        const { container } = render(<Home />);
+        const { container } = render(<HomeScreen />);
         expect(container).toBeTruthy();
     });
 });

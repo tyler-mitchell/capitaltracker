@@ -1,6 +1,6 @@
 describe('capitaltracker', () => {
     beforeEach(() => cy.visit('/'));
     it('should display welcome message', () => {
-        cy.get('div[data-testid="heading"]').should('contain', 'Text using NativeWind');
+        cy.get('h1[data-testid="heading"]').should('contain', 'Welcome to Solito.');
     });
 });
