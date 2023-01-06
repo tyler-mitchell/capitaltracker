@@ -12053,7 +12053,6 @@ __metadata:
     eslint-plugin-react-hooks: 4.6.0
     expo: ^47.0.11
     expo-cli: 6.0.8
-    expo-constants: ^14.0.2
     expo-splash-screen: ~0.17.5
     expo-status-bar: ~1.4.2
     firebase: ^9.15.0
@@ -16278,18 +16277,6 @@ __metadata:
     expo: bin/expo.js
     expo-cli: bin/expo.js
   checksum: e103aecd07264355b8f065c37a1e4d8a5e66ec3b6d55a890473b378572c1a25f6a01a6f55738a75260021ceb53aab45535f9d01d2da34722f13419ccf366a65c
-  languageName: node
-  linkType: hard
-
-"expo-constants@npm:^14.0.2":
-  version: 14.1.0
-  resolution: "expo-constants@npm:14.1.0"
-  dependencies:
-    "@expo/config": ~7.0.2
-    uuid: ^3.3.2
-  peerDependencies:
-    expo: "*"
-  checksum: 294272cbc576b0778ce0384e132bd88a6eee54dcbf8b8e9b2a731f3402b91db1aee92940d8a0bd21392761b9d7cde7c1c3887c2c5a7af1323823b0666183938b
   languageName: node
   linkType: hard
 

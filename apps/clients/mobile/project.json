@@ -7,7 +7,7 @@
         "serve": {
             "executor": "@nrwl/expo:start",
             "options": {
-                "port": 8081
+                "port": 8082
             }
         },
         "run-ios": {
