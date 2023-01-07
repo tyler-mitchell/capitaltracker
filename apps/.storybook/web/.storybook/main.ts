@@ -6,10 +6,7 @@ const config: StorybookConfig = {
     core: { ...rootMain.core, builder: 'webpack5' },
     stories: [
         ...rootMain.stories,
-        '../pages/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-        '../../../../libs/shared/src/pages/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-        '../../../../libs/shared/src/components/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-        '../../../../libs/shared/src/styles/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+        '../../../../libs/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     ],
     addons: [
         ...(rootMain.addons || []),

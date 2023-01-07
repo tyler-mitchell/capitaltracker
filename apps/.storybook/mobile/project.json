@@ -1,13 +1,19 @@
 {
-    "name": "mobile",
+    "name": "sb-mobile",
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "apps/clients/mobile/src",
+    "sourceRoot": "apps/.storybook/mobile/src",
     "projectType": "application",
     "targets": {
-        "serve": {
+        "start": {
             "executor": "@nrwl/expo:start",
             "options": {
-                "port": 8082
+                "port": 8081
+            }
+        },
+        "serve": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "nx start mobile"
             }
         },
         "run-ios": {
@@ -22,7 +28,7 @@
                 "platform": "android"
             }
         },
-        "build-eas": {
+        "build": {
             "executor": "@nrwl/expo:build",
             "options": {}
         },
@@ -33,7 +39,7 @@
         "download": {
             "executor": "@nrwl/expo:download",
             "options": {
-                "output": "apps/clients/mobile/dist"
+                "output": "apps/.storybook/mobile/dist"
             }
         },
         "build-ios": {
@@ -94,7 +100,7 @@
             "executor": "@nrwl/expo:export",
             "options": {
                 "platform": "all",
-                "outputDir": "../../../dist/apps/clients/mobile"
+                "outputDir": "../../../dist/apps/.storybook/mobile"
             }
         },
         "export-web": {
@@ -107,24 +113,15 @@
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
             "options": {
-                "lintFilePatterns": ["apps/clients/mobile/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": ["apps/.storybook/mobile/**/*.{ts,tsx,js,jsx}"]
             }
         },
         "test": {
             "executor": "@nrwl/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
-                "jestConfig": "apps/clients/mobile/jest.config.ts",
+                "jestConfig": "apps/.storybook/mobile/jest.config.ts",
                 "passWithNoTests": true
-            }
-        },
-        "prestorybook": {
-            "executor": "@nrwl/react-native:storybook",
-            "options": {
-                "searchDir": ["libs"],
-                "outputFile": "./.storybook/story-loader.js",
-                "pattern": "**/*.stories.@(js|jsx|ts|tsx|md)",
-                "silent": false
             }
         }
     },

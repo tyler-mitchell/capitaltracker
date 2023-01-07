@@ -1,0 +1,46 @@
+{
+    "name": "sb-web",
+    "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/.storybook/web",
+    "projectType": "application",
+    "targets": {
+        "storybook": {
+            "executor": "@nrwl/storybook:storybook",
+            "options": {
+                "uiFramework": "@storybook/react",
+                "port": 4400,
+                "config": {
+                    "configFolder": "apps/.storybook/web/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "build-storybook": {
+            "executor": "@nrwl/storybook:build",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "uiFramework": "@storybook/react",
+                "outputPath": "dist/storybook/web",
+                "config": {
+                    "configFolder": "apps/.storybook/web/.storybook"
+                }
+            },
+            "configurations": {
+                "ci": {
+                    "quiet": true
+                }
+            }
+        },
+        "test-storybook": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "test-storybook -c apps/.storybook/web/.storybook --url=http://localhost:4400"
+            }
+        }
+    },
+    "tags": []
+}

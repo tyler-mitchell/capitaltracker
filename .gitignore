@@ -114,3 +114,7 @@ npm-debug.*
 web-build/
 cache/
 apps/clients/mobile-e2e/artifacts
+apps/clients/storybook/mobile-e2e/artifacts
+apps/clients/.storybook/mobile-e2e/artifacts
+apps/clients/.storybook/web-e2e/artifacts
+apps/.storybook/mobile-e2e/artifacts

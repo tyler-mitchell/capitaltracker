@@ -28,7 +28,8 @@
         "@storybook/addon-ondevice-backgrounds": "*",
         "@storybook/addon-ondevice-controls": "*",
         "@storybook/addon-ondevice-notes": "*",
-        "@storybook/react-native": "*"
+        "@storybook/react-native": "*",
+        "@react-native-async-storage/async-storage": "*"
     },
     "scripts": {
         "eas-build-pre-install": "cd ../../../ && cp package-lock.json ./apps/mobile/",

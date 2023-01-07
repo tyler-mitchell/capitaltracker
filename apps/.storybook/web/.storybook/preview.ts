@@ -1,4 +1,4 @@
-import '../global.css';
+import './styles.css';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 export const parameters = {
