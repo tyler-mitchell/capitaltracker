@@ -72,7 +72,7 @@
             "executor": "@nrwl/expo:rollback",
             "options": {}
         },
-        "prebuild": {
+        "prebuild-eas": {
             "executor": "@nrwl/expo:prebuild",
             "options": {}
         },
