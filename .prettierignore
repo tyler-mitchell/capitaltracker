@@ -8,4 +8,4 @@
 **/.expo
 **/build
 .yarn/
-./storybook/story-loader.js
+apps/.storybook/mobile/.ondevice/storybook.requires.js
