@@ -6,6 +6,7 @@ module.exports = function (api) {
             // https://expo.github.io/router/docs/intro#configure-the-babel-plugin
             require.resolve('expo-router/babel'),
             'react-native-reanimated/plugin',
+            '@babel/plugin-proposal-export-namespace-from',
             'nativewind/babel',
         ],
     };

@@ -21,5 +21,10 @@
         "app/**/*.test.ts",
         "app/**/*.spec.tsx",
         "app/**/*.test.tsx"
+    ],
+    "references": [
+        {
+            "path": "./.storybook/tsconfig.json"
+        }
     ]
 }

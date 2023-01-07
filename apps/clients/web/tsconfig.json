@@ -14,5 +14,10 @@
         "types": ["jest", "node"]
     },
     "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.d.ts"],
-    "exclude": ["node_modules", "jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+    "exclude": ["**/*.stories.ts", "**/*.stories.js", "**/*.stories.jsx", "**/*.stories.tsx"],
+    "references": [
+        {
+            "path": "./.storybook/tsconfig.json"
+        }
+    ]
 }

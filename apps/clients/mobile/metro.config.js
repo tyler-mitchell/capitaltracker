@@ -1,7 +1,8 @@
 const { withNxMetro } = require('@nrwl/expo');
 const { getDefaultConfig } = require('@expo/metro-config');
-
+const path = require('path');
 const defaultConfig = getDefaultConfig(__dirname);
+const workspaceRoot = path.resolve(__dirname, '../../..');
 
 module.exports = (async () => {
     defaultConfig.transformer.babelTransformerPath = require.resolve(
@@ -20,6 +21,6 @@ module.exports = (async () => {
         // the project root to start the metro server
         projectRoot: __dirname,
         // Specify any additional (to projectRoot) watch folders, this is used to know which files to watch
-        watchFolders: [],
+        watchFolders: ['./.storybook', workspaceRoot],
     });
 })();

@@ -6591,6 +6591,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/addon-react-native-web@npm:^0.0.19":
+  version: 0.0.19
+  resolution: "@storybook/addon-react-native-web@npm:0.0.19"
+  peerDependencies:
+    "@babel/preset-react": "*"
+    "@storybook/addons": "*"
+    "@storybook/api": "*"
+    "@storybook/components": "*"
+    "@storybook/core-events": "*"
+    "@storybook/theming": "*"
+    babel-plugin-react-native-web: "*"
+    metro-react-native-babel-preset: "*"
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 662873518a364971aa8d00b46ea716c0bf50b4b2db8a23f70706e37133ae000ce45dea3ae5a92db64202d471f5e67e213d52567d7152d2a42abe5181020a7505
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-toolbars@npm:6.5.15":
   version: 6.5.15
   resolution: "@storybook/addon-toolbars@npm:6.5.15"
@@ -12183,6 +12206,7 @@ __metadata:
   resolution: "capitaltracker@workspace:."
   dependencies:
     "@babel/core": 7.12.13
+    "@babel/plugin-proposal-export-namespace-from": ^7.18.9
     "@babel/preset-react": ^7.14.5
     "@babel/preset-typescript": 7.12.13
     "@esbuild-plugins/node-globals-polyfill": ^0.1.1
@@ -12226,6 +12250,7 @@ __metadata:
     "@storybook/addon-ondevice-backgrounds": ^6.0.1-beta.9
     "@storybook/addon-ondevice-controls": ^6.0.1-beta.9
     "@storybook/addon-ondevice-notes": ^6.0.1-beta.9
+    "@storybook/addon-react-native-web": ^0.0.19
     "@storybook/builder-vite": ^0.2.6
     "@storybook/builder-webpack5": 6.5.15
     "@storybook/core-server": 6.5.15
@@ -12322,6 +12347,7 @@ __metadata:
     solito: ^2.1.3
     storybook-addon-next: ^1.6.6
     storybook-addon-swc: ^1.1.7
+    storybook-addon-theme-changer: ^0.1.2
     swc-loader: 0.1.15
     tailwindcss: ^3.2.4
     ts-jest: 28.0.5
@@ -30928,6 +30954,26 @@ __metadata:
     webpack:
       optional: true
   checksum: 9b29985fbec0a47657d59f2f6e225b5e49fe25a44ec2fb6624c6cc8c9c1ab3906eda440d85b830f6b1f4a15edd787a90a3d190c82e60fc86d73b65f6366abdce
+  languageName: node
+  linkType: hard
+
+"storybook-addon-theme-changer@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "storybook-addon-theme-changer@npm:0.1.2"
+  peerDependencies:
+    "@storybook/addons": ^6.4.0
+    "@storybook/api": ^6.4.0
+    "@storybook/components": ^6.4.0
+    "@storybook/core-events": ^6.4.0
+    "@storybook/theming": ^6.4.0
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 6943e49fd726b5642a0f4be5ec34343f204f0b27b3689dc6d15d43457833f442c7c68834b6deddd4b3ea2d039afadc7a58689aad17a7a789fff88c9ffc30898a
   languageName: node
   linkType: hard
 
