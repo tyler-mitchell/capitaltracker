@@ -1,4 +1,4 @@
-import { rootMain } from '../../../../.storybook/main';
+import { rootMain } from '../../../.storybook/main';
 import type { StorybookConfig, Options } from '@storybook/core-common';
 
 const config: StorybookConfig = {
@@ -6,7 +6,7 @@ const config: StorybookConfig = {
     core: { ...rootMain.core, builder: 'webpack5' },
     stories: [
         ...rootMain.stories,
-        '../../../../libs/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+        '../../../libs/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     ],
     addons: [
         ...(rootMain.addons || []),

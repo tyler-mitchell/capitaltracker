@@ -10,7 +10,7 @@
                 "uiFramework": "@storybook/react",
                 "port": 4400,
                 "config": {
-                    "configFolder": "apps/.storybook/web/.storybook"
+                    "configFolder": "apps/.storybook/web"
                 }
             },
             "configurations": {
@@ -26,7 +26,7 @@
                 "uiFramework": "@storybook/react",
                 "outputPath": "dist/storybook/web",
                 "config": {
-                    "configFolder": "apps/.storybook/web/.storybook"
+                    "configFolder": "apps/.storybook/web"
                 }
             },
             "configurations": {
@@ -38,7 +38,7 @@
         "test-storybook": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "test-storybook -c apps/.storybook/web/.storybook --url=http://localhost:4400"
+                "command": "test-storybook -c apps/.storybook/web/ --url=http://localhost:4400"
             }
         }
     },
