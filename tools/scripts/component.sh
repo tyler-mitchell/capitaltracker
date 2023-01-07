@@ -2,10 +2,8 @@
 
 component="$1"
 
-nx generate @nrwl/next:component "$component" --project=components --export -s=css
+nx generate @nrwl/expo:component "$component" --directory=components --project=shared --export -s=css
 
-nx generate @nrwl/react:component-story --componentPath=lib/"$component"/"$component".tsx --project=components
-
-nx generate @nrwl/react:component-cypress-spec --componentPath=lib/"$component"/"$component".tsx --project=components
+nx generate @nrwl/react:component-story --componentPath=components/"$component"/"$component".tsx --project=shared
 
 nx format

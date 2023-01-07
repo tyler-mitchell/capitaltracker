@@ -1,3 +1,5 @@
+export * from './components/logo/logo';
+export * from './pages/dashboard/dashboard';
 export * from './components/provider/safe-area/use-safe-area.web';
 export * from './components/provider/safe-area';
 export * from './components/provider/safe-area/use-safe-area';
