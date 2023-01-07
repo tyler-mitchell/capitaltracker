@@ -1,9 +1,6 @@
 describe('capitaltracker', () => {
-    beforeEach(() => cy.visit('/', { timeout: 30000000000000 }));
+    beforeEach(() => cy.visit('/'));
     it('should display welcome message', () => {
-        cy.get('h1[data-testid="heading"]', { timeout: 30000000000000 }).should(
-            'contain',
-            'Welcome to Solito.'
-        );
+        cy.get('h1[data-testid="heading"]').should('contain', 'Welcome to Solito.');
     });
 });
