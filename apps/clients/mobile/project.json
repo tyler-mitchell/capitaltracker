@@ -4,7 +4,7 @@
     "sourceRoot": "apps/clients/mobile/src",
     "projectType": "application",
     "targets": {
-        "serve": {
+        "start": {
             "executor": "@nrwl/expo:start",
             "options": {
                 "port": 8082
@@ -116,15 +116,6 @@
             "options": {
                 "jestConfig": "apps/clients/mobile/jest.config.ts",
                 "passWithNoTests": true
-            }
-        },
-        "prestorybook": {
-            "executor": "@nrwl/react-native:storybook",
-            "options": {
-                "searchDir": ["libs"],
-                "outputFile": "./.storybook/story-loader.js",
-                "pattern": "**/*.stories.@(js|jsx|ts|tsx|md)",
-                "silent": false
             }
         }
     },

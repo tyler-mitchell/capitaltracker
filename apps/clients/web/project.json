@@ -4,23 +4,7 @@
     "sourceRoot": "apps/clients/web",
     "projectType": "application",
     "targets": {
-        "build": {
-            "executor": "@nrwl/next:build",
-            "outputs": ["{options.outputPath}"],
-            "defaultConfiguration": "production",
-            "options": {
-                "root": "apps/clients/web",
-                "outputPath": "dist/apps/clients/web",
-                "postcssConfig": "apps/clients/web/postcss.config.js"
-            },
-            "configurations": {
-                "development": {
-                    "outputPath": "dist/apps/clients/web"
-                },
-                "production": {}
-            }
-        },
-        "serve": {
+        "start": {
             "executor": "@nrwl/next:server",
             "defaultConfiguration": "development",
             "options": {
@@ -38,7 +22,24 @@
                 }
             }
         },
+        "build": {
+            "executor": "@nrwl/next:build",
+            "outputs": ["{options.outputPath}"],
+            "defaultConfiguration": "production",
+            "options": {
+                "root": "apps/clients/web",
+                "outputPath": "dist/apps/clients/web",
+                "postcssConfig": "apps/clients/web/postcss.config.js"
+            },
+            "configurations": {
+                "development": {
+                    "outputPath": "dist/apps/clients/web"
+                },
+                "production": {}
+            }
+        },
         "export": {
+            "dependsOn": ["build"],
             "executor": "@nrwl/next:export",
             "options": {
                 "buildTarget": "web:build:production"

@@ -11,5 +11,13 @@
         "noFallthroughCasesInSwitch": true
     },
     "files": ["../../node_modules/@testing-library/jest-native/extend-expect.d.ts"],
-    "include": ["**/*.d.ts"]
+    "include": ["**/*.d.ts"],
+    "references": [
+        {
+            "path": "./tsconfig.lib.json"
+        },
+        {
+            "path": "./tsconfig.spec.json"
+        }
+    ]
 }

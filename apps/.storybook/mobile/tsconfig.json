@@ -7,19 +7,12 @@
         "moduleResolution": "node",
         "skipLibCheck": true,
         "resolveJsonModule": true,
-        "strict": true,
-        "composite": true,
-        "declaration": true
+        "strict": true
     },
-    "files": ["../../node_modules/@nrwl/expo/typings/svg.d.ts"],
-    "include": [],
-    "references": [
-        {
-            "path": "./tsconfig.app.json"
-        },
-        {
-            "path": "./tsconfig.spec.json"
-        }
+    "files": [
+        "../../../node_modules/@nrwl/expo/typings/svg.d.ts",
+        "../../../node_modules/@testing-library/jest-native/extend-expect.d.ts"
     ],
-    "exclude": ["node_modules"]
+    "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.d.ts", "./story-loader.js"],
+    "exclude": ["node_modules", "jest.config.ts"]
 }

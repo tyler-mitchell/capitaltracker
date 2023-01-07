@@ -1,5 +1,5 @@
 {
-    "name": ".storybook-mobile",
+    "name": "storybook-mobile",
     "version": "0.0.1",
     "private": true,
     "dependencies": {
@@ -8,9 +8,30 @@
         "react-native": "*",
         "expo": "*",
         "react-native-svg": "*",
-        "react-native-web": "*"
-    },
-    "scripts": {
-        "postinstall": "rm -r node_modules && cd ../../../ && yarn install && npx nx sync-deps .storybook-mobile && npx nx ensure-symlink .storybook-mobile"
+        "react-native-web": "*",
+        "@storybook/react-native": "*",
+        "@react-native-async-storage/async-storage": "*",
+        "@storybook/addon-ondevice-notes": "*",
+        "@storybook/addon-ondevice-controls": "*",
+        "@storybook/addon-ondevice-backgrounds": "*",
+        "@storybook/addon-ondevice-actions": "*",
+        "@storybook/core-common": "*",
+        "@nrwl/expo": "*",
+        "@expo/metro-config": "*",
+        "react": "*",
+        "@react-navigation/native": "*",
+        "nativewind": "*",
+        "react-native-safe-area-context": "*",
+        "next-router-mock": "*",
+        "solito": "*",
+        "react-native-gesture-handler": "*",
+        "react-native-reanimated": "*",
+        "expo-router": "*",
+        "@nrwl/react": "*",
+        "@expo/webpack-config": "*",
+        "webpack": "*",
+        "@storybook/react": "*",
+        "@storybook/docs-tools": "*",
+        "@storybook/addon-actions": "*"
     }
 }
