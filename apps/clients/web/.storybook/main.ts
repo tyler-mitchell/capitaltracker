@@ -1,6 +1,5 @@
 import { rootMain } from '../../../../.storybook/main';
 import type { StorybookConfig, Options } from '@storybook/core-common';
-import path from 'path';
 
 const config: StorybookConfig = {
     ...rootMain,
@@ -8,26 +7,23 @@ const config: StorybookConfig = {
     stories: [
         ...rootMain.stories,
         '../pages/**/*.stories.@(js|jsx|ts|tsx|mdx)',
-        '../../../../libs/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+        '../../../../libs/shared/src/pages/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+        '../../../../libs/shared/src/components/**/*.stories.@(js|jsx|ts|tsx|mdx)',
+        '../../../../libs/shared/src/styles/**/*.stories.@(js|jsx|ts|tsx|mdx)',
     ],
     addons: [
         ...(rootMain.addons || []),
         '@nrwl/react/plugins/storybook',
         'storybook-addon-swc',
-        {
-            name: 'storybook-addon-next',
-            options: {
-                nextConfigPath: path.resolve(__dirname, '../next.config.js'),
-            },
-        },
+        'storybook-addon-next-router',
         {
             name: '@storybook/addon-react-native-web',
             options: {
                 modulesToTranspile: ['solito', 'nativewind', 'moti'],
                 babelPlugins: [
+                    '@babel/plugin-proposal-export-namespace-from',
                     'react-native-reanimated/plugin',
                     'nativewind/babel',
-                    '@babel/plugin-proposal-export-namespace-from',
                 ],
             },
         },
@@ -40,7 +36,6 @@ const config: StorybookConfig = {
         }
 
         // add your own webpack tweaks if needed
-
         return config;
     },
 };

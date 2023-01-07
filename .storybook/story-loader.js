@@ -3,7 +3,9 @@
 //
 // https://github.com/elderfo/react-native-storybook-loader.git
 
-function loadStories() {}
+function loadStories() {
+    require()
+}
 
 const stories = [];
 

@@ -10,6 +10,7 @@
     ],
     "exclude": ["../**/*.spec.ts", "../**/*.spec.js", "../**/*.spec.tsx", "../**/*.spec.jsx"],
     "include": [
+        "../../../../.storybook/main.ts",
         "../pages/**/*.stories.ts",
         "../pages/**/*.stories.js",
         "../pages/**/*.stories.jsx",
