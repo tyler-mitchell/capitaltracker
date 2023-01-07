@@ -5,7 +5,7 @@
     "projectType": "application",
     "targets": {
         "fetch": {
-            "command": "sb-rn-get-stories --config-path apps/.storybook/mobile/.ondevice"
+            "command": "sb-rn-get-stories --config-path apps/.storybook/mobile"
         },
         "start": {
             "dependsOn": ["fetch"],

@@ -1,9 +1,2 @@
-const { join } = require('path');
-
-module.exports = {
-    plugins: {
-        tailwindcss: {
-            config: join(__dirname, 'tailwind.config.js'),
-        },
-    },
-};
+const config = require('../../clients/web/postcss.config');
+module.exports = config;
