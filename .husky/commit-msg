@@ -3,4 +3,7 @@
 
 # Extract emoji from commit title so commitlint rule doesnt break
 commit="$1"
-echo "$commit" | cut -d' ' -f2- | commitlint
+echo "$commit"
+stripped=$(echo "$commit" | cut -d' ' -f2-)
+echo "$stripped"
+echo "$stripped" | cut -d' ' -f2- | commitlint
