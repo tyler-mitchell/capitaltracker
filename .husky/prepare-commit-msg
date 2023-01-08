@@ -1,6 +1,3 @@
 #!/usr/bin/env sh
 
-echo "prepare"
-if ! exec < /dev/tty && yarn cz --hook; then
-    true
-fi
+exec < /dev/tty && yarn cz --hook || true

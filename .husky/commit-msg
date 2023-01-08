@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "commit"
-npx --no -- commitlint --edit "${1}"
+npx commitlint --from HEAD~1 --to HEAD --verbose
