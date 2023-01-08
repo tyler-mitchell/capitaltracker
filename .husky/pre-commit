@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 
-echo husky
+nx format:check
+nx workspace-lint
