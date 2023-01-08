@@ -1859,6 +1859,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@commitlint/cz-commitlint@npm:^17.4.0":
+  version: 17.4.0
+  resolution: "@commitlint/cz-commitlint@npm:17.4.0"
+  dependencies:
+    "@commitlint/ensure": ^17.4.0
+    "@commitlint/load": ^17.4.0
+    "@commitlint/types": ^17.4.0
+    chalk: ^4.1.0
+    lodash.isplainobject: ^4.0.6
+    word-wrap: ^1.2.3
+  peerDependencies:
+    commitizen: ^4.0.3
+    inquirer: ^8.0.0
+  checksum: fa5dedfeb7201b913454dc79af0465863f1e4f611c7dd7d23b7bd70b50c34e64b78a88495980b8073cdf382127dcca7b4f0d7fcc519619146c062cceb795f83d
+  languageName: node
+  linkType: hard
+
 "@commitlint/ensure@npm:^17.4.0":
   version: 17.4.0
   resolution: "@commitlint/ensure@npm:17.4.0"
@@ -12519,6 +12536,7 @@ __metadata:
     "@babel/preset-typescript": 7.12.13
     "@commitlint/cli": ^17.4.0
     "@commitlint/config-conventional": ^17.4.0
+    "@commitlint/cz-commitlint": ^17.4.0
     "@esbuild-plugins/node-globals-polyfill": ^0.1.1
     "@esbuild-plugins/node-modules-polyfill": ^0.1.4
     "@expo/cli": 0.4.10
@@ -12601,6 +12619,7 @@ __metadata:
     babel-plugin-react-docgen-typescript: ^1.5.1
     babel-plugin-react-native-web: ^0.18.10
     babel-preset-expo: ~9.2.2
+    commitizen: ^4.2.6
     core-js: ^3.6.5
     cypress: ^11.0.0
     cz-conventional-changelog: 3.3.0
@@ -12623,6 +12642,7 @@ __metadata:
     firebase: ^9.15.0
     html-webpack-plugin: ^5.5.0
     husky: ^8.0.0
+    inquirer: 8
     jest: 28.1.1
     jest-circus: 28.1.1
     jest-environment-jsdom: 28.1.1
@@ -13437,7 +13457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commitizen@npm:^4.0.3":
+"commitizen@npm:^4.0.3, commitizen@npm:^4.2.6":
   version: 4.2.6
   resolution: "commitizen@npm:4.2.6"
   dependencies:
@@ -20425,6 +20445,29 @@ __metadata:
     css-in-js-utils: ^3.1.0
     fast-loops: ^1.1.3
   checksum: caf7a75d18acbedc7e3b8bfac17563082becd2df6b65accad964a6afdf490329b42315c37fe65ba0177cc10fd32809eb40d62aba23a0118c74d87d4fc58defa2
+  languageName: node
+  linkType: hard
+
+"inquirer@npm:8":
+  version: 8.2.5
+  resolution: "inquirer@npm:8.2.5"
+  dependencies:
+    ansi-escapes: ^4.2.1
+    chalk: ^4.1.1
+    cli-cursor: ^3.1.0
+    cli-width: ^3.0.0
+    external-editor: ^3.0.3
+    figures: ^3.0.0
+    lodash: ^4.17.21
+    mute-stream: 0.0.8
+    ora: ^5.4.1
+    run-async: ^2.4.0
+    rxjs: ^7.5.5
+    string-width: ^4.1.0
+    strip-ansi: ^6.0.0
+    through: ^2.3.6
+    wrap-ansi: ^7.0.0
+  checksum: f13ee4c444187786fb393609dedf6b30870115a57b603f2e6424f29a99abc13446fd45ee22461c33c9c40a92a60a8df62d0d6b25d74fc6676fa4cb211de55b55
   languageName: node
   linkType: hard
 
