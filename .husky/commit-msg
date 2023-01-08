@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Extract emoji from commit title so commitlint rule doesnt break
+head -n1 "$1" | cut -d' ' -f2- | commitlint

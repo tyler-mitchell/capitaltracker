@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if exec < /dev/tty; then
+  yarn cz --hook
+else
+  true
+fi

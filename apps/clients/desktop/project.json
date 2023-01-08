@@ -5,6 +5,7 @@
     "sourceRoot": "apps/client/src",
     "targets": {
         "build": {
+            "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:build",
             "options": {
@@ -19,6 +20,7 @@
             }
         },
         "test": {
+            "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
@@ -33,6 +35,7 @@
             }
         },
         "lint": {
+            "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
@@ -47,6 +50,7 @@
             }
         },
         "export": {
+            "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "command": "tauri build"
         },
