@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 # shellcheck source=somefile
-. "$(dirname -- "$0")/_/husky.sh"
 
 echo husky
