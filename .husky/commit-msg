@@ -2,9 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Extract emoji from commit title so commitlint rule doesnt break
-commit_file="$1"
-commit_text="$(cat "$commit_file")"
-commit_title=$(head -n1 "$commit_text")
-stripped_commit_title=$(cut -d' ' -f2- "$commit_title")
-echo "$stripped_commit_title"
-echo "$stripped_commit_title" | cut -d' ' -f2- | commitlint
+head -n1 "$1" | cut -d' ' -f2- | commitlint
