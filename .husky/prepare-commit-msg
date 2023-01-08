@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 
-if ! exec < /dev/tty && npx cz --hook; then
+if ! exec < /dev/tty && npx git-cz --hook; then
     true
 fi
