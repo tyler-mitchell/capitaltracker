@@ -13142,6 +13142,7 @@ __metadata:
     babel-plugin-react-native-web: ^0.18.10
     babel-preset-expo: ~9.2.2
     commitizen: ^4.2.6
+    commitlint: ^17.4.0
     core-js: ^3.6.5
     cypress: ^11.0.0
     cz-conventional-changelog: 3.3.0
@@ -14065,6 +14066,18 @@ __metadata:
     cz: bin/git-cz
     git-cz: bin/git-cz
   checksum: 4423b25900a02d10e6a6aa98d58404bad0c0c2a68bbeff1ef2379c1ef04344a1fecdaaac3e773988d460de93c8ed4325d1afc186a01f904f7f27edcffcccfd49
+  languageName: node
+  linkType: hard
+
+"commitlint@npm:^17.4.0":
+  version: 17.4.0
+  resolution: "commitlint@npm:17.4.0"
+  dependencies:
+    "@commitlint/cli": ^17.4.0
+    "@commitlint/types": ^17.4.0
+  bin:
+    commitlint: cli.js
+  checksum: 1d5fd8859884422e013ad97cba75e749ee04c232c85d19562a2a0e99e26dcca72c947146823d84ff9b6af72faf6f73052ccf9ef623a215f9620fce584cde2f11
   languageName: node
   linkType: hard
 

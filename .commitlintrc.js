@@ -15,7 +15,7 @@ module.exports = {
                         !name.includes('sb') &&
                         projectType == 'application'
                 )),
-                'repo' // when project config has changed
+                'repo', // when project config has changed
             ],
         ],
     },
