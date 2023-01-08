@@ -18,7 +18,8 @@
         "page": "tools/scripts/page.sh",
         "affected": "nx affected --target",
         "all": "nx run-many --all=true --skip-nx-cache --with-deps=true --target",
-        "failed": "nx run-many --all=true --with-deps=true --only-failed=true --target"
+        "failed": "nx run-many --all=true --with-deps=true --only-failed=true --target",
+        "postinstall": "husky install"
     },
     "private": true,
     "dependencies": {
@@ -151,6 +152,7 @@
         "eslint-plugin-react-hooks": "4.6.0",
         "expo-cli": "6.0.8",
         "html-webpack-plugin": "^5.5.0",
+        "husky": "^8.0.0",
         "jest": "28.1.1",
         "jest-circus": "28.1.1",
         "jest-environment-jsdom": "28.1.1",
