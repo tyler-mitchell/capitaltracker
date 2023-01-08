@@ -6,4 +6,8 @@ export default defineConfig({
     env: {
         RETRIES: 5,
     },
+    retries: {
+        runMode: 5,
+        openMode: 0,
+    },
 });
