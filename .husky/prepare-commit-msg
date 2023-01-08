@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
-if ! exec < /dev/tty && npx git-cz --hook; then
+echo "prepare"
+if ! exec < /dev/tty && yarn cz --hook; then
     true
 fi
