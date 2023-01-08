@@ -13,6 +13,7 @@
             "!{projectRoot}/.eslintrc.json"
         ],
         "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
+        "desktopExported": ["{workspaceRoot}/dist/apps/clients/web/exported"],
         "grpcModels": ["{workspaceRoot}/tools/models/**/*.proto"]
     },
     "targetDefaults": {
