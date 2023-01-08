@@ -7,7 +7,7 @@
         "default": ["{projectRoot}/**/*"]
     },
     "targets": {
-        "serve": {
+        "start": {
             "executor": "@ignisda/nx-rust:run",
             "options": {
                 "release": false,

@@ -45,7 +45,8 @@
                     "frontend",
                     "codegen",
                     "test-codegen",
-                    "export"
+                    "export",
+                    "build-storybook"
                 ],
                 "accessToken": "MWY5NGM2MWYtMzljNi00ZDFiLTk2YzktYTFjYzBmZTNkNjYyfHJlYWQtd3JpdGU="
             }
@@ -58,6 +59,12 @@
             },
             "library": {
                 "unitTestRunner": "jest"
+            }
+        },
+        "@nrwl/next": {
+            "application": {
+                "style": "css",
+                "linter": "eslint"
             }
         }
     }

@@ -14,7 +14,22 @@
         "@nrwl/expo": "*",
         "@expo/metro-config": "*",
         "react": "*",
-        "@nrwl/react": "*"
+        "@nrwl/react": "*",
+        "@react-navigation/native": "*",
+        "@storybook/core-common": "*",
+        "react-native-safe-area-context": "*",
+        "next-router-mock": "*",
+        "solito": "*",
+        "react-native-gesture-handler": "*",
+        "react-native-reanimated": "*",
+        "expo-router": "*",
+        "@expo/webpack-config": "*",
+        "@storybook/addon-ondevice-actions": "*",
+        "@storybook/addon-ondevice-backgrounds": "*",
+        "@storybook/addon-ondevice-controls": "*",
+        "@storybook/addon-ondevice-notes": "*",
+        "@storybook/react-native": "*",
+        "@react-native-async-storage/async-storage": "*"
     },
     "scripts": {
         "eas-build-pre-install": "cd ../../../ && cp package-lock.json ./apps/mobile/",

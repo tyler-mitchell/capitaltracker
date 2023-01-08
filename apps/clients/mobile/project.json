@@ -4,7 +4,7 @@
     "sourceRoot": "apps/clients/mobile/src",
     "projectType": "application",
     "targets": {
-        "serve": {
+        "start": {
             "executor": "@nrwl/expo:start",
             "options": {
                 "port": 8082
@@ -72,7 +72,7 @@
             "executor": "@nrwl/expo:rollback",
             "options": {}
         },
-        "prebuild": {
+        "prebuild-eas": {
             "executor": "@nrwl/expo:prebuild",
             "options": {}
         },
