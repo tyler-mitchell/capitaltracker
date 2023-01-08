@@ -12361,6 +12361,7 @@ __metadata:
     babel-preset-expo: ~9.2.2
     core-js: ^3.6.5
     cypress: ^11.0.0
+    cypress-plugin-retries: ^1.5.2
     detox: 20.0.3
     eas-cli: 3.1.1
     eslint: ~8.15.0
@@ -14192,6 +14193,15 @@ __metadata:
   version: 1.0.1
   resolution: "cyclist@npm:1.0.1"
   checksum: 3cc2fdeb358599ca0ea96f5ecf2fc530ccab7ed1f8aa1a894aebfacd2009281bd7380cb9b30db02a18cdd00b3ed1d7ce81a3b11fe56e33a6a0fe4424dc592fbe
+  languageName: node
+  linkType: hard
+
+"cypress-plugin-retries@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "cypress-plugin-retries@npm:1.5.2"
+  dependencies:
+    chalk: ^3.0.0
+  checksum: 47bc1cc047dec48e8515399bada6c764a0a8c4d7a8a661b7c8e9c421b44e848040e159ddf86f1c512e38186f241b6dc42c4dab6813780d7469130d731fb98ed0
   languageName: node
   linkType: hard
 
