@@ -2,4 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Extract emoji from commit title so commitlint rule doesnt break
-git log -1 --format=%s | cut -d' ' -f2- | commitlint
+commit="$1"
+echo "$commit" | cut -d' ' -f2- | commitlint

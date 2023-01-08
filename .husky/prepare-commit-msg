@@ -1,3 +1,7 @@
 #!/usr/bin/env sh
 
-exec < /dev/tty && yarn cz --hook || true
+if exec < /dev/tty; then
+  yarn cz --hook
+else
+  true
+fi
