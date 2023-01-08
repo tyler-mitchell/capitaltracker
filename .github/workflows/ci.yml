@@ -414,9 +414,6 @@ jobs:
                   name: dist
                   path: dist
 
-            - name: Check Web exists
-              run: tree dist
-
             - name: Run Agent
               run: npx nx-cloud start-agent
 
