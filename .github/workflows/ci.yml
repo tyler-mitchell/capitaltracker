@@ -516,6 +516,10 @@ jobs:
               with:
                   name: windows-desktop
 
+            - name: Get Version
+              id: package-version
+              uses: martinbeentjes/npm-get-version-action@main
+
             - name: Release Desktop App (macos-12)
               if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/tags/v')
               uses: softprops/action-gh-release@v1

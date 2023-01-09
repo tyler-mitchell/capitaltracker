@@ -1,28 +1,24 @@
 {
-  "hosting": {
-    "public": "dist/apps/clients/web/exported",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  },
-  "emulators": {
-    "auth": {
-      "port": 9099
-    },
     "hosting": {
-      "port": 5000
+        "public": "dist/apps/clients/web/exported",
+        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
     },
-    "ui": {
-      "enabled": true
-    },
-    "singleProjectMode": true
-  }
+    "emulators": {
+        "auth": {
+            "port": 9099
+        },
+        "hosting": {
+            "port": 5000
+        },
+        "ui": {
+            "enabled": true
+        },
+        "singleProjectMode": true
+    }
 }

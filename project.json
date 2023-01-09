@@ -6,8 +6,11 @@
             "executor": "@jscutlery/semver:version",
             "options": {
                 "syncVersions": true,
-                "baseBranch": "main",
+                "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
+                "noVerify": true,
+                "remote": "origin",
                 "skipProjectChangelog": true,
+                "push": true,
                 "preset": "conventional"
             }
         }

@@ -7,10 +7,6 @@
         "watch": "nx watch --projects=web --includeDependencies -- nx build",
         "dev": "nx run-many --target=serve",
         "format": "nx format:check && cargo fmt --all --check",
-        "lint": "nx workspace-lint && yarn affected lint",
-        "build": "yarn affected build",
-        "test": "yarn affected test",
-        "e2e": "yarn affected e2e",
         "ci": "tools/scripts/ci.sh",
         "full": "tools/scripts/full.sh",
         "debug": "tools/scripts/debug.sh",
@@ -20,6 +16,7 @@
         "all": "nx run-many --all=true --skip-nx-cache --with-deps=true --target",
         "failed": "nx run-many --all=true --with-deps=true --only-failed=true --target",
         "cz": "git-cz",
+        "bump": "CI=1 nx version workspace",
         "postinstall": "husky install"
     },
     "dependencies": {
