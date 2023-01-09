@@ -11,6 +11,8 @@
         "@react-native-async-storage/async-storage": "*",
         "@react-navigation/native": "*",
         "@storybook/core-common": "*",
+        "@storybook/react": "*",
+        "@storybook/react-native": "*",
         "@testing-library/jest-native": "*",
         "@testing-library/react-native": "*",
         "expo": "*",
@@ -24,9 +26,7 @@
         "react-native-safe-area-context": "*",
         "react-native-svg": "*",
         "react-native-web": "*",
-        "solito": "*",
-        "@storybook/react": "*",
-        "@storybook/react-native": "*"
+        "solito": "*"
     },
     "scripts": {
         "postinstall": "npx nx sync-deps mobile && npx nx ensure-symlink mobile"
