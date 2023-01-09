@@ -12,8 +12,7 @@ module.exports = {
                     ctx,
                     ({ name, projectType }) =>
                         !name.includes('e2e') &&
-                        !name.includes('sb') &&
-                        projectType == 'application'
+                        !name.includes('sb')
                 )),
                 'repo', // when project config has changed
             ],
