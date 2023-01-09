@@ -7,4 +7,4 @@ if [ -n "${CI}" ]; then
 fi
 
 # Extract emoji from commit title so commitlint rule doesnt break
-head -n1 "$1" | cut -d' ' -f2- | yarn commitlint
+head -n1 "$1" | yarn commitlint
