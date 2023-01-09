@@ -470,6 +470,17 @@ jobs:
               if: startsWith(github.ref, 'refs/heads/main')
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn bump
 
+            - name: Abort Workflow
+              if: failure()
+              run: |
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
+
     release:
         name: Release
         runs-on: ${{ matrix.platform }}
