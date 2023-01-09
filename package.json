@@ -1,7 +1,11 @@
 {
     "name": "capitaltracker",
     "version": "0.0.1",
-    "license": "MIT",
+    "private": true,
+    "workspaces": [
+        "apps/**",
+        "libs/**"
+    ],
     "scripts": {
         "start": "nx start",
         "watch": "nx watch --projects=web --includeDependencies -- nx build",
@@ -22,7 +26,6 @@
         "cz": "git-cz",
         "postinstall": "husky install"
     },
-    "private": true,
     "dependencies": {
         "@expo/metro-config": "0.5.2",
         "@expo/next-adapter": "^4.0.13",

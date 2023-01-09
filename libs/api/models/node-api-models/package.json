@@ -2,8 +2,8 @@
     "name": "models",
     "version": "0.0.1",
     "type": "commonjs",
+    "private": true,
     "dependencies": {
         "@swc/helpers": "~0.4.11"
-    },
-    "devDependencies": {}
+    }
 }

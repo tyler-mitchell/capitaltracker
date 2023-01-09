@@ -5,6 +5,7 @@
 
 ### Changed
 
+- 🏗️ build(repo): run gitmoji changelog after after commit, add changes [[1fe4358](https://github.com/clemenscodes/capitaltracker/commit/1fe4358043b96451ffaf2371f2feaade8192e43f)]
 - 🏗️ build(rust-api-models): update default config to production for all targets [[c624d21](https://github.com/clemenscodes/capitaltracker/commit/c624d2125839b9b8c7193c95a830a6eec8aa379e)]
 - 🏗️ build(api): update nx build config [[79b5621](https://github.com/clemenscodes/capitaltracker/commit/79b56215948dc89cc8d11e38955dd8c264156527)]
 - 🏗️ build(repo): add changelog gen cli [[97efc65](https://github.com/clemenscodes/capitaltracker/commit/97efc65c394aeb3c59dde9746ad27dc71ce5f957)]
