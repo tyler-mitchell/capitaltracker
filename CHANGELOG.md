@@ -1,5 +1,12 @@
 # Capital Tracker Changelog
 
+## [0.2.0](https://github.com/clemenscodes/capitaltracker/compare/v0.1.0...v0.2.0) (2023-01-09)
+
+
+### Features
+
+* **workspace:** :sparkles: test bump ([cd74203](https://github.com/clemenscodes/capitaltracker/commit/cd7420335576d2c7254b96d4e9d6f045ab96b1f7))
+
 ## 0.1.0 (2023-01-09)
 
 
