@@ -462,7 +462,7 @@ jobs:
 
             - name: Prepare Release
               if: startsWith(github.ref, 'refs/heads/main')
-              run: yarn bump
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn bump
 
     release:
         name: Release
@@ -476,6 +476,10 @@ jobs:
             matrix:
                 platform: [macos-12, ubuntu-latest, windows-latest]
         steps:
+            - name: Checkout
+              if: startsWith(github.ref, 'refs/heads/main')
+              uses: actions/checkout@v3
+
             - name: Checkout
               if: startsWith(github.ref, 'refs/heads/main')
               uses: actions/checkout@v3
