@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-if [ -n "${CI-x}" ]; then
-echo "CI, exiting"
-exit 0
+if [ -n "${CI}" ]; then
+    echo "CI, exiting"
+    exit 0
 fi
 
 yarn
