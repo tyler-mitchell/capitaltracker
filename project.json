@@ -8,9 +8,7 @@
                 "syncVersions": true,
                 "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
                 "noVerify": true,
-                "remote": "origin",
                 "skipProjectChangelog": true,
-                "push": true,
                 "baseBranch": "main",
                 "preset": "conventional"
             }

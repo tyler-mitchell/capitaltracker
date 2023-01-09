@@ -470,7 +470,11 @@ jobs:
 
             - name: Prepare Release
               if: startsWith(github.ref, 'refs/heads/main')
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn bump
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false  yarn bump
+
+            - name: Push Changes
+              if: startsWith(github.ref, 'refs/heads/main')
+              run: git push origin main --tags --force
               env:
                   GITHUB_TOKEN: ${{ secrets.TAURI_GITHUB_TOKEN }}
 
