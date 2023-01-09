@@ -97,7 +97,7 @@ jobs:
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
 
             - name: Export Web
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export --skip-nx-cache
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export web --skip-nx-cache
 
             - name: Upload Web
               uses: actions/upload-artifact@v3
