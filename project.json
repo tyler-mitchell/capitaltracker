@@ -9,6 +9,9 @@
                 "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
                 "noVerify": true,
                 "skipProjectChangelog": true,
+                "skipCommit": true,
+                "push": false,
+                "remote": "origin",
                 "baseBranch": "main",
                 "preset": "conventional"
             }
