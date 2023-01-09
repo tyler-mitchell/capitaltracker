@@ -462,6 +462,10 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true' && startsWith(github.ref, 'refs/heads/main')
               run: yarn install --immutable
 
+            - name: Setup Git
+              if: startsWith(github.ref, 'refs/heads/main')
+              uses: fregante/setup-git-user@v1
+
             - name: Prepare Release
               if: startsWith(github.ref, 'refs/heads/main')
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn bump
