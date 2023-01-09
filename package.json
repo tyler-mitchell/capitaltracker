@@ -1,6 +1,6 @@
 {
     "name": "capitaltracker",
-    "version": "0.2.0",
+    "version": "0.1.0",
     "private": true,
     "nx": {
         "ignore": true
@@ -102,8 +102,6 @@
         "@react-native-community/cli-platform-android": "9.3.1",
         "@react-native-community/cli-platform-ios": "9.3.0",
         "@rollup/plugin-url": "^7.0.0",
-        "@semantic-release/commit-analyzer": "^9.0.2",
-        "@semantic-release/release-notes-generator": "^10.0.3",
         "@storybook/addon-actions": "^6.5.14",
         "@storybook/addon-controls": "^6.5.14",
         "@storybook/addon-essentials": "^6.5.14",
@@ -183,7 +181,6 @@
         "react-native-storybook-loader": "^2.0.5",
         "react-refresh": "^0.14.0",
         "react-test-renderer": "18.2.0",
-        "semantic-release": "^20.0.2",
         "storybook-addon-next": "^1.6.6",
         "storybook-addon-next-router": "^4.0.2",
         "storybook-addon-swc": "^1.1.7",
