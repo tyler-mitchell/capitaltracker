@@ -9,14 +9,18 @@
     "targets": {
         "start": {
             "executor": "@ignisda/nx-rust:run",
+            "defaultConfiguration": "production",
             "options": {
-                "release": false,
-                "locked": true,
-                "run": true
+                "locked": true
             },
             "configurations": {
                 "production": {
                     "release": true,
+                    "locked": true,
+                    "run": true
+                },
+                "development": {
+                    "release": false,
                     "locked": true,
                     "run": true
                 }
@@ -24,13 +28,17 @@
         },
         "build": {
             "executor": "@ignisda/nx-rust:build",
+            "defaultConfiguration": "production",
             "options": {
-                "release": false,
                 "locked": true
             },
             "configurations": {
                 "production": {
                     "release": true,
+                    "locked": true
+                },
+                "development": {
+                    "release": false,
                     "locked": true
                 }
             }
@@ -38,26 +46,31 @@
         "test": {
             "executor": "@ignisda/nx-rust:test",
             "dependsOn": ["build"],
+            "defaultConfiguration": "production",
             "options": {
-                "release": false,
                 "frozen": true,
                 "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true,
-                    "frozen": true,
-                    "locked": true
+                    "release": true
+                },
+                "development": {
+                    "release": false
                 }
             }
         },
         "lint": {
-            "executor": "@ignisda/nx-rust:clippy",
             "dependsOn": ["build"],
-            "options": {
-                "fix": false,
-                "failOnWarnings": true,
-                "noDeps": true
+            "defaultConfiguration": "production",
+            "executor": "nx:run-commands",
+            "configurations": {
+                "production": {
+                    "command": "cargo clippy --release -- --D warnings --no-deps"
+                },
+                "development": {
+                    "command": "cargo clippy -- --D warnings --no-deps"
+                }
             }
         },
         "fmt": {

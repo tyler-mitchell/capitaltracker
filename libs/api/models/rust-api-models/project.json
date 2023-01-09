@@ -10,14 +10,16 @@
         "build": {
             "inputs": ["grpcModels", "default"],
             "executor": "@ignisda/nx-rust:build",
+            "defaultConfiguration": "production",
             "options": {
-                "release": false,
                 "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true,
-                    "locked": true
+                    "release": true
+                },
+                "development": {
+                    "release": false
                 }
             }
         },
@@ -25,27 +27,32 @@
             "dependsOn": ["build"],
             "inputs": ["grpcModels", "default"],
             "executor": "@ignisda/nx-rust:test",
+            "defaultConfiguration": "production",
             "options": {
-                "release": false,
                 "frozen": true,
                 "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true,
-                    "frozen": true,
-                    "locked": true
+                    "release": true
+                },
+                "development": {
+                    "release": false
                 }
             }
         },
         "lint": {
             "dependsOn": ["build"],
             "inputs": ["grpcModels", "default"],
-            "executor": "@ignisda/nx-rust:clippy",
-            "options": {
-                "failOnWarnings": true,
-                "fix": false,
-                "noDeps": true
+            "defaultConfiguration": "production",
+            "executor": "nx:run-commands",
+            "configurations": {
+                "production": {
+                    "command": "cargo clippy --release -- --D warnings --no-deps"
+                },
+                "development": {
+                    "command": "cargo clippy -- --D warnings --no-deps"
+                }
             }
         },
         "fmt": {
