@@ -464,10 +464,80 @@ jobs:
               if: startsWith(github.ref, 'refs/heads/main')
               run: yarn bump
 
+    release:
+        name: Release
+        runs-on: ${{ matrix.platform }}
+        needs: [desktop, main, agents, semver]
+        defaults:
+            run:
+                shell: bash
+        strategy:
+            fail-fast: false
+            matrix:
+                platform: [macos-12, ubuntu-latest, windows-latest]
+        steps:
+            - name: Download Desktop (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
+              uses: actions/download-artifact@v3
+              with:
+                  name: linux-desktop
+
+            - name: Download Desktop (macos-12)
+              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
+              uses: actions/download-artifact@v3
+              with:
+                  name: macos-desktop
+
+            - name: Download Desktop (windows-latest)
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
+              uses: actions/download-artifact@v3
+              with:
+                  name: windows-desktop
+
+            - name: Generate Release Body
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
+              run: npx extract-changelog-release > RELEASE_BODY.md
+
+            - name: Release Desktop App (ubuntu-latest)
+              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
+              uses: softprops/action-gh-release@v1
+              with:
+                  body_path: RELEASE_BODY.md
+                  fail_on_unmatched_files: true
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  files: |
+                      appimage/*.AppImage
+                      deb/*.deb
+
+            - name: Release Desktop App (macos-12)
+              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
+              uses: softprops/action-gh-release@v1
+              with:
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  fail_on_unmatched_files: true
+                  files: |
+                      macos/*.app.tar
+                      dmg/*.dmg
+
+            - name: Release Desktop App (windows-latest)
+              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
+              uses: softprops/action-gh-release@v1
+              with:
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  fail_on_unmatched_files: true
+                  files: |
+                      *.msi
+
+            - name: Delete Artifacts
+              if: failure()
+              uses: geekyeggo/delete-artifact@v2
+              with:
+                  name: '*'
+
     deploy:
         name: Deploy Web
         runs-on: ubuntu-latest
-        needs: [main, agents, semver]
+        needs: [main, agents, semver, release]
         defaults:
             run:
                 shell: bash
@@ -522,113 +592,10 @@ jobs:
               with:
                   name: '*'
 
-    release:
-        name: Release
-        runs-on: ${{ matrix.platform }}
-        needs: [desktop, main, agents, semver]
-        defaults:
-            run:
-                shell: bash
-        strategy:
-            fail-fast: false
-            matrix:
-                platform: [macos-12, ubuntu-latest, windows-latest]
-        steps:
-            - name: Download Desktop (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: actions/download-artifact@v3
-              with:
-                  name: linux-desktop
-
-            - name: Download Desktop (macos-12)
-              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
-              uses: actions/download-artifact@v3
-              with:
-                  name: macos-desktop
-
-            - name: Download Desktop (windows-latest)
-              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: actions/download-artifact@v3
-              with:
-                  name: windows-desktop
-
-            - name: Generate Release Body
-              run: npx extract-changelog-release > RELEASE_BODY.md
-
-            - name: Release Desktop App (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
-              with:
-                  body_path: RELEASE_BODY.md
-                  fail_on_unmatched_files: true
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  files: |
-                      appimage/*.AppImage
-                      deb/*.deb
-
-            - name: Release Desktop App (macos-12)
-              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
-              with:
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  fail_on_unmatched_files: true
-                  files: |
-                      macos/*.app.tar
-                      dmg/*.dmg
-
-            - name: Release Desktop App (windows-latest)
-              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
-
-            - name: Download Desktop (windows-latest)
-              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: actions/download-artifact@v3
-              with:
-                  name: windows-desktop
-
-            - name: Generate Release Body
-              run: npx extract-changelog-release > RELEASE_BODY.md
-
-            - name: Release Desktop App (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
-              with:
-                  body_path: RELEASE_BODY.md
-                  fail_on_unmatched_files: true
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  files: |
-                      appimage/*.AppImage
-                      deb/*.deb
-
-            - name: Release Desktop App (macos-12)
-              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
-              with:
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  fail_on_unmatched_files: true
-                  files: |
-                      macos/*.app.tar
-                      dmg/*.dmg
-
-            - name: Release Desktop App (windows-latest)
-              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
-              with:
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  fail_on_unmatched_files: true
-                  files: |
-                      *.msi
-
-            - name: Delete Artifacts
-              if: failure()
-              uses: geekyeggo/delete-artifact@v2
-              with:
-                  name: '*'
-
     cleanup:
         name: Cleanup
         runs-on: ubuntu-latest
-        needs: [deploy, release]
+        needs: [deploy]
         steps:
             - name: Delete Artifacts
               uses: geekyeggo/delete-artifact@v2
