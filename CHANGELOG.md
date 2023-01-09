@@ -1,7 +1,4 @@
-# Changelog
-
-This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
-
+# Capital Tracker Changelog
 ## 0.1.0 (2023-01-09)
 
 
