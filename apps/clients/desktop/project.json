@@ -41,15 +41,11 @@
         "lint": {
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
-            "defaultConfiguration": "production",
-            "executor": "nx:run-commands",
-            "configurations": {
-                "production": {
-                    "command": "cargo clippy --release -- --D warnings --no-deps"
-                },
-                "development": {
-                    "command": "cargo clippy -- --D warnings --no-deps"
-                }
+            "executor": "@ignisda/nx-rust:clippy",
+            "options": {
+                "fix": false,
+                "failOnWarnings": true,
+                "noDeps": true
             }
         },
         "start": {

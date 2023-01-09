@@ -42,17 +42,13 @@
             }
         },
         "lint": {
-            "dependsOn": ["build"],
-            "inputs": ["grpcModels", "default"],
-            "defaultConfiguration": "production",
-            "executor": "nx:run-commands",
-            "configurations": {
-                "production": {
-                    "command": "cargo clippy --release -- --D warnings --no-deps"
-                },
-                "development": {
-                    "command": "cargo clippy -- --D warnings --no-deps"
-                }
+            "inputs": ["desktopExported"],
+            "dependsOn": ["^export"],
+            "executor": "@ignisda/nx-rust:clippy",
+            "options": {
+                "fix": false,
+                "failOnWarnings": true,
+                "noDeps": true
             }
         },
         "fmt": {

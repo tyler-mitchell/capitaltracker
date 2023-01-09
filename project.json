@@ -7,11 +7,11 @@
             "options": {
                 "syncVersions": true,
                 "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
-                "changelogHeader": "# Capital Tracker Changelog\n",
                 "noVerify": true,
                 "remote": "origin",
                 "skipProjectChangelog": true,
                 "push": true,
+                "baseBranch": "main",
                 "preset": "conventional"
             }
         }
