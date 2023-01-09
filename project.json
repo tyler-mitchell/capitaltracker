@@ -11,6 +11,7 @@
                 "remote": "origin",
                 "skipProjectChangelog": true,
                 "push": true,
+                "baseBranch": "main",
                 "preset": "conventional"
             }
         }
