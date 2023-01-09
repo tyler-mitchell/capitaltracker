@@ -464,11 +464,15 @@ jobs:
 
             - name: Setup Git
               if: startsWith(github.ref, 'refs/heads/main')
-              uses: fregante/setup-git-user@v1
+              run: |
+                  git config --global user.name "Clemens Horn"
+                  git config --global user.email "clemens.horn@mni.thm.de"
 
             - name: Prepare Release
               if: startsWith(github.ref, 'refs/heads/main')
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn bump
+              env:
+                GITHUB_TOKEN: ${{ secrets.TAURI_GITHUB_TOKEN }}
 
             - name: Abort Workflow
               if: failure()
