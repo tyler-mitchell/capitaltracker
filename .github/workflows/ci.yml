@@ -20,6 +20,7 @@ env:
     NX_EXEC: 'npx nx affected --nx-bail --base=$NX_BASE --head=$NX_HEAD --exclude=desktop --parallel=$NX_CLOUD_DISTRIBUTED_EXECUTION_AGENT_COUNT --target'
     RUST: false
     RUST_BUILT: false
+    CI: true
 
 jobs:
     web:
