@@ -11,13 +11,15 @@
             "inputs": ["grpcModels", "default"],
             "executor": "@ignisda/nx-rust:build",
             "options": {
-                "release": false,
+                "targetDir": "libs/api/models/rust-api-models/target",
                 "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true,
-                    "locked": true
+                    "release": true
+                },
+                "development": {
+                    "release": false
                 }
             }
         },
@@ -26,26 +28,31 @@
             "inputs": ["grpcModels", "default"],
             "executor": "@ignisda/nx-rust:test",
             "options": {
-                "release": false,
+                "targetDir": "libs/api/models/rust-api-models/target",
                 "frozen": true,
                 "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true,
-                    "frozen": true,
-                    "locked": true
+                    "release": true
+                },
+                "development": {
+                    "release": false
                 }
             }
         },
         "lint": {
             "dependsOn": ["build"],
             "inputs": ["grpcModels", "default"],
-            "executor": "@ignisda/nx-rust:clippy",
-            "options": {
-                "failOnWarnings": true,
-                "fix": false,
-                "noDeps": true
+            "defaultConfiguration": "production",
+            "executor": "nx:run-commands",
+            "configurations": {
+                "production": {
+                    "command": "CARGO_TARGET_DIR=libs/api/models/rust-api-models/target cargo clippy --release -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
+                },
+                "development": {
+                    "command": "CARGO_TARGET_DIR=libs/api/models/rust-api-models/target cargo clippy -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
+                }
             }
         },
         "fmt": {

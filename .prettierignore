@@ -1,11 +1,11 @@
 # Add files here to ignore them from prettier formatting
 
-/dist
-/coverage
-/target
-/node_modules
+**/dist
+**/coverage
+**/node_modules
 **/.next
 **/.expo
 **/build
+**/target
 .yarn/
 apps/.storybook/mobile/storybook.requires.js

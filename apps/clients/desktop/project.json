@@ -8,14 +8,17 @@
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:build",
+            "defaultConfiguration": "production",
             "options": {
-                "release": true,
+                "targetDir": "apps/clients/desktop/target",
                 "locked": true
             },
             "configurations": {
+                "production": {
+                    "release": true
+                },
                 "development": {
-                    "release": false,
-                    "locked": true
+                    "release": false
                 }
             }
         },
@@ -23,42 +26,55 @@
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:test",
+            "defaultConfiguration": "production",
             "options": {
-                "release": false,
+                "targetDir": "apps/clients/desktop/target",
                 "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true,
-                    "locked": true
+                    "release": true
+                },
+                "development": {
+                    "release": false
                 }
             }
         },
         "lint": {
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
-            "executor": "@ignisda/nx-rust:test",
-            "options": {
-                "release": false,
-                "locked": true
-            },
+            "defaultConfiguration": "production",
+            "executor": "nx:run-commands",
             "configurations": {
                 "production": {
-                    "release": true,
-                    "locked": true
+                    "command": "CARGO_TARGET_DIR=apps/clients/desktop/target cargo clippy --release -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
+                },
+                "development": {
+                    "command": "CARGO_TARGET_DIR=apps/clients/desktop/target cargo clippy -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
                 }
             }
+        },
+        "start": {
+            "inputs": ["desktopExported"],
+            "dependsOn": ["^export"],
+            "executor": "nx:run-commands",
+            "defaultConfiguration": "development",
+            "configurations": {
+                "production": {
+                    "command": "tauri dev -- --release --target-dir=target"
+                },
+                "development": {
+                    "command": "tauri dev -- --target-dir=target"
+                }
+            }
+        },
+        "fmt": {
+            "command": "cargo fmt -p desktop --check"
         },
         "export": {
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
-            "command": "tauri build"
-        },
-        "start": {
-            "command": "tauri dev"
-        },
-        "fmt": {
-            "command": "cargo fmt -p desktop --check"
+            "command": "tauri build -- --target-dir=target --locked"
         }
     },
     "implicitDependencies": ["web"],
