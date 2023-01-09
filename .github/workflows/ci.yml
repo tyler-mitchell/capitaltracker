@@ -479,6 +479,8 @@ jobs:
             - name: Checkout
               if: startsWith(github.ref, 'refs/heads/main')
               uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
 
             - name: Checkout
               if: startsWith(github.ref, 'refs/heads/main')
