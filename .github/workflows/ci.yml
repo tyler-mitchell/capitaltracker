@@ -459,21 +459,18 @@ jobs:
               if: steps.node_cache.outputs.cache-hit != 'true' && startsWith(github.ref, 'refs/heads/main')
               run: yarn install --immutable
 
-            - name: Setup Git
-              if: startsWith(github.ref, 'refs/heads/main')
-              run: |
-                  git config --global user.name "Clemens Horn"
-                  git config --global user.email "clemens.horn@mni.thm.de"
-
             - name: Prepare Release
               if: startsWith(github.ref, 'refs/heads/main')
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false  yarn bump
 
-            - name: Push Changes
+            - name: Commit & Push changes
               if: startsWith(github.ref, 'refs/heads/main')
-              run: git push origin main --tags --force
-              env:
-                  GITHUB_TOKEN: ${{ secrets.TAURI_GITHUB_TOKEN }}
+              uses: actions-js/push@master
+              with:
+                  github_token: ${{ secrets.TAURI_GITHUB_TOKEN }}
+                  message: 'chore(workspace): bump version'
+                  tags: true
+                  force: true
 
             - name: Abort Workflow
               if: failure()
