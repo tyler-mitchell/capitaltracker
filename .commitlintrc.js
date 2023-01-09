@@ -14,7 +14,6 @@ module.exports = {
                     ctx,
                     ({ name }) => !name.includes('e2e') && !name.includes('sb')
                 )),
-                'workspace', // when project config has changed
             ],
         ],
     },
