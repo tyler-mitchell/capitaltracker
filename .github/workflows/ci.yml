@@ -462,7 +462,7 @@ jobs:
 
             - name: Prepare Release
               if: startsWith(github.ref, 'refs/heads/main')
-              run: yarn bump
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false yarn bump
 
     release:
         name: Release
