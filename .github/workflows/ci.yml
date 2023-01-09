@@ -476,6 +476,10 @@ jobs:
             matrix:
                 platform: [macos-12, ubuntu-latest, windows-latest]
         steps:
+            - name: Checkout
+              if: startsWith(github.ref, 'refs/heads/main')
+              uses: actions/checkout@v3
+
             - name: Download Desktop (ubuntu-latest)
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
               uses: actions/download-artifact@v3
