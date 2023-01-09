@@ -11,7 +11,6 @@
             "executor": "@ignisda/nx-rust:run",
             "defaultConfiguration": "production",
             "options": {
-                "targetDir": "apps/api/target",
                 "locked": true
             },
             "configurations": {
@@ -31,7 +30,6 @@
             "executor": "@ignisda/nx-rust:build",
             "defaultConfiguration": "production",
             "options": {
-                "targetDir": "apps/api/target",
                 "locked": true
             },
             "configurations": {
@@ -50,7 +48,6 @@
             "dependsOn": ["build"],
             "defaultConfiguration": "production",
             "options": {
-                "targetDir": "apps/api/target",
                 "frozen": true,
                 "locked": true
             },
@@ -69,10 +66,10 @@
             "executor": "nx:run-commands",
             "configurations": {
                 "production": {
-                    "command": "CARGO_TARGET_DIR=apps/api/target cargo clippy --release -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
+                    "command": "cargo clippy --release -- --D warnings --no-deps"
                 },
                 "development": {
-                    "command": "CARGO_TARGET_DIR=apps/api/target cargo clippy -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
+                    "command": "cargo clippy -- --D warnings --no-deps"
                 }
             }
         },

@@ -12,7 +12,6 @@
             "executor": "@ignisda/nx-rust:build",
             "defaultConfiguration": "production",
             "options": {
-                "targetDir": "libs/api/models/rust-api-models/target",
                 "locked": true
             },
             "configurations": {
@@ -30,7 +29,6 @@
             "executor": "@ignisda/nx-rust:test",
             "defaultConfiguration": "production",
             "options": {
-                "targetDir": "libs/api/models/rust-api-models/target",
                 "frozen": true,
                 "locked": true
             },
@@ -50,10 +48,10 @@
             "executor": "nx:run-commands",
             "configurations": {
                 "production": {
-                    "command": "CARGO_TARGET_DIR=libs/api/models/rust-api-models/target cargo clippy --release -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
+                    "command": "cargo clippy --release -- --D warnings --no-deps"
                 },
                 "development": {
-                    "command": "CARGO_TARGET_DIR=libs/api/models/rust-api-models/target cargo clippy -- --D warnings --no-deps; unset CARGO_TARGET_DIR"
+                    "command": "cargo clippy -- --D warnings --no-deps"
                 }
             }
         },
