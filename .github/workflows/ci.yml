@@ -472,10 +472,10 @@ jobs:
               if: startsWith(github.ref, 'refs/heads/main')
               uses: CasperWA/push-protected@v2
               with:
-                token: ${{ secrets.TAURI_GITHUB_TOKEN}}
-                branch: main
-                tags: true
-                force: true
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN}}
+                  branch: main
+                  tags: true
+                  force: true
 
             - name: Abort Workflow
               if: failure()
