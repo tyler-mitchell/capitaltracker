@@ -9,8 +9,8 @@
                 "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
                 "noVerify": true,
                 "skipProjectChangelog": true,
-                "skipCommit": true,
                 "push": false,
+                "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
                 "remote": "origin",
                 "baseBranch": "main",
                 "preset": "conventional"
