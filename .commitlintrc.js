@@ -10,7 +10,7 @@ module.exports = {
             [
                 ...(await getProjects(
                     ctx,
-                    ({ name, projectType }) =>
+                    ({ name }) =>
                         !name.includes('e2e') &&
                         !name.includes('sb')
                 )),
