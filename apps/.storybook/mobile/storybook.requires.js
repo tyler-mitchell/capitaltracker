@@ -38,7 +38,11 @@ try {
 } catch {}
 
 const getStories = () => {
-  return [require("../../../libs/shared/src/pages/home/home.stories.tsx")];
+  return [
+    require("../../../libs/shared/src/components/logo/logo.stories.tsx"),
+    require("../../../libs/shared/src/pages/dashboard/dashboard.stories.tsx"),
+    require("../../../libs/shared/src/pages/home/home.stories.tsx"),
+  ];
 };
 
 configure(getStories, module, false);

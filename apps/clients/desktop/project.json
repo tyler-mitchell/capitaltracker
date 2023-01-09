@@ -8,14 +8,16 @@
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:build",
+            "defaultConfiguration": "production",
             "options": {
-                "release": true,
                 "locked": true
             },
             "configurations": {
+                "production": {
+                    "release": true
+                },
                 "development": {
-                    "release": false,
-                    "locked": true
+                    "release": false
                 }
             }
         },
@@ -23,42 +25,50 @@
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
             "executor": "@ignisda/nx-rust:test",
+            "defaultConfiguration": "production",
             "options": {
-                "release": false,
                 "locked": true
             },
             "configurations": {
                 "production": {
-                    "release": true,
-                    "locked": true
+                    "release": true
+                },
+                "development": {
+                    "release": false
                 }
             }
         },
         "lint": {
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
-            "executor": "@ignisda/nx-rust:test",
+            "executor": "@ignisda/nx-rust:clippy",
             "options": {
-                "release": false,
-                "locked": true
-            },
+                "fix": false,
+                "failOnWarnings": true,
+                "noDeps": true
+            }
+        },
+        "start": {
+            "inputs": ["desktopExported"],
+            "dependsOn": ["^export"],
+            "executor": "nx:run-commands",
+            "defaultConfiguration": "development",
             "configurations": {
                 "production": {
-                    "release": true,
-                    "locked": true
+                    "command": "tauri dev -- --release"
+                },
+                "development": {
+                    "command": "tauri dev"
                 }
             }
+        },
+        "fmt": {
+            "command": "cargo fmt -p desktop --check"
         },
         "export": {
             "inputs": ["desktopExported"],
             "dependsOn": ["^export"],
-            "command": "tauri build"
-        },
-        "start": {
-            "command": "tauri dev"
-        },
-        "fmt": {
-            "command": "cargo fmt -p desktop --check"
+            "command": "tauri build -- --locked"
         }
     },
     "implicitDependencies": ["web"],
