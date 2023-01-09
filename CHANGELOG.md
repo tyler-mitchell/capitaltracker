@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.0](https://github.com/clemenscodes/capitaltracker/compare/v0.1.0...v0.2.0) (2023-01-09)
+
+
+### Features
+
+* **workspace:** :sparkles: implement semver ([b16814c](https://github.com/clemenscodes/capitaltracker/commit/b16814cbd9526c763bb1c3fcda0c26dde3cfac82))
+
 ## [0.1.0](https://github.com/clemenscodes/capitaltracker/compare/v0.0.2...v0.1.0) (2023-01-09)
 
 ### Features
