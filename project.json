@@ -8,6 +8,7 @@
                 "syncVersions": true,
                 "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
                 "noVerify": true,
+                "changelogHeader": "# Capital Tracker Changelog",
                 "skipProjectChangelog": true,
                 "push": false,
                 "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
