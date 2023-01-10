@@ -4,7 +4,7 @@
     "sourceRoot": "libs/api/models/node-api-models/src",
     "projectType": "library",
     "namedInputs": {
-        "defaultGrpc": ["default", "grpcModels"]
+        "defaultGrpc": ["default", "grpcModels", "noPackageJson"]
     },
     "targets": {
         "codegen": {

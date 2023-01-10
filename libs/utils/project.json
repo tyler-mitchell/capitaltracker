@@ -4,9 +4,12 @@
     "sourceRoot": "libs/utils/src",
     "projectType": "library",
     "tags": [],
+    "namedInputs": {
+        "defaultBump": ["default", "noPackageJson"]
+    },
     "targets": {
         "build": {
-            "inputs": ["default"],
+            "inputs": ["defaultBump"],
             "executor": "@nrwl/web:rollup",
             "outputs": ["{options.outputPath}"],
             "options": {
