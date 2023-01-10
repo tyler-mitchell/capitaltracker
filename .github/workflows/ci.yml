@@ -538,6 +538,7 @@ jobs:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
                   tag: v${{ steps.extract_version.outputs.version }}
                   artifactErrorsFailBuild: true
+                  skipIfReleaseExists: true
                   bodyFile: RELEASE_BODY.md
                   artifacts: |
                       appimage/*.AppImage
