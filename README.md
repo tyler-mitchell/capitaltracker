@@ -1,4 +1,6 @@
-# Capitaltracker
+# Capital Tracker
+
+[![ci](https://github.com/clemenscodes/capitaltracker/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/clemenscodes/capitaltracker/actions/workflows/ci.yml)
 
 ## Technologies
 
@@ -54,4 +56,4 @@
 ### Deployment
 
 - Google Cloud Run
-- Google Cloud for Anthos
+- Google Cloud Run for Anthos

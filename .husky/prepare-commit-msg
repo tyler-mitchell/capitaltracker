@@ -7,7 +7,7 @@ if [ -n "${CI}" ]; then
 fi
 
 if exec < /dev/tty; then
-    yarn cz --hook
+    yarn git-cz --hook
 else
     true
 fi

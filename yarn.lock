@@ -3961,7 +3961,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/proto-loader@npm:^0.7.0":
+"@grpc/proto-loader@npm:^0.7.0, @grpc/proto-loader@npm:^0.7.4":
   version: 0.7.4
   resolution: "@grpc/proto-loader@npm:0.7.4"
   dependencies:
@@ -12587,6 +12587,7 @@ __metadata:
     "@expo/next-adapter": ^4.0.13
     "@expo/webpack-config": ~0.17.3
     "@grpc/grpc-js": ^1.8.0
+    "@grpc/proto-loader": ^0.7.4
     "@ignisda/nx-rust": ^14.8.1
     "@jscutlery/semver": ^2.29.3
     "@nrwl/cypress": 15.4.5

@@ -3,15 +3,20 @@
     "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/api/models/node-api-models/src",
     "projectType": "library",
+    "namedInputs": {
+        "defaultGrpc": ["default", "grpcModels"]
+    },
     "targets": {
         "codegen": {
-            "inputs": ["default", "grpcModels"],
+            "inputs": ["defaultGrpc"],
             "command": "libs/api/models/node-api-models/codegen.sh"
         },
         "test-codegen": {
+            "inputs": ["defaultGrpc"],
             "command": "[ -d libs/api/models/node-api-models/src/lib/api ] || yarn nx codegen node-api-models --skip-nx-cache"
         },
         "build": {
+            "inputs": ["defaultGrpc"],
             "dependsOn": ["test-codegen"],
             "executor": "@nrwl/vite:build",
             "outputs": ["{options.outputPath}"],
@@ -20,7 +25,8 @@
             }
         },
         "lint": {
-            "dependsOn": ["test-codegen"],
+            "inputs": ["defaultGrpc"],
+            "dependsOn": ["build"],
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
             "options": {
@@ -28,7 +34,8 @@
             }
         },
         "test": {
-            "dependsOn": ["test-codegen"],
+            "inputs": ["defaultGrpc"],
+            "dependsOn": ["build"],
             "executor": "@nrwl/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {

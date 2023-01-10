@@ -5,6 +5,7 @@
     "projectType": "application",
     "targets": {
         "start": {
+            "inputs": ["default"],
             "executor": "@nrwl/next:server",
             "defaultConfiguration": "development",
             "options": {
@@ -23,6 +24,7 @@
             }
         },
         "build": {
+            "inputs": ["default"],
             "executor": "@nrwl/next:build",
             "outputs": ["{options.outputPath}"],
             "defaultConfiguration": "production",
@@ -39,6 +41,7 @@
             }
         },
         "export": {
+            "inputs": ["default"],
             "dependsOn": ["build"],
             "executor": "@nrwl/next:export",
             "options": {
@@ -46,6 +49,7 @@
             }
         },
         "test": {
+            "inputs": ["default"],
             "executor": "@nrwl/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
@@ -54,6 +58,7 @@
             }
         },
         "lint": {
+            "inputs": ["default"],
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
             "options": {

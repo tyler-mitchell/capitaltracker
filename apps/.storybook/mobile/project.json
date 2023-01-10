@@ -5,9 +5,11 @@
     "projectType": "application",
     "targets": {
         "fetch": {
+            "inputs": ["default"],
             "command": "sb-rn-get-stories --config-path apps/.storybook/mobile"
         },
         "start": {
+            "inputs": ["default"],
             "dependsOn": ["fetch"],
             "executor": "@nrwl/expo:start",
             "options": {

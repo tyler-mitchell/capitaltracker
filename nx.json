@@ -4,7 +4,7 @@
     "defaultProject": "web",
     "plugins": ["@ignisda/nx-rust"],
     "namedInputs": {
-        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "default": ["{projectRoot}/**/*", "sharedGlobals", "noPackageJson"],
         "production": [
             "default",
             "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
@@ -12,6 +12,7 @@
             "!{projectRoot}/jest.config.[jt]s",
             "!{projectRoot}/.eslintrc.json"
         ],
+        "noPackageJson": ["!{projectRoot}/package.json"],
         "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
         "desktopExported": ["{workspaceRoot}/dist/apps/clients/web/exported"],
         "grpcModels": ["{workspaceRoot}/tools/models/**/*.proto"]
