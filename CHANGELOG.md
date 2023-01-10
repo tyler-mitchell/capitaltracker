@@ -1,4 +1,11 @@
 # Capital Tracker Changelog
+## [0.1.2](https://github.com/clemenscodes/capitaltracker/compare/v0.1.1...v0.1.2) (2023-01-10)
+
+
+### Bug Fixes
+
+* **node-api-models:** :bug: install @grpc/proto-loader ([a51f625](https://github.com/clemenscodes/capitaltracker/commit/a51f6253949a9512f22d8ca03355ac01fc48648a))
+
 ## [0.1.1](https://github.com/clemenscodes/capitaltracker/compare/v0.1.0...v0.1.1) (2023-01-10)
 
 
