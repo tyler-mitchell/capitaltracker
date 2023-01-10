@@ -503,10 +503,9 @@ jobs:
             - name: Checkout
               if: startsWith(github.ref, 'refs/heads/main')
               uses: actions/checkout@v3
-
-            - name: Checkout
-              if: startsWith(github.ref, 'refs/heads/main')
-              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
 
             - name: Download Desktop (ubuntu-latest)
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
@@ -527,6 +526,7 @@ jobs:
                   name: windows-desktop
 
             - name: Generate Release Body
+              id: release_body
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
               run: npx extract-changelog-release > RELEASE_BODY.md
 
