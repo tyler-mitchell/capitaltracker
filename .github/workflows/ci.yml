@@ -531,34 +531,48 @@ jobs:
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
               run: npx extract-changelog-release > RELEASE_BODY.md
 
+            - name: Get Version
+              id: package-version
+              if: startsWith(github.ref, 'refs/heads/main')
+              uses: martinbeentjes/npm-get-version-action@main
+
             - name: Release Desktop App (ubuntu-latest)
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
+              uses: ncipollo/release-action@v1.12.0
               with:
-                  body_path: RELEASE_BODY.md
-                  fail_on_unmatched_files: true
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  files: |
+                  tag: ${{ steps.package-version.outputs.current-version }}
+                  allowUpdates: true
+                  artifactErrorsFailBuild: true
+                  omitBodyDuringUpdate: true
+                  bodyFile: RELEASE_BODY.md
+                  artifacts: |
                       appimage/*.AppImage
                       deb/*.deb
 
             - name: Release Desktop App (macos-12)
               if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
+              uses: ncipollo/release-action@v1.12.0
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  fail_on_unmatched_files: true
-                  files: |
+                  tag: ${{ steps.package-version.outputs.current-version }}
+                  allowUpdates: true
+                  artifactErrorsFailBuild: true
+                  omitBodyDuringUpdate: true
+                  artifacts: |
                       macos/*.app.tar
                       dmg/*.dmg
 
             - name: Release Desktop App (windows-latest)
               if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: softprops/action-gh-release@v1
+              uses: ncipollo/release-action@v1.12.0
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  fail_on_unmatched_files: true
-                  files: |
+                  tag: ${{ steps.package-version.outputs.current-version }}
+                  allowUpdates: true
+                  artifactErrorsFailBuild: true
+                  omitBodyDuringUpdate: true
+                  artifacts: |
                       *.msi
 
             - name: Delete Artifacts
