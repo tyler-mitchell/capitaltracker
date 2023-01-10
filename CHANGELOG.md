@@ -1,6 +1,12 @@
-# Changelog
+# Capital Tracker Changelog
+## [0.1.1](https://github.com/clemenscodes/capitaltracker/compare/v0.1.0...v0.1.1) (2023-01-10)
 
-This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
+
+### Bug Fixes
+
+* :bug: ci step check ([748dc26](https://github.com/clemenscodes/capitaltracker/commit/748dc2657213ed6f861a422d86e1d2af78c102f0))
+* **workspace:** :bug: fix husky hooks ([7019f3e](https://github.com/clemenscodes/capitaltracker/commit/7019f3eb61ab0014b0e88c47a5bdc6361a2977d1))
+* **workspace:** :bug: fix husky hooks ([#43](https://github.com/clemenscodes/capitaltracker/issues/43)) ([8f64ef0](https://github.com/clemenscodes/capitaltracker/commit/8f64ef02946eaa6b2303b82029bc7f8937089023))
 
 ## 0.1.0 (2023-01-10)
 
