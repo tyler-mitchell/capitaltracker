@@ -474,7 +474,6 @@ jobs:
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN}}
                   branch: main
-                  tags: true
                   force: true
 
             - name: Delete Artifacts
@@ -490,15 +489,11 @@ jobs:
 
     release:
         name: Release
-        runs-on: ${{ matrix.platform }}
+        runs-on: ubuntu-latest
         needs: [desktop, main, agents, semver]
         defaults:
             run:
                 shell: bash
-        strategy:
-            fail-fast: false
-            matrix:
-                platform: [macos-12, ubuntu-latest, windows-latest]
         steps:
             - name: Checkout
               if: startsWith(github.ref, 'refs/heads/main')
@@ -509,70 +504,45 @@ jobs:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
 
             - name: Download Desktop (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
+              if: startsWith(github.ref, 'refs/heads/main')
               uses: actions/download-artifact@v3
               with:
                   name: linux-desktop
 
             - name: Download Desktop (macos-12)
-              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
+              if: startsWith(github.ref, 'refs/heads/main')
               uses: actions/download-artifact@v3
               with:
                   name: macos-desktop
 
             - name: Download Desktop (windows-latest)
-              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
+              if: startsWith(github.ref, 'refs/heads/main')
               uses: actions/download-artifact@v3
               with:
                   name: windows-desktop
 
             - name: Generate Release Body
               id: release_body
-              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
+              if: startsWith(github.ref, 'refs/heads/main')
               run: npx extract-changelog-release > RELEASE_BODY.md
 
             - name: Extract version
               id: extract_version
               uses: Saionaro/extract-package-version@v1.1.1
 
-            - name: Release Desktop App (ubuntu-latest)
-              if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
+            - name: Release
+              if: startsWith(github.ref, 'refs/heads/main')
               uses: ncipollo/release-action@v1.12.0
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
                   tag: v${{ steps.extract_version.outputs.version }}
-                  allowUpdates: true
                   artifactErrorsFailBuild: true
-                  omitBodyDuringUpdate: true
                   bodyFile: RELEASE_BODY.md
                   artifacts: |
                       appimage/*.AppImage
                       deb/*.deb
-
-            - name: Release Desktop App (macos-12)
-              if: matrix.platform == 'macos-12' && startsWith(github.ref, 'refs/heads/main')
-              uses: ncipollo/release-action@v1.12.0
-              with:
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  tag: v${{ steps.extract_version.outputs.version }}
-                  allowUpdates: true
-                  artifactErrorsFailBuild: true
-                  omitBodyDuringUpdate: true
-                  artifacts: |
                       macos/*.app.tar
                       dmg/*.dmg
-
-            - name: Release Desktop App (windows-latest)
-              if: matrix.platform == 'windows-latest' && startsWith(github.ref, 'refs/heads/main')
-              uses: ncipollo/release-action@v1.12.0
-              with:
-                  token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  tag: v${{ steps.extract_version.outputs.version }}
-                  name: ${{ steps.extract_version.outputs.version }}
-                  allowUpdates: true
-                  artifactErrorsFailBuild: true
-                  omitBodyDuringUpdate: true
-                  artifacts: |
                       *.msi
 
             - name: Delete Artifacts
