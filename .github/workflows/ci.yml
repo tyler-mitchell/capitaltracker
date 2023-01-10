@@ -528,6 +528,7 @@ jobs:
 
             - name: Extract version
               id: extract_version
+              if: startsWith(github.ref, 'refs/heads/main')
               uses: Saionaro/extract-package-version@v1.1.1
 
             - name: Release
