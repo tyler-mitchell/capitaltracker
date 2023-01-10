@@ -536,12 +536,17 @@ jobs:
               if: startsWith(github.ref, 'refs/heads/main')
               uses: martinbeentjes/npm-get-version-action@main
 
+            - name: Extract version
+              id: extract_version
+              uses: Saionaro/extract-package-version@v1.1.1
+
             - name: Release Desktop App (ubuntu-latest)
               if: matrix.platform == 'ubuntu-latest' && startsWith(github.ref, 'refs/heads/main')
               uses: ncipollo/release-action@v1.12.0
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  tag: ${{ steps.package-version.outputs.current-version }}
+                  tag: ${{ steps.extract_version.outputs.version }}
+                  name: v${{ steps.extract_version.outputs.version }}
                   allowUpdates: true
                   artifactErrorsFailBuild: true
                   omitBodyDuringUpdate: true
@@ -555,7 +560,8 @@ jobs:
               uses: ncipollo/release-action@v1.12.0
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  tag: ${{ steps.package-version.outputs.current-version }}
+                  tag: ${{ steps.extract_version.outputs.version }}
+                  name: v${{ steps.extract_version.outputs.version }}
                   allowUpdates: true
                   artifactErrorsFailBuild: true
                   omitBodyDuringUpdate: true
@@ -568,7 +574,8 @@ jobs:
               uses: ncipollo/release-action@v1.12.0
               with:
                   token: ${{ secrets.TAURI_GITHUB_TOKEN }}
-                  tag: ${{ steps.package-version.outputs.current-version }}
+                  tag: ${{ steps.extract_version.outputs.version }}
+                  name: v${{ steps.extract_version.outputs.version }}
                   allowUpdates: true
                   artifactErrorsFailBuild: true
                   omitBodyDuringUpdate: true
@@ -580,6 +587,11 @@ jobs:
               uses: geekyeggo/delete-artifact@v2
               with:
                   name: '*'
+
+            - name: Abort Workflow
+              if: failure()
+              run: |
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
 
     deploy:
         name: Deploy Web
@@ -638,6 +650,11 @@ jobs:
               uses: geekyeggo/delete-artifact@v2
               with:
                   name: '*'
+
+            - name: Abort Workflow
+              if: failure()
+              run: |
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
 
     cleanup:
         name: Cleanup
