@@ -1,4 +1,6 @@
-# Capitaltracker
+# Capital Tracker
+
+[![ci](https://github.com/clemenscodes/capitaltracker/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/clemenscodes/capitaltracker/actions/workflows/ci.yml)
 
 ## Technologies
 
