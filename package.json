@@ -18,14 +18,14 @@
         "affected": "nx affected --target",
         "all": "nx run-many --all=true --skip-nx-cache --with-deps=true --target",
         "failed": "nx run-many --all=true --with-deps=true --only-failed=true --target",
-        "cz": "git-cz",
-        "bump": "CI=1 nx version workspace",
+        "bump": "nx version workspace",
         "postinstall": "husky install"
     },
     "dependencies": {
         "@expo/metro-config": "0.5.2",
         "@expo/next-adapter": "^4.0.13",
         "@expo/webpack-config": "~0.17.3",
+        "@grpc/proto-loader": "^0.7.4",
         "@nrwl/next": "15.4.4",
         "@react-native-community/datetimepicker": "^6.7.1",
         "@react-native-community/slider": "^4.4.0",

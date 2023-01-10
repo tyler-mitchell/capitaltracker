@@ -5,92 +5,112 @@
     "projectType": "application",
     "targets": {
         "start": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:start",
             "options": {
                 "port": 8082
             }
         },
         "run-ios": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:run",
             "options": {
                 "platform": "ios"
             }
         },
         "run-android": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:run",
             "options": {
                 "platform": "android"
             }
         },
         "build-eas": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:build",
             "options": {}
         },
         "build-list": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:build-list",
             "options": {}
         },
         "download": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:download",
             "options": {
                 "output": "apps/clients/mobile/dist"
             }
         },
         "build-ios": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:build-ios",
             "options": {}
         },
         "build-android": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:build-android",
             "options": {}
         },
         "build-web": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:build-web",
             "options": {}
         },
         "build-status": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:build-web",
             "options": {}
         },
         "sync-deps": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:sync-deps",
             "options": {}
         },
         "ensure-symlink": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:ensure-symlink",
             "options": {}
         },
         "publish": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:publish",
             "options": {}
         },
         "publish-set": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:publish-set",
             "options": {}
         },
         "rollback": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:rollback",
             "options": {}
         },
         "prebuild-eas": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:prebuild",
             "options": {}
         },
         "eject": {
+            "inputs": ["default"],
             "executor": "nx:run-commands",
             "options": {
                 "command": "nx prebuild mobile"
             }
         },
         "install": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:install",
             "options": {}
         },
         "update": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:update",
             "options": {}
         },
         "export": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:export",
             "options": {
                 "platform": "all",
@@ -98,12 +118,14 @@
             }
         },
         "export-web": {
+            "inputs": ["default"],
             "executor": "@nrwl/expo:export",
             "options": {
                 "bundler": "webpack"
             }
         },
         "lint": {
+            "inputs": ["default"],
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
             "options": {
@@ -111,6 +133,7 @@
             }
         },
         "test": {
+            "inputs": ["default"],
             "executor": "@nrwl/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {

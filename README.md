@@ -54,4 +54,4 @@
 ### Deployment
 
 - Google Cloud Run
-- Google Cloud for Anthos
+- Google Cloud Run for Anthos
