@@ -9,4 +9,4 @@
 **/target
 .yarn/
 apps/.storybook/mobile/storybook.requires.js
-CHANGELOG.md
+*.md
