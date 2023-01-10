@@ -477,16 +477,16 @@ jobs:
                   tags: true
                   force: true
 
-            - name: Abort Workflow
-              if: failure()
-              run: |
-                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
-
             - name: Delete Artifacts
               if: failure()
               uses: geekyeggo/delete-artifact@v2
               with:
                   name: '*'
+
+            - name: Abort Workflow
+              if: failure()
+              run: |
+                  curl -X POST -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
 
     release:
         name: Release
