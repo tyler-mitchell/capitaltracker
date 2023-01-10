@@ -6,4 +6,4 @@ if [ -n "${CI}" ]; then
     exit 0
 fi
 
-yarn
+git pull && yarn

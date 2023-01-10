@@ -6,4 +6,4 @@ if [ -n "${CI}" ]; then
     exit 0
 fi
 
-git add -A && yarn ci 4 && git add -A
+yarn ci 8
