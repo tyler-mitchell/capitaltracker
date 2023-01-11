@@ -1,6 +1,6 @@
 {
     "name": "capitaltracker",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "scripts": {
         "start": "nx start web",
@@ -15,7 +15,7 @@
         "affected": "nx affected --target",
         "all": "nx run-many --all=true --skip-nx-cache --with-deps=true --target",
         "failed": "nx run-many --all=true --with-deps=true --only-failed=true --target",
-        "bump": "nx version workspace",
+        "bump": "CI=true nx version workspace",
         "postinstall": "husky install"
     },
     "dependencies": {
