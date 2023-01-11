@@ -10,7 +10,7 @@
                 "allowEmptyRelease": false,
                 "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
                 "noVerify": true,
-                "changelogHeader": "# Capital Tracker Changelog",
+                "changelogHeader": "# Capital Tracker Changelog\n",
                 "push": false,
                 "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
                 "remote": "origin",
