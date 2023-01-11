@@ -4,7 +4,7 @@
     "defaultProject": "web",
     "plugins": ["@ignisda/nx-rust"],
     "namedInputs": {
-        "default": ["{projectRoot}/**/*", "sharedGlobals"],
+        "default": ["{projectRoot}/**/*", "sharedGlobals", "noPackageJson"],
         "production": [
             "default",
             "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
