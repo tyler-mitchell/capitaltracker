@@ -1,6 +1,5 @@
 {
     "name": "storybook-mobile",
-    "version": "0.1.2",
     "private": true,
     "dependencies": {
         "@testing-library/jest-native": "*",
