@@ -1,4 +1,12 @@
 # Capital Tracker Changelog
+## [0.1.3](https://github.com/clemenscodes/capitaltracker/compare/v0.1.2...v0.1.3) (2023-01-11)
+
+
+### Bug Fixes
+
+* **workspace:** :bug: update deps in ci ([590a17c](https://github.com/clemenscodes/capitaltracker/commit/590a17c548ce50ee94a07b15787ce52853e22a99))
+* **workspace:** :bug: update inputs ([7b63413](https://github.com/clemenscodes/capitaltracker/commit/7b63413eb738a5c88403e4f6bf7d82bf771c9107))
+
 ## [0.1.2](https://github.com/clemenscodes/capitaltracker/compare/v0.1.1...v0.1.2) (2023-01-10)
 
 
