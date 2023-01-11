@@ -3,9 +3,12 @@
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/api/node-api-wrapper/src",
     "projectType": "library",
+    "namedInputs": {
+        "defaultBump": ["default", "noPackageJson"]
+    },
     "targets": {
         "build": {
-            "inputs": ["default"],
+            "inputs": ["defaultBump"],
             "dependsOn": ["^build"],
             "executor": "@nrwl/vite:build",
             "outputs": ["{options.outputPath}"],
@@ -14,7 +17,7 @@
             }
         },
         "lint": {
-            "inputs": ["default"],
+            "inputs": ["defaultBump"],
             "dependsOn": ["^build"],
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
@@ -23,7 +26,7 @@
             }
         },
         "test": {
-            "inputs": ["default"],
+            "inputs": ["defaultBump"],
             "dependsOn": ["^build"],
             "executor": "@nrwl/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],

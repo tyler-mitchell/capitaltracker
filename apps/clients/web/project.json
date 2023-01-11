@@ -3,6 +3,9 @@
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "apps/clients/web",
     "projectType": "application",
+    "namedInputs": {
+        "defaultBump": ["default", "noPackageJson"]
+    },
     "targets": {
         "start": {
             "inputs": ["default"],

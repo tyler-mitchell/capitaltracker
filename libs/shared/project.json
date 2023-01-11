@@ -4,9 +4,12 @@
     "sourceRoot": "libs/shared/src",
     "projectType": "library",
     "tags": [],
+    "namedInputs": {
+        "defaultBump": ["default", "noPackageJson"]
+    },
     "targets": {
         "build": {
-            "inputs": ["default"],
+            "inputs": ["defaultBump"],
             "executor": "@nrwl/web:rollup",
             "outputs": ["{options.outputPath}"],
             "options": {
@@ -27,7 +30,7 @@
             }
         },
         "lint": {
-            "inputs": ["default"],
+            "inputs": ["defaultBump"],
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
             "options": {
@@ -35,7 +38,7 @@
             }
         },
         "test": {
-            "inputs": ["default"],
+            "inputs": ["defaultBump"],
             "executor": "@nrwl/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
