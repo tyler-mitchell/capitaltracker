@@ -53,7 +53,7 @@
 - Releases
 - Deployments
 
-### Deployment
+### Deployments
 
 - Google Cloud Run
 - Google Cloud Run for Anthos
