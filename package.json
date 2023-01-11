@@ -1,10 +1,7 @@
 {
     "name": "capitaltracker",
-    "version": "0.1.2",
+    "version": "0.1.0",
     "private": true,
-    "nx": {
-        "ignore": true
-    },
     "scripts": {
         "start": "nx start web",
         "watch": "nx watch --projects=web --includeDependencies -- nx build web",
