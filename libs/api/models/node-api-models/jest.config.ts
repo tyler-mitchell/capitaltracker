@@ -1,17 +1,13 @@
-/* eslint-disable */
-import { readFileSync } from 'fs';
-
-// Reading the SWC compilation config and remove the "exclude"
-// for the test files to be compiled by SWC
-const { exclude: _, ...swcJestConfig } = JSON.parse(
-    readFileSync(`${__dirname}/.lib.swcrc.json`, 'utf-8')
-);
-export default {
-    displayName: 'node-api-models',
-    preset: '../../../../jest.preset.js',
-    transform: {
-        '^.+\\.[tj]s$': ['@swc/jest', swcJestConfig],
+module.exports = {
+    displayName: 'api-models--node-api-models',
+    resolver: '@nrwl/jest/plugins/resolver',
+    preset: 'react-native',
+    transformIgnorePatterns: [
+        'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)',
+    ],
+    moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
+    setupFilesAfterEnv: ['<rootDir>/test-setup.ts'],
+    moduleNameMapper: {
+        '\\.svg$': '@nrwl/expo/plugins/jest/svg-mock',
     },
-    moduleFileExtensions: ['ts', 'js', 'html'],
-    coverageDirectory: '../../../../coverage/libs/api/models',
 };

@@ -5,11 +5,12 @@
         "version": {
             "executor": "@jscutlery/semver:version",
             "options": {
-                "syncVersions": true,
+                "syncVersions": false,
+                "tagPrefix": "v",
+                "allowEmptyRelease": false,
                 "skipCommitTypes": ["chore", "build", "ci", "docs", "refactor", "test"],
                 "noVerify": true,
-                "changelogHeader": "# Capital Tracker Changelog",
-                "skipProjectChangelog": true,
+                "changelogHeader": "# Capital Tracker Changelog\n",
                 "push": false,
                 "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
                 "remote": "origin",

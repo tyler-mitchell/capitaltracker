@@ -3,117 +3,93 @@
     "$schema": "../../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "apps/clients/mobile/src",
     "projectType": "application",
-    "namedInputs": {
-        "defaultBump": ["default", "noPackageJson"]
-    },
     "targets": {
         "start": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:start",
             "options": {
                 "port": 8082
             }
         },
         "run-ios": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:run",
             "options": {
                 "platform": "ios"
             }
         },
         "run-android": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:run",
             "options": {
                 "platform": "android"
             }
         },
         "build-eas": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:build",
             "options": {}
         },
         "build-list": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:build-list",
             "options": {}
         },
         "download": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:download",
             "options": {
                 "output": "apps/clients/mobile/dist"
             }
         },
         "build-ios": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:build-ios",
             "options": {}
         },
         "build-android": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:build-android",
             "options": {}
         },
         "build-web": {
-            "inputs": ["defaultBump"],
-            "executor": "@nrwl/expo:build-web",
             "options": {}
         },
         "build-status": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:build-web",
             "options": {}
         },
         "sync-deps": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:sync-deps",
             "options": {}
         },
         "ensure-symlink": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:ensure-symlink",
             "options": {}
         },
         "publish": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:publish",
             "options": {}
         },
         "publish-set": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:publish-set",
             "options": {}
         },
         "rollback": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:rollback",
             "options": {}
         },
         "prebuild-eas": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:prebuild",
             "options": {}
         },
         "eject": {
-            "inputs": ["defaultBump"],
             "executor": "nx:run-commands",
             "options": {
                 "command": "nx prebuild mobile"
             }
         },
         "install": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:install",
             "options": {}
         },
         "update": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:update",
             "options": {}
         },
         "export": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:export",
             "options": {
                 "platform": "all",
@@ -121,14 +97,12 @@
             }
         },
         "export-web": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/expo:export",
             "options": {
                 "bundler": "webpack"
             }
         },
         "lint": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
             "options": {
@@ -136,7 +110,6 @@
             }
         },
         "test": {
-            "inputs": ["defaultBump"],
             "executor": "@nrwl/jest:jest",
             "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
             "options": {
