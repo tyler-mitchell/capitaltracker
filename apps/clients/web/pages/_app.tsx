@@ -19,7 +19,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
-                <title>Solito Example App</title>
+                <title>Capital Tracker</title>
                 <meta name="description" content="Capital Tracker" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>

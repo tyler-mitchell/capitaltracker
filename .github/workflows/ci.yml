@@ -94,7 +94,6 @@ jobs:
               with:
                   path: dist
                   key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
-                  restore-keys: ubuntu-latest-dist-
 
     desktop:
         name: Build Desktop
