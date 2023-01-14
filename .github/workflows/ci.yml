@@ -70,8 +70,8 @@ jobs:
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
-            - name: Node Build Cache
-              uses: actions/cache@v3
+            - name: Restore Node Build Cache
+              uses: actions/cache/restore@v3
               with:
                   path: dist
                   key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
@@ -93,6 +93,13 @@ jobs:
 
             - name: Export Web
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export web
+
+            - name: Save Node Build Cache
+              uses: actions/cache/save@v3
+              with:
+                  path: dist
+                  key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
+                  restore-keys: ubuntu-latest-dist-
 
     desktop:
         name: Build Desktop
