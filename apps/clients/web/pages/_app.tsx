@@ -20,7 +20,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
         <>
             <Head>
                 <title>Solito Example App</title>
-                <meta name="description" content="Expo + Next.js with Solito. By Fernando Rojo." />
+                <meta name="description" content="Capital Tracker" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className="app">
