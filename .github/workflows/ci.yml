@@ -163,7 +163,7 @@ jobs:
                   path: dist
 
             - name: Build Tauri App
-              run: npx tauri build
+              run: npx @tauri-apps/cli build
 
             - name: Package App (macos only)
               if: matrix.platform == 'macos-12'
