@@ -156,32 +156,6 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Node Cache
-              id: node_cache
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cache/Cypress/
-                      node_modules/
-                  key: ${{ matrix.platform }}-node-${{ hashFiles('yarn.lock') }}
-                  restore-keys: ${{ matrix.platform }}-node-
-
-            - name: Rust Cache
-              uses: actions/cache@v3
-              with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ~/.cargo/git/db/
-                      target/
-                  key: ${{ matrix.platform }}-cargo-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ${{ matrix.platform }}-cargo-
-
-            - name: Install Node Dependencies
-              if: steps.node_cache.outputs.cache-hit != 'true'
-              run: yarn install --immutable
-
             - name: Download Web
               uses: actions/download-artifact@v3
               with:
@@ -189,7 +163,7 @@ jobs:
                   path: dist
 
             - name: Build Tauri App
-              run: yarn tauri build
+              run: npx tauri build
 
             - name: Package App (macos only)
               if: matrix.platform == 'macos-12'
