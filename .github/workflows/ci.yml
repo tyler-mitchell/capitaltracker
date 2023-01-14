@@ -34,11 +34,6 @@ jobs:
             - name: Install Protocol Buffer Dependencies
               run: sudo apt-get install -y protobuf-compiler libprotobuf-dev
 
-            - name: Install Rust Toolchain
-              uses: dtolnay/rust-toolchain@stable
-              with:
-                  components: rustfmt, clippy
-
             - name: Install Node
               uses: actions/setup-node@v3
               with:
