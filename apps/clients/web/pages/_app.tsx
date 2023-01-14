@@ -19,7 +19,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
-                <title>Capital Tracker</title>
+                <title>Capital Tracker App</title>
                 <meta name="description" content="Capital Tracker" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
