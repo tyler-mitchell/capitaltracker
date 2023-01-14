@@ -70,6 +70,13 @@ jobs:
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
+            - name: Node Build Cache
+              uses: actions/cache@v3
+              with:
+                  path: dist
+                  key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
+                  restore-keys: ubuntu-latest-dist-
+
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
@@ -85,13 +92,7 @@ jobs:
               run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx-cloud record -- npx nx workspace-lint
 
             - name: Export Web
-              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export web --skip-nx-cache
-
-            - name: Upload Web
-              uses: actions/upload-artifact@v3
-              with:
-                  name: dist
-                  path: dist
+              run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx export web
 
     desktop:
         name: Build Desktop
@@ -153,14 +154,15 @@ jobs:
                       ~/.cargo/registry/cache/
                       ~/.cargo/git/db/
                       target/
-                  key: ${{ matrix.platform}}-cargo-${{ hashFiles('Cargo.lock') }}
-                  restore-keys: ${{ matrix.platform}}-cargo
+                  key: ${{ matrix.platform }}-cargo-${{ hashFiles('Cargo.lock') }}
+                  restore-keys: ${{ matrix.platform }}-cargo
 
-            - name: Download Web
-              uses: actions/download-artifact@v3
+            - name: Restore Node Build Cache
+              uses: actions/cache/restore@v3
               with:
-                  name: dist
                   path: dist
+                  key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
+                  restore-keys: ubuntu-latest-dist-
 
             - name: Build Tauri App
               run: npx @tauri-apps/cli build
@@ -232,12 +234,6 @@ jobs:
               with:
                   node-version: 16
 
-            - name: Download Web
-              uses: actions/download-artifact@v3
-              with:
-                  name: dist
-                  path: dist
-
             - name: Derive SHAs
               uses: nrwl/nx-set-shas@v3
 
@@ -250,6 +246,13 @@ jobs:
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
+
+            - name: Restore Node Build Cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: dist
+                  key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
+                  restore-keys: ubuntu-latest-dist-
 
             - name: Rust Cache
               uses: actions/cache/restore@v3
@@ -323,6 +326,22 @@ jobs:
                 agent:
                     - ${{fromJson(needs.set-agents.outputs.matrix)}}
         steps:
+            - name: Checkout [Pull Request]
+              uses: actions/checkout@v3
+              if: github.event_name == 'pull_request'
+              with:
+                  ref: ${{ github.event.pull_request.head.sha }}
+                  fetch-depth: 0
+
+            - name: Checkout [Main]
+              uses: actions/checkout@v3
+              if: github.event_name != 'pull_request'
+              with:
+                  fetch-depth: 0
+
+            - name: Derive SHAs
+              uses: nrwl/nx-set-shas@v3
+
             - name: Update
               run: sudo apt-get update
 
@@ -342,22 +361,6 @@ jobs:
               with:
                   node-version: 16
 
-            - name: Checkout [Pull Request]
-              uses: actions/checkout@v3
-              if: github.event_name == 'pull_request'
-              with:
-                  ref: ${{ github.event.pull_request.head.sha }}
-                  fetch-depth: 0
-
-            - name: Checkout [Main]
-              uses: actions/checkout@v3
-              if: github.event_name != 'pull_request'
-              with:
-                  fetch-depth: 0
-
-            - name: Derive SHAs
-              uses: nrwl/nx-set-shas@v3
-
             - name: Restore Node Cache
               id: node_cache
               uses: actions/cache/restore@v3
@@ -367,6 +370,14 @@ jobs:
                       node_modules/
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
+
+            - name: Restore Node Build Cache
+              id: dist
+              uses: actions/cache/restore@v3
+              with:
+                  path: dist
+                  key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
+                  restore-keys: ubuntu-latest-dist-
 
             - name: Restore Rust Cache
               id: rust_cache
@@ -384,12 +395,6 @@ jobs:
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
               run: yarn install --immutable
-
-            - name: Download Web
-              uses: actions/download-artifact@v3
-              with:
-                  name: dist
-                  path: dist
 
             - name: Run Agent
               run: npx nx-cloud start-agent
@@ -550,7 +555,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            - name: Node Cache
+            - name: Restore Node Cache
               id: node_cache
               uses: actions/cache/restore@v3
               with:
@@ -560,16 +565,17 @@ jobs:
                   key: ubuntu-latest-node-${{ hashFiles('yarn.lock') }}
                   restore-keys: ubuntu-latest-node-
 
+            - name: Restore Node Build Cache
+              uses: actions/cache/restore@v3
+              with:
+                  path: dist
+                  key: ubuntu-latest-dist-${{ hashFiles('dist/**') }}
+                  restore-keys: ubuntu-latest-dist-
+
             - name: Install Node
               uses: actions/setup-node@v3
               with:
                   node-version: 16
-
-            - name: Download Web
-              uses: actions/download-artifact@v3
-              with:
-                  name: dist
-                  path: dist
 
             - name: Install Node Dependencies
               if: steps.node_cache.outputs.cache-hit != 'true'
